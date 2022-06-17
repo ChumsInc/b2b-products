@@ -3,4 +3,6 @@
 /node_modules/
 /.idea
 /public/css/.sass-cache
+/public/css/**/*.css
+/public/css/**/*.map
 /public/js
