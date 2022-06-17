@@ -1,0 +1,6 @@
+
+# Project exclude paths
+/node_modules/
+/.idea
+/public/css/.sass-cache
+/public/js
