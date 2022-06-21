@@ -1,5 +1,5 @@
 
-import {fetchJSON} from "chums-ducks";
+import {fetchJSON} from "chums-components/dist/fetch";
 import {ItemSearchFilter, ItemSearchRecord} from "../types/item-search";
 
 function parseSearchParams(search: string, filter?: ItemSearchFilter): URLSearchParams {

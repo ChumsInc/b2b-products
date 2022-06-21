@@ -1,32 +1,19 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-ducks";
-import {selectCurrentProduct, selectCurrentProductLoading, selectCurrentProductSaving} from "../selectors";
+import {useSelector} from "react-redux";
+import {Alert, FormColumn, SpinnerButton} from "chums-components";
+import {selectCurrentProduct, selectCurrentProductSaving} from "../selectors";
 import {Product, ProductAdditionalData} from "b2b-types/src/products";
-import {
-    duplicateProductAction, loadProductAction,
-    saveProductAction,
-    setNewCurrentProductAction,
-    updateProductAction,
-    updateProductAdditionalDataAction
-} from "../actions";
-import SeasonSelect from "../../seasons/SeasonSelect";
-import {Keyword, ProductSeason} from "b2b-types";
-import KeywordSelect from "../../keywords/KeywordSelect";
-import ProductSellAsToggle from "./ProductSellAsToggle";
-import ProductItemCodeInput from "./ProductItemCodeInput";
-import SeasonAlert from "../../seasons/SeasonAlert";
+import {saveProductAction, updateProductAction, updateProductAdditionalDataAction} from "../actions";
 import TextareaAutosize from 'react-textarea-autosize';
 import ModalEditor from "../../../app/ModalEditor";
 import CodeEditButton from "./CodeEditButton";
-import RedirectToParent from "./RedirectToParent";
+import {useAppDispatch} from "../../../app/hooks";
 
 
 const colWidth = 8;
 const ProductDetailsTab: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
-    const loading = useSelector(selectCurrentProductLoading);
     const saving = useSelector(selectCurrentProductSaving);
 
     const [showEditor, setShowEditor] = useState(false);
@@ -47,31 +34,14 @@ const ProductDetailsTab: React.FC = () => {
     const additionalDataChangeHandler = (field: keyof ProductAdditionalData) =>
         (ev: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
 
-        switch (field) {
-        case 'subtitle':
-        case 'size':
-        case 'formatted_name':
-        case 'swatch_format':
-            return dispatch(updateProductAdditionalDataAction({[field]: ev.target.value}));
+            switch (field) {
+            case 'subtitle':
+            case 'size':
+            case 'formatted_name':
+            case 'swatch_format':
+                return dispatch(updateProductAdditionalDataAction({[field]: ev.target.value}));
+            }
         }
-    }
-
-    const toggleChangeHandler = (field: keyof Product) => () => {
-        switch (field) {
-        case 'canDome':
-        case 'canScreenPrint':
-            return dispatch(updateProductAction({[field]: !product[field]}));
-        }
-    }
-
-    const toggleAdditionalDataChangeHandler = (field: keyof ProductAdditionalData) => () => {
-        const checked = (!!product.additionalData ? !!product.additionalData[field] : false);
-        switch (field) {
-        case 'best_seller':
-        case 'upcycled':
-            return dispatch(updateProductAdditionalDataAction({[field]: !checked}));
-        }
-    }
 
     const onShowEditor = (field: 'details' | 'description') => {
         setEditorField(field)
@@ -85,7 +55,6 @@ const ProductDetailsTab: React.FC = () => {
     const onCancelEditor = () => {
         setShowEditor(false);
     }
-
 
 
     return (

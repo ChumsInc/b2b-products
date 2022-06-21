@@ -1,4 +1,4 @@
-import {Tab} from "chums-ducks";
+import {Tab} from "chums-components";
 
 export interface TabMap {
     [key:string]: Tab,

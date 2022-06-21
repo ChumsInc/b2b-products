@@ -1,13 +1,13 @@
 import React, {ChangeEvent, FormEvent} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {SpinnerButton} from "chums-ducks";
+import {useSelector} from "react-redux";
+import {SpinnerButton} from "chums-components";
 import {saveColorAction, setCurrentColorAction, updateCurrentColorAction} from "./actions";
 import {ProductColor} from "b2b-types";
 import {selectColorSaving, selectCurrentColor} from "./selectors";
-import {emptyColor} from "./index";
+import {useAppDispatch} from "../../app/hooks";
 
 const ColorEditor: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const current = useSelector(selectCurrentColor);
     const saving = useSelector(selectColorSaving);
     const onChangeField = (field: keyof ProductColor) => (ev: ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +48,8 @@ const ColorEditor: React.FC = () => {
                     <button type="button" className="btn btn-sm btn-outline-secondary">Cancel</button>
                 </div>
                 <div className="col-auto">
-                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={newImageHandler}>New</button>
+                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={newImageHandler}>New
+                    </button>
                 </div>
                 <div className="col-auto">
                     <pre><code>id = {current.id}</code></pre>

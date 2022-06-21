@@ -4,9 +4,8 @@ import {
     ActionInterface,
     ActionPayload,
     dismissContextAlertAction,
-    selectAlertListByContext,
-    siteSelected, SorterProps
-} from "chums-ducks";
+    selectAlertListByContext
+} from "chums-connected-components";
 import {ThunkAction} from "redux-thunk";
 import {apiActionHelper} from "../utils";
 import {fetchKeywords} from "../../api/keywordsAPI";
@@ -27,7 +26,7 @@ interface KeywordsThunkAction extends ThunkAction<any, RootState, unknown, Keywo
 export const loadKeywords = 'keywords/load';
 export const [loadKeywordsPending, loadKeywordsResolved, loadKeywordsRejected] = apiActionHelper(loadKeywords);
 
-export const keywordTitleSorter = (a:Keyword, b:Keyword) => a.title.toLowerCase() === b.title.toLowerCase()
+export const keywordTitleSorter = (a: Keyword, b: Keyword) => a.title.toLowerCase() === b.title.toLowerCase()
     ? (a.keyword > b.keyword ? 1 : -1)
     : (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1);
 
@@ -35,7 +34,7 @@ export const selectKeywordsList = (state: RootState) => state.keywords.list;
 export const selectKeywordsLoading = (state: RootState) => state.keywords.loading;
 export const selectKeywordsLoaded = (state: RootState) => state.keywords.loaded;
 
-export const loadKeywordsAction = (site: string): KeywordsThunkAction =>
+export const loadKeywordsAction = (): KeywordsThunkAction =>
     async (dispatch, getState) => {
         try {
             const state = getState();
@@ -43,7 +42,7 @@ export const loadKeywordsAction = (site: string): KeywordsThunkAction =>
                 return;
             }
             dispatch({type: loadKeywordsPending});
-            const list = await fetchKeywords(site);
+            const list = await fetchKeywords();
             dispatch({type: loadKeywordsResolved, payload: {list}});
             if (selectAlertListByContext(loadKeywords).length) {
                 dispatch(dismissContextAlertAction(loadKeywords));
@@ -64,8 +63,6 @@ const listReducer = (state: Keyword[] = [], action: KeywordsAction): Keyword[] =
         if (payload?.list) {
             return [...payload.list.sort((a, b) => a.keyword > b.keyword ? 1 : -1)];
         }
-        return [];
-    case siteSelected:
         return [];
     default:
         return state;
@@ -88,8 +85,6 @@ const loadedReducer = (state: boolean = false, action: KeywordsAction): boolean 
     switch (action.type) {
     case loadKeywordsResolved:
         return true;
-    case siteSelected:
-        return false;
     default:
         return state;
     }

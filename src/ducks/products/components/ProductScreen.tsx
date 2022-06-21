@@ -3,7 +3,7 @@ import ProductTableFilterBar from "./ProductTableFilterBar";
 import ProductTable from "./ProductTable";
 import ProductEditTabs, {productEditTabsKey, productTabs} from "./ProductEditTabs";
 import {useSelector} from "react-redux";
-import {selectCurrentTab} from "chums-ducks";
+import {selectCurrentTab} from "chums-connected-components";
 import MainEditForm from "./MainEditForm";
 import ProductJSON from "./ProductJSON";
 import ProductEditorTitle from "./ProductEditorTitle";

@@ -1,15 +1,15 @@
 import React, {MouseEvent} from 'react';
 import classNames from "classnames";
-import {useDispatch} from "react-redux";
 import {loadProductAction} from "../actions";
 import {ProductListItem} from "b2b-types";
+import {useAppDispatch} from "../../../app/hooks";
 
 export interface ProductRedirectIconProps {
     product: ProductListItem,
 }
 
 const ProductRedirectIcon: React.FC<ProductRedirectIconProps> = ({product}) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     if (!product.redirectToParent) {
         return null;
     }

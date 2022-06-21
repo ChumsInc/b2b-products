@@ -1,7 +1,8 @@
 import {RootState} from "../../app/configureStore";
 import {colorSorter} from "./sorter";
 import {createSelector} from "reselect";
-import {filterPage, selectCurrentPage, selectRowsPerPage, selectTableSort} from "chums-ducks";
+import {selectCurrentPage, selectRowsPerPage, selectTableSort} from "chums-connected-components";
+import {filterPage} from "chums-components";
 import {colorListTableKey} from "./index";
 import {ColorSorterProps} from "../../types/product";
 import {defaultColor} from "../../defaults";

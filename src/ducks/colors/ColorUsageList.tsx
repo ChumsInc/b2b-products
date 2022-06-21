@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCurrentColor, selectWhereUsed} from "./selectors";
 import {loadColorUsageAction} from "./actions";
 import ProductImage from "../../app/ProductImage";
 import {ColorProductUsage} from "b2b-types";
-import {calcPages, filterPage, FormCheck, Pagination, RowsPerPage} from "chums-ducks";
+import {calcPages, filterPage, FormCheck, Pagination, RowsPerPage} from "chums-components";
+import {useAppDispatch} from "../../app/hooks";
 
 const ColorUsageList: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const selected = useSelector(selectCurrentColor);
     const whereUsed = useSelector(selectWhereUsed);
 
@@ -41,16 +42,17 @@ const ColorUsageList: React.FC = () => {
                 </div>
                 <div className="col-auto">
                     <FormCheck label="Filter Inactive" checked={checked}
-                               onClick={() => setChecked(!checked)} type="checkbox" />
+                               onClick={() => setChecked(!checked)} type="checkbox"/>
                 </div>
                 <div className="col-auto">
-                    <Pagination page={page} pages={calcPages(list.length, rowsPerPage)} onSelectPage={setPage} filtered={list.length !== whereUsed.length}/>
+                    <Pagination page={page} pages={calcPages(list.length, rowsPerPage)} onSelectPage={setPage}
+                                filtered={list.length !== whereUsed.length}/>
                 </div>
             </div>
             <div className="d-flex flex-wrap justify-content-start">
                 {pagedList.map(c => (
                     <ProductImage key={c.productId} filename={c.image} itemCode={c.itemCode}
-                                                  colorCode={selected.code} size={80} className="p-1"/>
+                                  colorCode={selected.code} size={80} className="p-1"/>
                 ))}
             </div>
         </div>

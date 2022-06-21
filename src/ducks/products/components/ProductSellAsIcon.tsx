@@ -10,7 +10,7 @@ import {
     SELL_AS_VARIANTS,
     variantsColor
 } from "../constants";
-import {Badge} from "chums-ducks";
+import {Badge} from "chums-components";
 
 
 

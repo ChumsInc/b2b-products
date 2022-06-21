@@ -1,11 +1,11 @@
 import {apiActionHelper} from "../utils";
-import {ActionInterface, ActionPayload} from "chums-ducks";
+import {ActionInterface, ActionPayload} from "chums-connected-components";
 import {
     Product,
     ProductColorItem,
-    ProductColorVariant,
-    ProductListItem, ProductMixComponent, ProductMixItem,
-    ProductSellAs,
+    ProductListItem,
+    ProductMixComponent,
+    ProductMixItem,
     ProductVariant
 } from 'b2b-types/src/products';
 
@@ -31,6 +31,7 @@ export interface ProductsPayload extends ActionPayload {
     value?: string,
     checked?: boolean,
 }
+
 export interface ProductsAction extends ActionInterface {
     payload?: ProductsPayload,
 }

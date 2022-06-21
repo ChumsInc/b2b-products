@@ -1,5 +1,5 @@
 import {ProductSeason} from "b2b-types";
-import {ActionInterface, ActionPayload, dateFromInputValue, dismissContextAlertAction} from "chums-ducks";
+import {ActionInterface, ActionPayload, dismissContextAlertAction} from "chums-connected-components";
 import {apiActionHelper} from "../utils";
 import {combineReducers} from "redux";
 import {RootState} from "../../app/configureStore";

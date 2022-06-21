@@ -1,13 +1,14 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCurrentProduct} from "../selectors";
 import classNames from "classnames";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../constants";
 import {updateProductAction} from "../actions";
 import {ProductSellAs} from "b2b-types/src/products";
+import {useAppDispatch} from "../../../app/hooks";
 
 const ProductSellAsToggle: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const {sellAs} = useSelector(selectCurrentProduct);
 
     const cSellAsSelf = classNames('btn btn-sm', {
@@ -27,10 +28,11 @@ const ProductSellAsToggle: React.FC = () => {
         'btn-outline-sell-as-colors': sellAs !== SELL_AS_COLORS
     });
 
-    const clickHandler = (sellAs:ProductSellAs)  => dispatch(updateProductAction({sellAs: sellAs}));
+    const clickHandler = (sellAs: ProductSellAs) => dispatch(updateProductAction({sellAs: sellAs}));
     return (
         <div className="btn-group btn-group-smp">
-            <button type="button" className={cSellAsVariants} onClick={() => clickHandler(SELL_AS_VARIANTS)}>Variants</button>
+            <button type="button" className={cSellAsVariants} onClick={() => clickHandler(SELL_AS_VARIANTS)}>Variants
+            </button>
             <button type="button" className={cSellAsSelf} onClick={() => clickHandler(SELL_AS_SELF)}>Self</button>
             <button type="button" className={cSellAsMix} onClick={() => clickHandler(SELL_AS_MIX)}>Mix</button>
             <button type="button" className={cSellAsColors} onClick={() => clickHandler(SELL_AS_COLORS)}>Colors</button>

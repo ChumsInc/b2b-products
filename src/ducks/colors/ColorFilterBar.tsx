@@ -1,14 +1,13 @@
 import React, {ChangeEvent} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
-import {SpinnerButton} from "chums-ducks";
+import {SpinnerButton} from "chums-components";
 import {loadColorsAction, setColorFilterAction} from "./actions";
 import {selectColorFilter, selectColorsLoading} from "./selectors";
-import Debug from "debug";
-const debug = Debug('chums:src:ducks:colors:ColorFilterBar');
+import {useAppDispatch} from "../../app/hooks";
 
 const ColorFilterBar: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const loading = useSelector(selectColorsLoading);
     const filter = useSelector(selectColorFilter);
 

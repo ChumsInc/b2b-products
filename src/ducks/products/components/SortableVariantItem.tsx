@@ -1,17 +1,19 @@
 import React, {useRef} from "react";
 import {ProductVariant} from "b2b-types/src/products";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCurrentVariant} from "../selectors";
 import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
 import {setCurrentVariantAction} from "../actions";
 import classNames from "classnames";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../constants";
 import ProductImage from "./ProductImage";
+import {useAppDispatch} from "../../../app/hooks";
 
 interface SortableVariantItemProps {
     variant: ProductVariant,
     index: number,
     moveItem: (dragIndex: number, hoverIndex: number) => void,
+    children?: React.ReactNode,
 }
 
 interface DragItem {
@@ -24,8 +26,8 @@ const style = {
     cursor: 'move',
 }
 
-const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index, moveItem}) => {
-    const dispatch = useDispatch();
+const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index, moveItem, children}) => {
+    const dispatch = useAppDispatch();
     const selectedVariant = useSelector(selectCurrentVariant);
     const ref = useRef<HTMLDivElement>(null);
 

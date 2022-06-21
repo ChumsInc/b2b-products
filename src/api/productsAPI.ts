@@ -1,4 +1,4 @@
-import {fetchJSON} from 'chums-ducks';
+import {fetchJSON} from 'chums-components';
 import Debug from "debug";
 import {ProductListItem} from "b2b-types";
 import {

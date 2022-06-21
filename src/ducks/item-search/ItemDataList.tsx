@@ -1,7 +1,8 @@
 import React, {HTMLAttributes, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {itemSearchAction, selectItemSearchList} from "./index";
 import {ItemSearchFilter} from "../../types/item-search";
+import {useAppDispatch} from "../../app/hooks";
 
 
 export interface ItemDataListProps extends HTMLAttributes<HTMLDataListElement> {
@@ -19,7 +20,7 @@ const ItemDataList: React.FC<ItemDataListProps> = ({
                                                        ...props
                                                    }) => {
     const controller = new AbortController();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const items = useSelector(selectItemSearchList);
 
     const [timer, setTimer] = useState(0);
@@ -45,10 +46,10 @@ const ItemDataList: React.FC<ItemDataListProps> = ({
             {Object.keys(items)
                 .map(key => items[key])
                 .map(item => (
-                <option key={item.ItemCode} value={item.ItemCode} className={`item-data-list--${item.ProductType}`}>
-                    {item.ItemCodeDesc}
-                </option>
-            ))}
+                    <option key={item.ItemCode} value={item.ItemCode} className={`item-data-list--${item.ProductType}`}>
+                        {item.ItemCodeDesc}
+                    </option>
+                ))}
         </datalist>
     )
 }

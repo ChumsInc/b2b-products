@@ -1,15 +1,15 @@
 import React, {ChangeEvent, useState} from 'react'
 import ItemDataList from "../../item-search/ItemDataList";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCurrentProduct} from "../selectors";
 import {updateProductAction} from "../actions";
-import {selectItemSearchList, selectItemSearchLoading} from "../../item-search";
+import {selectItemSearchList} from "../../item-search";
+import {useAppDispatch} from "../../../app/hooks";
 
 
 export const ProductItemCodeInput: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const {itemCode} = useSelector(selectCurrentProduct);
-    const loading = useSelector(selectItemSearchLoading);
     const items = useSelector(selectItemSearchList);
 
     const [search, setSearch] = useState('');

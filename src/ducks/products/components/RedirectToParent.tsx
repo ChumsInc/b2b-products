@@ -1,11 +1,12 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCurrentProduct} from "../selectors";
 import {updateProductAction} from "../actions";
 import classNames from "classnames";
+import {useAppDispatch} from "../../../app/hooks";
 
-const RedirectToParent:React.FC = () => {
-    const dispatch = useDispatch();
+const RedirectToParent: React.FC = () => {
+    const dispatch = useAppDispatch();
     const {redirectToParent, defaultParentProductsId} = useSelector(selectCurrentProduct);
     const onChange = () => dispatch(updateProductAction({redirectToParent: !redirectToParent}))
     const iconClassName = {

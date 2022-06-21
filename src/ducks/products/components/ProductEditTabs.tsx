@@ -1,16 +1,11 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {
-    selectCurrentTab,
-    Tab,
-    TabList,
-    tabListCreatedAction,
-    tabSelectedAction,
-    tabToggleStatusAction
-} from "chums-ducks";
+import {useSelector} from "react-redux";
+import {ConnectedTabs, selectCurrentTab, tabSelectedAction, tabToggleStatusAction} from "chums-connected-components";
 import {TabMap} from "../../../app/types";
 import {selectCurrentProduct} from "../selectors";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "../constants";
+import {Tab} from "chums-components";
+import {useAppDispatch} from "../../../app/hooks";
 
 export const productEditTabsKey = 'product-edit-tabs';
 
@@ -43,13 +38,10 @@ const tabList: Tab[] = [
 ];
 
 const ProductEditTabs: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const currentProduct = useSelector(selectCurrentProduct);
     const currentTab = useSelector(selectCurrentTab(productEditTabsKey));
 
-    useEffect(() => {
-        dispatch(tabListCreatedAction(tabList, productEditTabsKey, productTabs.details.id))
-    }, [])
 
     useEffect(() => {
         dispatch(tabToggleStatusAction(productTabs.variant.id, productEditTabsKey, currentProduct.sellAs == SELL_AS_VARIANTS));
@@ -67,7 +59,7 @@ const ProductEditTabs: React.FC = () => {
     }, [currentProduct.sellAs])
 
     return (
-        <TabList tabKey={productEditTabsKey}/>
+        <ConnectedTabs tabKey={productEditTabsKey} tabs={tabList} defaultTabId={productTabs.details.id}/>
     )
 }
 

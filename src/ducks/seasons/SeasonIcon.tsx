@@ -1,7 +1,7 @@
 import  React from 'react';
 import {useSelector} from "react-redux";
 import {selectSeasons} from "./index";
-import {Badge} from "chums-ducks";
+import {Badge} from "chums-components";
 
 export interface SeasonIcon {
     code: string,

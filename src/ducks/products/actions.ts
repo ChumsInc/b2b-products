@@ -29,7 +29,11 @@ import {
     saveCurrentVariantPending,
     saveCurrentVariantRejected,
     saveCurrentVariantResolved,
-    saveMix, saveMixComponent, saveMixComponentPending, saveMixComponentRejected, saveMixComponentResolved,
+    saveMix,
+    saveMixComponent,
+    saveMixComponentPending,
+    saveMixComponentRejected,
+    saveMixComponentResolved,
     saveMixPending,
     saveMixRejected,
     saveMixResolved,
@@ -64,7 +68,8 @@ import {
     fetchProductsAPI,
     postProductAPI,
     saveColorItemAPI,
-    saveMixAPI, saveMixComponentAPI,
+    saveMixAPI,
+    saveMixComponentAPI,
     saveVariantAPI,
     saveVariantSortAPI,
     setDefaultVariantAPI
@@ -392,15 +397,18 @@ export const saveMixComponentAction = (component: ProductMixComponent): Products
             }
             const color = selectColorByCode(component.color_code)(state);
             if (!color || !color.id) {
-                return dispatch({type:saveMixComponentRejected, payload: {error: new Error('Color not found for mix component'), context: saveMixComponent}});
+                return dispatch({
+                    type: saveMixComponentRejected,
+                    payload: {error: new Error('Color not found for mix component'), context: saveMixComponent}
+                });
             }
-            dispatch({type:saveMixComponentPending})
+            dispatch({type: saveMixComponentPending})
             const mix = await saveMixComponentAPI(_mix.productId, {...component, colorsId: color.id});
-            dispatch({type:saveMixComponentResolved, payload: {mix, clearContext: saveMixComponent}})
-        } catch(error:unknown) {
+            dispatch({type: saveMixComponentResolved, payload: {mix, clearContext: saveMixComponent}})
+        } catch (error: unknown) {
             if (error instanceof Error) {
                 console.log("saveMixComponentAction()", error.message);
-                return dispatch({type:saveMixComponentRejected, payload: {error, context: saveMixComponent}})
+                return dispatch({type: saveMixComponentRejected, payload: {error, context: saveMixComponent}})
             }
             console.error("saveMixComponentAction()", error);
         }

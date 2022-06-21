@@ -1,32 +1,46 @@
-import {SorterProps} from "chums-ducks";
+import {SorterProps} from "chums-connected-components";
 import {
+    ColorProductUsage,
     Product,
     ProductColor,
-    ColorProductUsage,
+    ProductColorItem,
     ProductListItem,
+    ProductMixComponent,
+    ProductMixItem,
     ProductSeason,
-    ProductVariant, ProductColorVariant, ProductColorItem, ProductMixItem, ProductMixComponent
+    ProductVariant
 } from "b2b-types/src/products";
 
 export interface Editable {
     changed?: boolean,
 }
 
-export interface EditableProductColor extends ProductColor, Editable {}
+export interface EditableProductColor extends ProductColor, Editable {
+}
 
-export interface EditableProduct extends Product, Editable {}
-export interface EditableVariant extends ProductVariant, Editable {}
-export interface EditableProductColorItem extends ProductColorItem, Editable {}
-export interface EditableProductMixItem extends ProductMixItem, Editable {}
-export interface EditableProductMixComponent extends ProductMixComponent, Editable {}
+export interface EditableProduct extends Product, Editable {
+}
 
-export type BooleanLike = boolean|1|0;
+export interface EditableVariant extends ProductVariant, Editable {
+}
 
-export type SortableColor = Omit<ProductColor, 'changed'|'active'>
+export interface EditableProductColorItem extends ProductColorItem, Editable {
+}
+
+export interface EditableProductMixItem extends ProductMixItem, Editable {
+}
+
+export interface EditableProductMixComponent extends ProductMixComponent, Editable {
+}
+
+export type BooleanLike = boolean | 1 | 0;
+
+export type SortableColor = Omit<ProductColor, 'changed' | 'active'>
 
 export interface ColorSorterProps extends SorterProps {
     field: keyof SortableColor,
 }
+
 export type SortableColorProductUsage = Omit<ColorProductUsage, 'swatchCode' | 'image'>
 
 export interface ColorProductSorterProps extends SorterProps {
@@ -38,11 +52,11 @@ export type ProductImagePath = '80' | '125' | '250' | '400' | '800' | '2048' | '
 
 
 export interface ProductList {
-    [key:string]: ProductListItem,
+    [key: string]: ProductListItem,
 }
 
 export interface ProductSeasonList {
-    [key:string]: ProductSeason,
+    [key: string]: ProductSeason,
 }
 
 export interface ProductListSorterProps extends SorterProps {

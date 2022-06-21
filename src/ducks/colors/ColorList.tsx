@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
-import {addPageSetAction, PagerDuck, SortableTable, SortableTableField, tableAddedAction} from "chums-ducks";
+import {ConnectedPager, ConnectedTable, SortableTableField} from "chums-connected-components";
+
 import {ProductColor} from "b2b-types";
-import {colorListTableKey} from "./index";
+import {colorListTableKey, defaultColorSort} from "./index";
 import {loadColorsAction, setCurrentColorAction} from "./actions";
 import {
     selectColorListLength,
@@ -12,6 +13,7 @@ import {
     selectFilteredListLength,
     selectSortedList
 } from "./selectors";
+import {useAppDispatch} from "../../app/hooks";
 
 
 interface ColorTableField extends SortableTableField {
@@ -31,8 +33,9 @@ const rowClassName = (row: ProductColor) => {
     }
 }
 
+
 const ColorList: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const count = useSelector(selectColorListLength);
     const countFiltered = useSelector(selectFilteredListLength);
     const loading = useSelector(selectColorsLoading);
@@ -40,9 +43,6 @@ const ColorList: React.FC = () => {
     const pagedList = useSelector(selectSortedList);
 
     useEffect(() => {
-        dispatch(tableAddedAction({key: colorListTableKey, field: 'code', ascending: true}));
-        dispatch(addPageSetAction({key: colorListTableKey}));
-
         if (!count && !loading) {
             dispatch(loadColorsAction());
         }
@@ -54,11 +54,13 @@ const ColorList: React.FC = () => {
 
     return (
         <div>
-            <SortableTable tableKey={colorListTableKey} keyField={'id'} fields={colorFields} size="xs"
-                           selected={(color) => color.id === selected.id} rowClassName={rowClassName}
-                           onSelectRow={onSelectColor}
-                           data={pagedList}/>
-            <PagerDuck pageKey={colorListTableKey} dataLength={countFiltered} filtered={count !== countFiltered}/>
+            <ConnectedTable tableKey={colorListTableKey} defaultSort={defaultColorSort} keyField={'id'}
+                            fields={colorFields} size="xs"
+                            selected={(color) => color.id === selected.id} rowClassName={rowClassName}
+                            onSelectRow={onSelectColor}
+                            data={pagedList}/>
+            <ConnectedPager pageSetKey={colorListTableKey} dataLength={countFiltered}
+                            filtered={count !== countFiltered}/>
         </div>
     )
 

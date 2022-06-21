@@ -1,15 +1,15 @@
-import React, {ChangeEvent, FormEvent, useEffect, useRef} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {Alert, FormCheck, FormColumn, InputGroup, noop, SpinnerButton} from "chums-ducks";
+import React, {ChangeEvent, FormEvent} from 'react';
+import {useSelector} from "react-redux";
+import {Alert, FormCheck, FormColumn, InputGroup, noop, SpinnerButton} from "chums-components";
 import {selectCurrentMix, selectCurrentMixLoading, selectCurrentMixSaving, selectCurrentProduct} from "../selectors";
 import {ProductMixItem} from "b2b-types/src/products";
 import {saveCurrentMixAction, updateCurrentMixAction} from "../actions";
+import {useAppDispatch} from "../../../app/hooks";
 
 
 const colWidth = 8;
 const ProductColorEditor: React.FC = () => {
-    const dispatch = useDispatch();
-    const colorCodeRef = useRef<HTMLInputElement>(null)
+    const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
     const current = useSelector(selectCurrentMix);
     const loading = useSelector(selectCurrentMixLoading);

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from "classnames";
-import {Spinner} from "chums-ducks";
+import {Spinner} from "chums-components";
 import {useSelector} from "react-redux";
 import {selectCurrentProduct, selectCurrentProductChanged, selectCurrentProductLoading} from "../selectors";
 

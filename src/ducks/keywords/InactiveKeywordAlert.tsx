@@ -1,6 +1,6 @@
 import React from 'react';
 import {Keyword} from "b2b-types";
-import {Alert} from "chums-ducks";
+import {Alert} from "chums-components";
 
 export interface InactiveKeywordAlertProps {
     keyword?: Keyword|null,

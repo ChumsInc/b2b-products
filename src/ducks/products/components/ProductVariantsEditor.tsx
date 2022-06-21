@@ -1,15 +1,11 @@
 import React, {ChangeEvent, FormEvent, useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-ducks";
+import {useSelector} from "react-redux";
+import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-components";
+import {selectCurrentProduct, selectCurrentVariant, selectCurrentVariantSaving} from "../selectors";
+import {ProductVariant} from "b2b-types/src/products";
 import {
-    selectCurrentProduct,
-    selectCurrentVariant,
-    selectCurrentVariantLoading,
-    selectCurrentVariantSaving
-} from "../selectors";
-import {Product, ProductVariant} from "b2b-types/src/products";
-import {
-    deleteVariantAction, loadProductAction,
+    deleteVariantAction,
+    loadProductAction,
     saveCurrentVariantAction,
     setCurrentVariantAction,
     setDefaultVariantAction,
@@ -18,15 +14,14 @@ import {
 import {Keyword} from "b2b-types";
 import KeywordSelect from "../../keywords/KeywordSelect";
 import {defaultVariant} from "../../../defaults";
-
+import {useAppDispatch} from "../../../app/hooks";
 
 
 const colWidth = 9;
 const ProductVariantsEditor: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const {id} = useSelector(selectCurrentProduct);
     const variant = useSelector(selectCurrentVariant);
-    const loading = useSelector(selectCurrentVariantLoading);
     const saving = useSelector(selectCurrentVariantSaving);
 
     useEffect(() => {
@@ -96,7 +91,7 @@ const ProductVariantsEditor: React.FC = () => {
                                    onSelectKeyword={keywordChangeHandler('variantProductID')}>
 
                         <button className="btn btn-sm btn-secondary" onClick={onEditVariantProduct}>
-                            <span className="bi-pencil-fill" />
+                            <span className="bi-pencil-fill"/>
                         </button>
                     </KeywordSelect>
                 </FormColumn>
@@ -113,11 +108,13 @@ const ProductVariantsEditor: React.FC = () => {
                 <FormColumn label="" width={colWidth}>
                     <SpinnerButton type="submit" className="btn btn-sm btn-primary me-2 mb-1"
                                    spinning={saving}>Save</SpinnerButton>
-                    <button type="button" className="btn btn-sm btn-outline-secondary me-2 mb-1" onClick={newVariantHandler}
+                    <button type="button" className="btn btn-sm btn-outline-secondary me-2 mb-1"
+                            onClick={newVariantHandler}
                             disabled={!id}>
                         New
                     </button>
-                    <button type="button" className="btn btn-sm btn-outline-danger me-2 mb-1" onClick={deleteVariantHandler}
+                    <button type="button" className="btn btn-sm btn-outline-danger me-2 mb-1"
+                            onClick={deleteVariantHandler}
                             disabled={!id}>
                         Delete
                     </button>

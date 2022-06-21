@@ -1,50 +1,29 @@
-import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {Alert, FormCheck, FormColumn, InputGroup, Modal, noop, SpinnerButton} from "chums-ducks";
-import {
-    selectCurrentColorItem, selectCurrentColorItemLoading, selectCurrentColorItemSaving,
-    selectCurrentProduct,
-    selectCurrentProductLoading,
-    selectCurrentProductSaving
-} from "../selectors";
-import {
-    Product,
-    ProductAdditionalData, ProductColorItem,
-    ProductColorItemAdditionalData,
-    ProductColorVariant
-} from "b2b-types/src/products";
+import React, {ChangeEvent, FormEvent, useEffect, useRef} from 'react';
+import {useSelector} from "react-redux";
+import {Alert, FormCheck, FormColumn, InputGroup, noop, SpinnerButton} from "chums-components";
+import {selectCurrentColorItem, selectCurrentColorItemSaving, selectCurrentProduct} from "../selectors";
+import {ProductColorItem, ProductColorItemAdditionalData} from "b2b-types/src/products";
 import {
     deleteColorItemAction,
-    duplicateProductAction, saveCurrentColorItemAction,
-    saveProductAction, setCurrentColorItemAction, setNewCurrentProductAction, updateCurrentColorItemAction,
-    updateProductAction,
-    updateProductAdditionalDataAction
+    saveCurrentColorItemAction,
+    setCurrentColorItemAction,
+    updateCurrentColorItemAction
 } from "../actions";
 import SeasonSelect from "../../seasons/SeasonSelect";
-import {Keyword, ProductSeason} from "b2b-types";
-import KeywordSelect from "../../keywords/KeywordSelect";
-import ProductSellAsToggle from "./ProductSellAsToggle";
-import ProductItemCodeInput from "./ProductItemCodeInput";
+import {ProductSeason} from "b2b-types";
 import SeasonAlert from "../../seasons/SeasonAlert";
-import TextareaAutosize from 'react-textarea-autosize';
-import ModalEditor from "../../../app/ModalEditor";
-import CodeEditButton from "./CodeEditButton";
-import {setCurrentColorItem, updateProductAdditionalData} from "../actionTypes";
-import RedirectToParent from "./RedirectToParent";
-import {updateCurrentColorAction} from "../../colors/actions";
 import {defaultColorItem} from "../../../defaults";
 import ColorDataList from "../../colors/ColorDataList";
 import {selectColorByCode} from "../../colors/selectors";
-
+import {useAppDispatch} from "../../../app/hooks";
 
 
 const colWidth = 8;
 const ProductColorEditor: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const colorCodeRef = useRef<HTMLInputElement>(null)
     const {id: productId} = useSelector(selectCurrentProduct);
     const current = useSelector(selectCurrentColorItem);
-    const loading = useSelector(selectCurrentColorItemLoading);
     const saving = useSelector(selectCurrentColorItemSaving);
     const color = useSelector(selectColorByCode(current.colorCode));
 
@@ -75,7 +54,7 @@ const ProductColorEditor: React.FC = () => {
         switch (field) {
         case 'swatch_code':
         case 'image_filename':
-            const additionalData:ProductColorItemAdditionalData = current.additionalData || {};
+            const additionalData: ProductColorItemAdditionalData = current.additionalData || {};
             additionalData[field] = ev.target.value;
             return dispatch(updateCurrentColorItemAction({additionalData}));
         }
@@ -89,7 +68,7 @@ const ProductColorEditor: React.FC = () => {
     }
 
     const seasonChangeHandler = (season: ProductSeason | null) => {
-        const additionalData:ProductColorItemAdditionalData = {...(current.additionalData || {})};
+        const additionalData: ProductColorItemAdditionalData = {...(current.additionalData || {})};
         additionalData.season_id = season?.product_season_id || 0;
         additionalData.season = season || undefined;
         return dispatch(updateCurrentColorItemAction({additionalData}));
@@ -137,11 +116,13 @@ const ProductColorEditor: React.FC = () => {
                                type="checkbox" inline/>
                     <FormCheck label='Disco' checked={current.productType === 'D'} onClick={noop} disabled
                                type="checkbox" inline/>
-                    {current.productType === null && <Alert color="danger">Item <strong>{current.itemCode}</strong> does not exist.</Alert> }
+                    {current.productType === null &&
+                        <Alert color="danger">Item <strong>{current.itemCode}</strong> does not exist.</Alert>}
                 </FormColumn>
                 <FormColumn label="Image" width={colWidth}>
                     <input type="text" className="form-control form-control-sm"
-                           value={current.additionalData?.image_filename || ''} onChange={additionalDataChangeHandler('image_filename')}/>
+                           value={current.additionalData?.image_filename || ''}
+                           onChange={additionalDataChangeHandler('image_filename')}/>
                 </FormColumn>
                 <FormColumn label="Order Type" width={colWidth}>
                     <InputGroup bsSize="sm">
@@ -167,7 +148,7 @@ const ProductColorEditor: React.FC = () => {
                     </button>
                 </FormColumn>
                 <FormColumn label="" width={colWidth}>
-                    {current.changed && <Alert color="warning">Don't forget to save your changes.</Alert> }
+                    {current.changed && <Alert color="warning">Don't forget to save your changes.</Alert>}
                 </FormColumn>
             </form>
         </>

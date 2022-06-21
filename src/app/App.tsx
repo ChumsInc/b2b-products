@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
 import AppTabs, {appTabs, tabKey} from "./AppTabs";
-import {AlertList, selectCurrentTab} from "chums-ducks";
-import {useDispatch, useSelector} from "react-redux";
+import {AlertList, selectCurrentTab} from "chums-connected-components";
+import {useSelector} from "react-redux";
 import ProductScreen from "../ducks/products/components/ProductScreen";
 import ColorScreen from "./ColorScreen";
 import {loadColorsAction} from "../ducks/colors/actions";
 import {loadProductListAction} from "../ducks/products/actions";
+import {useAppDispatch} from "./hooks";
 
 const App: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const tab = useSelector(selectCurrentTab(tabKey));
     useEffect(() => {
         dispatch(loadColorsAction());

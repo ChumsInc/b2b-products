@@ -1,7 +1,7 @@
 import {combineReducers} from "redux";
 import {ColorProductSorterProps, ColorSorterProps, EditableProductColor} from "../../types/product";
 import {ColorProductUsage, ProductColor} from "b2b-types";
-import {colorProductUsageSorter, colorSorter} from "./sorter";
+import {colorProductUsageSorter} from "./sorter";
 import {
     ColorAction,
     loadColorsPending,
@@ -27,7 +27,7 @@ export const emptyColor: ProductColor = {
 }
 
 
-const defaultColorSort: ColorSorterProps = {
+export const defaultColorSort: ColorSorterProps = {
     field: 'id',
     ascending: true,
 }
@@ -38,7 +38,7 @@ const defaultColorProductUsageSort: ColorProductSorterProps = {
 }
 
 export interface ProductColorList {
-    [key:string]: ProductColor,
+    [key: string]: ProductColor,
 }
 
 const listReducer = (state: ProductColorList = {}, action: ColorAction): ProductColorList => {
@@ -47,7 +47,7 @@ const listReducer = (state: ProductColorList = {}, action: ColorAction): Product
     case loadColorsResolved:
     case saveColorResolved:
         if (payload?.list) {
-            const nextState:ProductColorList = {};
+            const nextState: ProductColorList = {};
             payload.list.forEach(c => nextState[c.code] = c);
             return nextState;
         }

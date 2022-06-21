@@ -1,10 +1,10 @@
 import {combineReducers} from "redux";
-import {ActionInterface, ActionPayload} from "chums-ducks";
+import {ActionInterface, ActionPayload} from "chums-connected-components";
 import {ThunkAction} from "redux-thunk";
 import {RootState} from "../../app/configureStore";
 import {apiActionHelper} from "../utils";
 import {loadItemSearchAPI} from "../../api/item-searchAPI";
-import {ItemSearchFilter, ItemSearchList, ItemSearchRecord} from "../../types/item-search";
+import {ItemSearchFilter, ItemSearchList} from "../../types/item-search";
 
 export interface ItemSearchPayload extends ActionPayload {
     list: ItemSearchList
@@ -20,14 +20,14 @@ export interface ItemSearchThunkAction extends ThunkAction<any, RootState, unkno
 export const loadItemSearch = 'item-search/load';
 const [loadItemSearchPending, loadItemSearchResolved, loadItemSearchRejected] = apiActionHelper(loadItemSearch);
 
-export const selectItemSearchList = (state:RootState):ItemSearchList => state.itemSearch.list;
-export const selectItemSearchLoading = (state:RootState):boolean => state.itemSearch.loading;
+export const selectItemSearchList = (state: RootState): ItemSearchList => state.itemSearch.list;
+export const selectItemSearchLoading = (state: RootState): boolean => state.itemSearch.loading;
 
 export const itemSearchAction = (search: string, filter?: ItemSearchFilter, signal?: AbortSignal): ItemSearchThunkAction =>
     async (dispatch, getState) => {
         try {
             const items = await loadItemSearchAPI(search, filter, signal);
-            const list:ItemSearchList = {};
+            const list: ItemSearchList = {};
 
             items
                 .map(i => ({...i, LabelKey: `${i.ItemCode} - ${i.ItemCodeDesc}`}))

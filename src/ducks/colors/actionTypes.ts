@@ -1,5 +1,5 @@
 import {apiActionHelper} from "../utils";
-import {ActionInterface, ActionPayload} from "chums-ducks";
+import {ActionInterface, ActionPayload} from "chums-connected-components";
 import {ColorProductUsage, ProductColor} from "b2b-types";
 
 export interface ColorPayload extends ActionPayload {

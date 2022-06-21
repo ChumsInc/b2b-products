@@ -1,21 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCurrentColorItem, selectCurrentProduct, selectCurrentProductColors} from "../selectors";
 import ProductImage from "../../../app/ProductImage";
 import {ProductColorItem} from "b2b-types/src/products";
-import {calcPages, filterPage, FormCheck, Pagination, RowsPerPage} from "chums-ducks";
+import {calcPages, filterPage, FormCheck, Pagination, RowsPerPage} from "chums-components";
 import classNames from "classnames";
 import {setCurrentColorItemAction} from "../actions";
-import {LocalStore, storeProductItemsRowsPerPage, storeProductListRowsPerPage} from "../../../localStore";
+import {LocalStore, storeProductItemsRowsPerPage} from "../../../localStore";
+import {useAppDispatch} from "../../../app/hooks";
 
 
 const ProductColorList: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const list = useSelector(selectCurrentProductColors);
     const product = useSelector(selectCurrentProduct);
     const selected = useSelector(selectCurrentColorItem);
 
-    const selectItemHandler = (item:ProductColorItem) => dispatch(setCurrentColorItemAction(item));
+    const selectItemHandler = (item: ProductColorItem) => dispatch(setCurrentColorItemAction(item));
 
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(25);
@@ -47,7 +48,7 @@ const ProductColorList: React.FC = () => {
         setPagedList(filteredList.filter(filterPage(page, rowsPerPage)));
     }, [rowsPerPage, page]);
 
-    const onChangeRowsPerPage = (value:number) => {
+    const onChangeRowsPerPage = (value: number) => {
         LocalStore.setItem(storeProductItemsRowsPerPage, value);
         setRowsPerPage(value);
     }
@@ -71,7 +72,8 @@ const ProductColorList: React.FC = () => {
                     <div key={item.id} className="product-color-item">
                         <button type="button" className={classNames('btn btn-sm', {
                             'btn-secondary': selected.id === item.id,
-                            'btn-outline-secondary': selected.id !== item.id})} onClick={() => selectItemHandler(item)}>
+                            'btn-outline-secondary': selected.id !== item.id
+                        })} onClick={() => selectItemHandler(item)}>
                             {item.colorCode}
                         </button>
                         <ProductImage filename={item.additionalData?.image_filename || product.image}

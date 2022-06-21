@@ -1,10 +1,11 @@
-import React, {ChangeEvent, FormEvent, KeyboardEvent} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-ducks";
-import {selectCurrentProduct, selectCurrentProductLoading, selectCurrentProductSaving} from "../selectors";
+import React, {ChangeEvent, FormEvent} from 'react';
+import {useSelector} from "react-redux";
+import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-components";
+import {selectCurrentProduct, selectCurrentProductSaving} from "../selectors";
 import {Product, ProductAdditionalData} from "b2b-types/src/products";
 import {
-    duplicateProductAction, loadProductAction,
+    duplicateProductAction,
+    loadProductAction,
     saveProductAction,
     setNewCurrentProductAction,
     updateProductAction,
@@ -16,17 +17,14 @@ import KeywordSelect from "../../keywords/KeywordSelect";
 import ProductSellAsToggle from "./ProductSellAsToggle";
 import ProductItemCodeInput from "./ProductItemCodeInput";
 import SeasonAlert from "../../seasons/SeasonAlert";
-import TextareaAutosize from 'react-textarea-autosize';
-import ModalEditor from "../../../app/ModalEditor";
-import CodeEditButton from "./CodeEditButton";
 import RedirectToParent from "./RedirectToParent";
+import {useAppDispatch} from "../../../app/hooks";
 
 
 const colWidth = 8;
 const MainEditForm: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
-    const loading = useSelector(selectCurrentProductLoading);
     const saving = useSelector(selectCurrentProductSaving);
 
 
@@ -198,11 +196,12 @@ const MainEditForm: React.FC = () => {
                     <FormCheck label="Screen Print" inline checked={product.canScreenPrint || false}
                                onClick={toggleChangeHandler('canScreenPrint')} type="checkbox"/>
                 </FormColumn>
-                <hr />
+                <hr/>
                 <FormColumn label="" width={colWidth}>
                     <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1"
                                    spinning={saving}>Save</SpinnerButton>
-                    <button type="button" className="btn btn-sm btn-outline-secondary me-1" onClick={newProductHandler}>New
+                    <button type="button" className="btn btn-sm btn-outline-secondary me-1"
+                            onClick={newProductHandler}>New
                         Product
                     </button>
                     <button type="button" className="btn btn-sm btn-outline-secondary me-1"

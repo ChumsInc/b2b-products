@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {SpinnerButton} from "chums-ducks";
+import {SpinnerButton} from "chums-components";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCurrentProductVariants} from "../selectors";
 import {variantListSorter} from "../sorter";
 import {variantPrioritySort} from "../constants";
 import SortableVariantItem from "./SortableVariantItem";
 import {saveVariantSortAction} from "../actions";
+import {useAppDispatch} from "../../../app/hooks";
 
 const SortableVariantList: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const variants = useSelector(selectCurrentProductVariants);
     const saving = false;
 
@@ -47,7 +48,7 @@ const SortableVariantList: React.FC = () => {
                 <div className="sortable-variant-list">
                     {[...items]
                         .map((v, index) => (
-                            <SortableVariantItem key={v.id} variant={v} index={index} moveItem={onMoveItem}>{v.title}</SortableVariantItem>
+                            <SortableVariantItem key={v.id} variant={v} index={index} moveItem={onMoveItem}/>
                         ))
                     }
                 </div>
