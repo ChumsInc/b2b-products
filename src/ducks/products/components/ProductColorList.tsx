@@ -60,7 +60,7 @@ const ProductColorList: React.FC = () => {
                 </div>
                 <div className="col-auto">
                     <FormCheck label="Filter Inactive" checked={checked}
-                               onClick={() => setChecked(!checked)} type="checkbox"/>
+                               onChange={() => setChecked(!checked)} type="checkbox"/>
                 </div>
                 <div className="col-auto">
                     <Pagination page={page} pages={calcPages(filteredList.length, rowsPerPage)} onSelectPage={setPage}

@@ -110,11 +110,11 @@ const ProductColorEditor: React.FC = () => {
 
                 </FormColumn>
                 <FormColumn label="Status" width={colWidth} align="baseline">
-                    <FormCheck label='Enabled' checked={current.status} onClick={toggleChangeHandler('status')}
+                    <FormCheck label='Enabled' checked={current.status} onChange={toggleChangeHandler('status')}
                                type="checkbox" inline/>
-                    <FormCheck label='Inactive' checked={!!current.inactiveItem} onClick={noop} disabled
+                    <FormCheck label='Inactive' checked={!!current.inactiveItem} onChange={noop} disabled
                                type="checkbox" inline/>
-                    <FormCheck label='Disco' checked={current.productType === 'D'} onClick={noop} disabled
+                    <FormCheck label='Disco' checked={current.productType === 'D'} onChange={noop} disabled
                                type="checkbox" inline/>
                     {current.productType === null &&
                         <Alert color="danger">Item <strong>{current.itemCode}</strong> does not exist.</Alert>}

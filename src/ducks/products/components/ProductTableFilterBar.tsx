@@ -62,15 +62,15 @@ const ProductTableFilterBar: React.FC = () => {
                 </div>
             </div>
             <div className="col-auto">
-                <FormCheck label="Filter Active" checked={filterActive} onClick={filterActiveClickHandler}
+                <FormCheck label="Filter Active" checked={filterActive} onChange={filterActiveClickHandler}
                            type={"checkbox"}/>
             </div>
             <div className="col-auto">
-                <FormCheck label="Filter On Sale" checked={filterOnSale} onClick={filterOnSaleClickHandler}
+                <FormCheck label="Filter On Sale" checked={filterOnSale} onChange={filterOnSaleClickHandler}
                            type={"checkbox"}/>
             </div>
             <div className="col-auto">
-                <FormCheck label="Filter Available" checked={filterAvailable} onClick={filterAvailableClickHandler}
+                <FormCheck label="Filter Available" checked={filterAvailable} onChange={filterAvailableClickHandler}
                            type={"checkbox"}/>
             </div>
             <div className="col-auto">

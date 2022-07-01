@@ -115,7 +115,8 @@ const MainEditForm: React.FC = () => {
                 <FormColumn label="ID" width={colWidth}>
                     <InputGroup bsSize="sm">
                         <input type="number" readOnly value={product.id} className="form-control form-control-sm"/>
-                        <button type="button" className="btn btn-sm btn-warning" onClick={duplicateHandler}>Duplicate
+                        <button type="button" className="btn btn-sm btn-warning" onClick={duplicateHandler}>
+                            Duplicate
                         </button>
                     </InputGroup>
                 </FormColumn>
@@ -129,10 +130,10 @@ const MainEditForm: React.FC = () => {
                 </FormColumn>
                 <hr/>
                 <FormColumn label="Status" width={colWidth} align="baseline">
-                    <FormCheck label='Enabled' checked={product.status} onClick={toggleChangeHandler('status')}
+                    <FormCheck label='Enabled' checked={product.status} onChange={toggleChangeHandler('status')}
                                type="checkbox" inline/>
                     <FormCheck label='Available for Sale' checked={product.availableForSale}
-                               onClick={toggleChangeHandler('availableForSale')} type="checkbox" inline/>
+                               onChange={toggleChangeHandler('availableForSale')} type="checkbox" inline/>
                 </FormColumn>
                 <FormColumn label="Order Type" width={colWidth}>
                     <InputGroup bsSize="sm">
@@ -188,13 +189,13 @@ const MainEditForm: React.FC = () => {
                 </FormColumn>
                 <FormColumn label="Features" width={colWidth}>
                     <FormCheck label="Best Seller" inline checked={product.additionalData?.best_seller || false}
-                               onClick={toggleAdditionalDataChangeHandler('best_seller')} type="checkbox"/>
+                               onChange={toggleAdditionalDataChangeHandler('best_seller')} type="checkbox"/>
                     <FormCheck label="Upcycled" inline checked={product.additionalData?.upcycled || false}
-                               onClick={toggleAdditionalDataChangeHandler('upcycled')} type="checkbox"/>
+                               onChange={toggleAdditionalDataChangeHandler('upcycled')} type="checkbox"/>
                     <FormCheck label="Dome" inline checked={product.canDome || false}
-                               onClick={toggleChangeHandler('canDome')} type="checkbox"/>
+                               onChange={toggleChangeHandler('canDome')} type="checkbox"/>
                     <FormCheck label="Screen Print" inline checked={product.canScreenPrint || false}
-                               onClick={toggleChangeHandler('canScreenPrint')} type="checkbox"/>
+                               onChange={toggleChangeHandler('canScreenPrint')} type="checkbox"/>
                 </FormColumn>
                 <hr/>
                 <FormColumn label="" width={colWidth}>

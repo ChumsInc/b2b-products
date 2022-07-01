@@ -42,7 +42,7 @@ const ColorUsageList: React.FC = () => {
                 </div>
                 <div className="col-auto">
                     <FormCheck label="Filter Inactive" checked={checked}
-                               onClick={() => setChecked(!checked)} type="checkbox"/>
+                               onChange={(ev) => setChecked(ev.target.checked)} type="checkbox"/>
                 </div>
                 <div className="col-auto">
                     <Pagination page={page} pages={calcPages(list.length, rowsPerPage)} onSelectPage={setPage}
