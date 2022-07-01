@@ -90,7 +90,8 @@ const ProductVariantsEditor: React.FC = () => {
                                    required
                                    onSelectKeyword={keywordChangeHandler('variantProductID')}>
 
-                        <button className="btn btn-sm btn-secondary" onClick={onEditVariantProduct}>
+                        <button type="button" className="btn btn-sm btn-secondary" onClick={onEditVariantProduct}
+                                disabled={variant.id === 0 || !variant.product}>
                             <span className="bi-pencil-fill"/>
                         </button>
                     </KeywordSelect>
@@ -100,7 +101,7 @@ const ProductVariantsEditor: React.FC = () => {
                            value={variant.title} onChange={textChangeHandler('title')} required/>
                 </FormColumn>
                 <FormColumn label="Status" width={colWidth} align="baseline">
-                    <FormCheck label='Enabled' checked={variant.status} onClick={toggleChangeHandler('status')}
+                    <FormCheck label='Enabled' checked={variant.status} onChange={toggleChangeHandler('status')}
                                disabled={!variant.product?.status}
                                type="checkbox" inline/>
                 </FormColumn>
