@@ -1,5 +1,4 @@
-import {Product, ProductBase, ProductColor, ProductColorVariant, ProductVariant} from "b2b-types";
-import {ProductFilter} from "./ducks/products/actionTypes";
+import {Product, ProductBase, ProductColor, ProductVariant} from "b2b-types";
 import {ProductColorItem, ProductMixComponent, ProductMixItem} from "b2b-types/src/products";
 
 
@@ -10,45 +9,50 @@ export const defaultColor: ProductColor = {
 }
 
 
-export const defaultProductBase:ProductBase = {
+export const defaultProductBase: ProductBase = {
     id: 0,
-    status: true,
+    parentProductID: 0,
+    variantProductID: 0,
     itemCode: '',
+    status: true,
+    msrp: null,
+    stdPrice: null,
+    priceCode: null,
+    stdUM: null,
+    salesUM: null,
+    salesUMFactor: null,
+    shipWeight: null,
+    productType: null,
+    QuantityAvailable: 0,
+    inactiveItem: false,
+    buffer: 0,
+    timestamp: null,
 }
 
-export const defaultProduct:Product = {
+export const defaultProduct: Product = {
+    variants: [],
+    images: [],
+    options: undefined,
+    anticipatedPrice: undefined,
     ...defaultProductBase,
-    QuantityAvailable: 0,
-    buffer: null,
+    additionalData: undefined,
     canDome: false,
     canScreenPrint: false,
     dateAvailable: "",
     defaultCategoriesId: 0,
     defaultCategoryKeyword: null,
     defaultColor: "",
-    inactiveItem: false,
     materialsId: 0,
     metaTitle: null,
-    msrp: null,
-    priceCode: null,
-    productType: null,
-    salesUM: null,
-    salesUMFactor: null,
     season_active: null,
     season_available: false,
     season_code: null,
     season_description: null,
     season_teaser: null,
-    shipWeight: null,
-    stdPrice: null,
-    stdUM: null,
     taxClassId: 0,
     upc: null,
-    id: 0,
     name: '',
-    itemCode: '',
     keyword: '',
-    status: true,
     sellAs: 0,
     image: '',
     manufacturersId: 12,
@@ -61,7 +65,7 @@ export const defaultProduct:Product = {
     details: ''
 }
 
-export const defaultVariant:ProductVariant = {
+export const defaultVariant: ProductVariant = {
 
     id: 0,
     parentProductID: 0,
@@ -72,7 +76,7 @@ export const defaultVariant:ProductVariant = {
     priority: 0,
 }
 
-export const defaultColorItem:ProductColorItem = {
+export const defaultColorItem: ProductColorItem = {
     ...defaultProductBase,
     productId: 0,
     colorCode: '',
@@ -81,7 +85,7 @@ export const defaultColorItem:ProductColorItem = {
     color: {...defaultColor}
 }
 
-export const defaultMixItem:ProductMixItem = {
+export const defaultMixItem: ProductMixItem = {
     ...defaultProductBase,
     productId: 0,
     itemCode: '',
@@ -89,7 +93,7 @@ export const defaultMixItem:ProductMixItem = {
     mixName: '',
 }
 
-export const defaultMixComponent:ProductMixComponent = {
+export const defaultMixComponent: ProductMixComponent = {
     id: 0,
     mixID: 0,
     itemCode: '',

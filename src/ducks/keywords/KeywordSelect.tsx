@@ -1,8 +1,9 @@
 import React, {ChangeEvent, ReactNode, SelectHTMLAttributes, useEffect} from 'react';
 import {Keyword} from "b2b-types";
 import {useSelector} from "react-redux";
-import {loadKeywordsAction, selectKeywordsList, selectKeywordsLoaded} from "./index";
+import {loadKeywords, selectKeywordsList, selectKeywordsLoaded, selectKeywordsLoading} from "./index";
 import {useAppDispatch} from "../../app/hooks";
+
 
 export interface KeywordSelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     pageType: 'product' | 'category' | 'page',
@@ -14,11 +15,12 @@ const KeywordSelect: React.FC<KeywordSelectProps> = ({pageType, value, onSelectK
     const dispatch = useAppDispatch();
     const keywords = useSelector(selectKeywordsList);
     const loaded = useSelector(selectKeywordsLoaded);
+    const loading = useSelector(selectKeywordsLoading);
 
 
     useEffect(() => {
-        if (!loaded) {
-            dispatch(loadKeywordsAction());
+        if (!loaded && !loading) {
+            dispatch(loadKeywords());
         }
     }, [])
 

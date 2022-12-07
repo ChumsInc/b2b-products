@@ -1,6 +1,7 @@
 import {ProductListItem} from "b2b-types";
-import {ProductListSorterProps, ProductVariantListSorterProps} from "../../types/product";
-import {ProductColorItem, ProductColorVariant, ProductMixComponent, ProductVariant} from "b2b-types/src/products";
+import {ProductListSorterProps} from "../../types/product";
+import {ProductColorItem, ProductMixComponent, ProductVariant} from "b2b-types/src/products";
+import {SortProps} from "chums-components";
 
 
 export const productListSorter = ({field, ascending}: ProductListSorterProps) =>
@@ -34,7 +35,7 @@ export const productListSorter = ({field, ascending}: ProductListSorterProps) =>
     }
 
 
-export const variantListSorter = ({field, ascending}: ProductVariantListSorterProps) =>
+export const variantListSorter = ({field, ascending}: SortProps<ProductVariant>) =>
     (a: ProductVariant, b: ProductVariant) => {
         const ascMod = ascending ? 1 : -1;
         switch (field) {
@@ -56,13 +57,13 @@ export const variantListSorter = ({field, ascending}: ProductVariantListSorterPr
         }
     }
 
-export const colorItemSorter = (a:ProductColorItem, b:ProductColorItem) => {
+export const colorItemSorter = (a: ProductColorItem, b: ProductColorItem) => {
     return a.color.code === b.color.code
         ? (a.id - b.id)
         : (a.color.code.toLowerCase() > b.color.code.toLowerCase() ? 1 : -1)
 }
 
-export const mixComponentSorter = (a:ProductMixComponent, b:ProductMixComponent): number => {
+export const mixComponentSorter = (a: ProductMixComponent, b: ProductMixComponent): number => {
     return a.itemCode === b.itemCode
         ? (a.id - b.id)
         : (a.itemCode > b.itemCode ? 1 : -1);

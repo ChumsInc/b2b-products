@@ -1,6 +1,6 @@
 import {fetchJSON} from 'chums-components';
 import Debug from "debug";
-import {ProductListItem} from "b2b-types";
+import {BasicProduct, ProductAlternateImage, ProductListItem, SELL_AS_VARIANTS} from "b2b-types";
 import {
     Product,
     ProductColorItem,
@@ -10,12 +10,13 @@ import {
     ProductVariant
 } from "b2b-types/src/products";
 import {defaultProduct} from "../defaults";
+import {isSellAsColorsProduct, isSellAsMixProduct, isSellAsVariantsProduct} from "../ducks/products/utils";
 
 const debug = Debug('chums:api:productsAPI');
 
 export const manufacturerId__CHUMS = 12;
 
-export async function fetchProductsAPI():Promise<ProductListItem[]> {
+export async function fetchProducts():Promise<ProductListItem[]> {
     try {
         const url = `/api/b2b/products/v2/list/${manufacturerId__CHUMS}`;
         const {products} = await fetchJSON<{products: ProductListItem[]}>(url);
@@ -30,7 +31,7 @@ export async function fetchProductsAPI():Promise<ProductListItem[]> {
     }
 }
 
-export async function fetchProductAPI(keyword: string):Promise<Product> {
+export async function fetchProduct(keyword: string):Promise<Product> {
     try {
         const url = `/api/b2b/products/v2/keyword/${encodeURIComponent(keyword)}`;
         const {products} = await fetchJSON<{products: Product[]}>(url);
@@ -48,20 +49,27 @@ export async function fetchProductAPI(keyword: string):Promise<Product> {
     }
 }
 
-export async function postProductAPI(_product:Product):Promise<Product> {
+export async function postProduct(_product:Product):Promise<Product> {
     try {
         if (!_product.keyword) {
             return Promise.reject(new Error('Keyword must be provided.'));
         }
         const url = `/api/b2b/products/v2/${encodeURIComponent(_product.id)}`;
         const method = _product.id === 0 ? 'POST' : 'PUT';
-        const data = {..._product};
-        delete data.variants;
-        delete data.images;
-        delete data.items;
-        delete data.mix;
+        let baseProduct:BasicProduct = _product;
+        if (isSellAsVariantsProduct(_product)) {
+            const {variants, ...p} = _product
+            baseProduct = p;
+        } else if (isSellAsMixProduct(_product)) {
+            const {mix, ...p} = _product;
+            baseProduct = p;
+        } else if (isSellAsColorsProduct(_product)) {
+            const {items, ...p} = _product;
+            baseProduct = p;
+        }
+        delete baseProduct.images;
 
-        const body = JSON.stringify(data);
+        const body = JSON.stringify(baseProduct);
         const {product} = await fetchJSON<{product:Product}>(url, {method, body});
         return product;
     } catch(err:unknown) {
@@ -74,7 +82,7 @@ export async function postProductAPI(_product:Product):Promise<Product> {
     }
 }
 
-export async function saveVariantAPI(_variant:ProductVariant):Promise<ProductVariant|undefined> {
+export async function postVariant(_variant:ProductVariant):Promise<ProductVariant|null> {
     try {
         if (!_variant.parentProductID) {
             return Promise.reject(new Error('Invalid parentProductID'));
@@ -82,7 +90,7 @@ export async function saveVariantAPI(_variant:ProductVariant):Promise<ProductVar
         const url = `/api/b2b/products/v2/variants/${_variant.parentProductID}/${_variant.id || ''}`;
         const method = _variant.id ? 'PUT' : 'POST';
         const {variant} = await fetchJSON<{variant:ProductVariant}>(url, {method, body: JSON.stringify(_variant)});
-        return variant;
+        return variant ?? null;
     } catch(err:unknown) {
         if (err instanceof Error) {
             debug("postVariant()", err.message);
@@ -93,7 +101,7 @@ export async function saveVariantAPI(_variant:ProductVariant):Promise<ProductVar
     }
 }
 
-export async function saveVariantSortAPI(_variants:ProductVariant[]):Promise<ProductVariant[]> {
+export async function putVariantSort(_variants:ProductVariant[]):Promise<ProductVariant[]> {
     try {
         if (_variants.length === 0) {
             return [];
@@ -112,7 +120,7 @@ export async function saveVariantSortAPI(_variants:ProductVariant[]):Promise<Pro
     }
 }
 
-export async function setDefaultVariantAPI(variant:ProductVariant):Promise<ProductVariant[]> {
+export async function putDefaultVariant(variant:ProductVariant):Promise<ProductVariant[]> {
     try {
         if (!variant.id || !variant.parentProductID) {
             return Promise.reject(new Error('invalid variant'));
@@ -130,7 +138,7 @@ export async function setDefaultVariantAPI(variant:ProductVariant):Promise<Produ
     }
 }
 
-export async function deleteVariantAPI(_variant:ProductVariant):Promise<ProductVariant[]> {
+export async function deleteVariant(_variant:ProductVariant):Promise<ProductVariant[]> {
     try {
         const {parentProductID, id} = _variant;
         if (!id || !parentProductID) {
@@ -141,15 +149,15 @@ export async function deleteVariantAPI(_variant:ProductVariant):Promise<ProductV
         return variants;
     } catch(err:unknown) {
         if (err instanceof Error) {
-            debug("deleteVariantAPI()", err.message);
+            debug("deleteVariant()", err.message);
             return Promise.reject(err);
         }
-        debug("deleteVariantAPI()", err);
-        return Promise.reject(new Error('Error in deleteVariantAPI()'));
+        debug("deleteVariant()", err);
+        return Promise.reject(new Error('Error in deleteVariant()'));
     }
 }
 
-export async function saveColorItemAPI(item:ProductColorVariant) {
+export async function postColorItem(item:ProductColorVariant) {
     try {
         if (!item.productId || !item.colorCode) {
             return Promise.reject(new Error('Invalid color item - missing product ID or color code'));
@@ -160,15 +168,15 @@ export async function saveColorItemAPI(item:ProductColorVariant) {
         return items;
     } catch(err:unknown) {
         if (err instanceof Error) {
-            debug("saveColorItemAPI()", err.message);
+            debug("postColorItem()", err.message);
             return Promise.reject(err);
         }
-        debug("saveColorItemAPI()", err);
-        return Promise.reject(new Error('Error in saveColorItemAPI()'));
+        debug("postColorItem()", err);
+        return Promise.reject(new Error('Error in postColorItem()'));
     }
 }
 
-export async function deleteColorItemAPI(item:ProductColorItem):Promise<ProductColorItem[]> {
+export async function deleteColorItem(item:ProductColorItem):Promise<ProductColorItem[]> {
     try {
         if (!item.productId || !item.id) {
             return Promise.reject(new Error('Invalid color item - missing product ID or item ID'));
@@ -179,15 +187,15 @@ export async function deleteColorItemAPI(item:ProductColorItem):Promise<ProductC
         return items;
     } catch(err:unknown) {
         if (err instanceof Error) {
-            debug("saveColorItemAPI()", err.message);
+            debug("deleteColorItem()", err.message);
             return Promise.reject(err);
         }
-        debug("saveColorItemAPI()", err);
-        return Promise.reject(new Error('Error in saveColorItemAPI()'));
+        debug("deleteColorItem()", err);
+        return Promise.reject(new Error('Error in postColorItem()'));
     }
 }
 
-export async function saveMixAPI(_mix:ProductMixItem):Promise<ProductMixItem> {
+export async function postMix(_mix:ProductMixItem):Promise<ProductMixItem> {
     try {
         if (!_mix.productId) {
             return Promise.reject(new Error('Invalid Mix: missing product ID'));
@@ -200,15 +208,15 @@ export async function saveMixAPI(_mix:ProductMixItem):Promise<ProductMixItem> {
         return mix;
     } catch(err:unknown) {
         if (err instanceof Error) {
-            debug("saveMixAPI()", err.message);
+            debug("postMix()", err.message);
             return Promise.reject(err);
         }
-        debug("saveMixAPI()", err);
-        return Promise.reject(new Error('Error in saveMixAPI()'));
+        debug("postMix()", err);
+        return Promise.reject(new Error('Error in postMix()'));
     }
 }
 
-export async function saveMixComponentAPI(productId: number, component:ProductMixComponent):Promise<ProductMixItem> {
+export async function postMixComponent(productId: number, component:ProductMixComponent):Promise<ProductMixItem> {
     try {
         if (!productId || !component.mixID) {
             return Promise.reject(new Error('Invalid Mix Component: missing product ID or mix ID'));
@@ -220,10 +228,65 @@ export async function saveMixComponentAPI(productId: number, component:ProductMi
         return mix;
     } catch(err:unknown) {
         if (err instanceof Error) {
-            debug("saveMixComponents()", err.message);
+            debug("postMixComponent()", err.message);
             return Promise.reject(err);
         }
-        debug("saveMixComponents()", err);
-        return Promise.reject(new Error('Error in saveMixComponents()'));
+        debug("postMixComponent()", err);
+        return Promise.reject(new Error('Error in postMixComponent()'));
+    }
+}
+
+export async function fetchAltImages(productId: number):Promise<ProductAlternateImage[]>{
+    try {
+        const url = '/api/b2b/products/v2/images/product/:productId'
+            .replace(':productId', encodeURIComponent(productId));
+        const {images} = await fetchJSON<{images:ProductAlternateImage[]}>(url);
+        return images;
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            debug("fetchAltImages()", err.message);
+            return Promise.reject(err);
+        }
+        debug("fetchAltImages()", err);
+        return Promise.reject(new Error('Error in fetchAltImages()'));
+    }
+}
+
+export async function postAltImage(image:ProductAlternateImage):Promise<ProductAlternateImage[]> {
+    try {
+        if (!image.productId || !image.image) {
+            return Promise.reject(new Error('Invalid Image: missing product ID or filename'));
+        }
+        const url = '/api/b2b/products/v2/images/:id'.replace(':id', encodeURIComponent(image.id === 0 ? '' : image.id));
+        const method = image.id === 0 ? 'POST' : 'PUT';
+        const {images} = await fetchJSON<{images: ProductAlternateImage[]}>(url, {method, body: JSON.stringify(image)});
+        return images;
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            console.debug("postAltImage()", err.message);
+            return Promise.reject(err);
+        }
+        console.debug("postAltImage()", err);
+        return Promise.reject(new Error('Error in postAltImage()'));
+    }
+}
+
+export async function deleteAltImage(image:ProductAlternateImage):Promise<ProductAlternateImage[]> {
+    try {
+        if (!image.productId || !image.image || !image.id) {
+            return Promise.reject(new Error('Invalid Image: missing ID, product ID or filename'));
+        }
+        const url = '/api/b2b/products/v2/images/:productId/:id'
+            .replace(':productId', encodeURIComponent(image.productId))
+            .replace(':id', encodeURIComponent(image.id));
+        const {images} = await fetchJSON<{images: ProductAlternateImage[]}>(url, {method: 'DELETE'});
+        return images;
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            console.debug("deleteAltImage()", err.message);
+            return Promise.reject(err);
+        }
+        console.debug("deleteAltImage()", err);
+        return Promise.reject(new Error('Error in postAltImage()'));
     }
 }

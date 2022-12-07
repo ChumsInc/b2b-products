@@ -1,38 +1,22 @@
-import {combineReducers} from "redux";
-import {ColorProductSorterProps, ColorSorterProps, EditableProductColor} from "../../types/product";
 import {ColorProductUsage, ProductColor} from "b2b-types";
 import {colorProductUsageSorter} from "./sorter";
+import {SortProps} from "chums-components";
+import {getPreference, localStorageKeys, setPreference} from "../../api/preferences";
+import {createReducer} from "@reduxjs/toolkit";
 import {
-    ColorAction,
-    loadColorsPending,
-    loadColorsRejected,
-    loadColorsResolved,
-    loadUsagePending,
-    loadUsageResolved,
-    saveColorPending,
-    saveColorRejected,
-    saveColorResolved,
+    loadColors,
+    loadColorUsage,
+    saveColor,
     setColorFilter,
-    setCurrentColor,
-    updateCurrentColor
-} from "./actionTypes";
+    setCurrentColor, setPage, setRowsPerPage, setSort, toggleFilterInactiveColors
+} from "./actions";
 
-
-export const colorListTableKey = 'color-list';
-
-export const emptyColor: ProductColor = {
-    id: 0,
-    code: '',
-    name: '',
-}
-
-
-export const defaultColorSort: ColorSorterProps = {
+const defaultColorSort: SortProps<ProductColor> = {
     field: 'id',
     ascending: true,
 }
 
-const defaultColorProductUsageSort: ColorProductSorterProps = {
+const defaultColorProductUsageSort: SortProps<ColorProductUsage> = {
     field: 'itemCode',
     ascending: true,
 }
@@ -41,98 +25,113 @@ export interface ProductColorList {
     [key: string]: ProductColor,
 }
 
-const listReducer = (state: ProductColorList = {}, action: ColorAction): ProductColorList => {
-    const {type, payload} = action;
-    switch (type) {
-    case loadColorsResolved:
-    case saveColorResolved:
-        if (payload?.list) {
-            const nextState: ProductColorList = {};
-            payload.list.forEach(c => nextState[c.code] = c);
-            return nextState;
-        }
-        return state;
-    default:
-        return state;
-    }
+export interface ColorsState {
+    list: ProductColorList,
+    loading: boolean;
+    saving: boolean;
+    current: ProductColor | null;
+    filter: string;
+    filterInactive: boolean;
+    whereUsed: {
+        list: ColorProductUsage[];
+        loading: boolean;
+    };
+    sort: SortProps<ProductColor>;
+    page: number;
+    rowsPerPage: number;
 }
 
-const loadingReducer = (state: boolean = false, action: ColorAction): boolean => {
-    const {type, payload} = action;
-    switch (type) {
-    case loadColorsPending:
-        return true;
-    case loadColorsResolved:
-    case loadColorsRejected:
-        return false;
-    default:
-        return state;
-    }
+export const initialColorsState: ColorsState = {
+    list: {},
+    loading: false,
+    saving: false,
+    current: null,
+    filter: '',
+    filterInactive: true,
+    whereUsed: {
+        list: [],
+        loading: false,
+    },
+    sort: {...defaultColorSort},
+    page: 0,
+    rowsPerPage: getPreference(localStorageKeys.colors.rowsPerPage, 25),
 }
+export const colorListTableKey = 'color-list';
 
-const savingReducer = (state: boolean = false, action: ColorAction): boolean => {
-    const {type, payload} = action;
-    switch (type) {
-    case saveColorPending:
-        return true;
-    case saveColorResolved:
-    case saveColorRejected:
-        return false;
-    default:
-        return state;
-    }
-}
+const colorsReducer = createReducer(initialColorsState, (builder) => {
+    builder
+        .addCase(loadColors.pending, (state) => {
+            state.loading = true;
+        })
+        .addCase(loadColors.fulfilled, (state, action) => {
+            state.loading = false;
+            state.list = {};
+            action.payload.forEach(color => {
+                state.list[color.code] = color;
+            })
+            if (state.current) {
+                const [color] = action.payload.filter(color => color.id === state.current?.id);
+                state.current = color ?? null;
+            }
+            if (state.page > (Object.keys(action.payload).length % state.rowsPerPage)) {
+                state.page = 0;
+            }
+        })
+        .addCase(loadColors.rejected, (state) => {
+            state.loading = false;
+        })
+        .addCase(saveColor.pending, (state) => {
+            state.saving = true;
+        })
+        .addCase(saveColor.fulfilled, (state, action) => {
+            state.list = {};
+            action.payload.list.forEach(color => {
+                state.list[color.code] = color;
+            });
+            state.current = action.payload.color;
+            state.saving = false;
 
-const currentReducer = (state: EditableProductColor = emptyColor, action: ColorAction): EditableProductColor => {
-    const {type, payload} = action;
-    switch (type) {
-    case setCurrentColor:
-    case saveColorResolved:
-    case loadColorsResolved:
-        if (payload?.color) {
-            return {...payload.color};
-        }
-        return {...emptyColor};
-    case updateCurrentColor:
-        if (payload?.props) {
-            return {...state, ...payload.props, changed: true,}
-        }
-        return state;
-    default:
-        return state;
-    }
-}
-
-const filterReducer = (state: string = '', action: ColorAction): string => {
-    const {type, payload} = action;
-    switch (type) {
-    case setColorFilter:
-        return payload?.value || '';
-    default:
-        return state;
-    }
-}
-
-const whereUsedReducer = (state: ColorProductUsage[] = [], action: ColorAction): ColorProductUsage[] => {
-    const {type, payload} = action;
-    switch (type) {
-    case loadUsagePending:
-        return [];
-    case loadUsageResolved:
-        if (payload?.items) {
-            return [...payload.items.sort(colorProductUsageSorter(defaultColorProductUsageSort))];
-        }
-        return state;
-    default:
-        return state;
-    }
-}
-
-export default combineReducers({
-    list: listReducer,
-    loading: loadingReducer,
-    saving: savingReducer,
-    current: currentReducer,
-    filter: filterReducer,
-    whereUsed: whereUsedReducer,
+            if (state.page > (Object.keys(action.payload).length % state.rowsPerPage)) {
+                state.page = 0;
+            }
+        })
+        .addCase(saveColor.rejected, (state) => {
+            state.saving = false;
+        })
+        .addCase(setCurrentColor, (state, action) => {
+            state.current = action.payload ?? null;
+            state.whereUsed.list = [];
+        })
+        .addCase(setColorFilter, (state, action) => {
+            state.filter = action.payload;
+            state.page = 0;
+        })
+        .addCase(toggleFilterInactiveColors, (state, action) => {
+            state.filterInactive = action.payload ?? !state.filterInactive;
+        })
+        .addCase(loadColorUsage.pending, (state) => {
+            state.whereUsed.loading = true;
+        })
+        .addCase(loadColorUsage.fulfilled, (state, action) => {
+            state.whereUsed.list = action.payload.sort(colorProductUsageSorter(defaultColorProductUsageSort));
+            state.whereUsed.loading = false;
+        })
+        .addCase(loadColorUsage.rejected, (state) => {
+            state.whereUsed.loading = false;
+        })
+        .addCase(setPage, (state, action) => {
+            state.page = action.payload;
+        })
+        .addCase(setRowsPerPage, (state, action) => {
+            setPreference(localStorageKeys.colors.rowsPerPage, action.payload);
+            state.rowsPerPage = action.payload;
+            state.page = 0;
+        })
+        .addCase(setSort, (state, action) => {
+            state.page = 0;
+            state.sort = action.payload;
+        })
 })
+
+
+export default colorsReducer;

@@ -1,27 +1,45 @@
-import React, {useEffect} from 'react';
-import AppTabs, {appTabs, tabKey} from "./AppTabs";
-import {AlertList, selectCurrentTab} from "chums-connected-components";
-import {useSelector} from "react-redux";
-import ProductScreen from "../ducks/products/components/ProductScreen";
-import ColorScreen from "./ColorScreen";
-import {loadColorsAction} from "../ducks/colors/actions";
-import {loadProductListAction} from "../ducks/products/actions";
+import React, {useEffect, useReducer} from 'react';
+import {AlertList} from "chums-connected-components";
+import ProductScreen from "../ducks/products/ProductScreen";
+import ColorScreen from "../ducks/colors/ColorScreen";
+import {loadColors} from "../ducks/colors/actions";
+import {initialTabState, Tab, TabList, tabsReducer} from "chums-components";
+import {AppTabMap} from "./types";
+import {SessionStore, storeMainTab} from "../localStore";
+import {loadProductsList} from "../ducks/products/list/actions";
 import {useAppDispatch} from "./hooks";
+import {loadSeasons} from "../ducks/seasons";
+
+
+export const appTabs: AppTabMap = {
+    products: {id: 'products', title: 'Products'},
+    colors: {id: 'colors', title: 'Colors'},
+}
+const tabList: Tab[] = [appTabs.products, appTabs.colors];
 
 const App: React.FC = () => {
     const dispatch = useAppDispatch();
-    const tab = useSelector(selectCurrentTab(tabKey));
+    const [tabs, tabsDispatch] = useReducer(tabsReducer, initialTabState);
+
     useEffect(() => {
-        dispatch(loadColorsAction());
-        dispatch(loadProductListAction())
-    }, [])
+        tabsDispatch({type: 'add', payload: tabList});
+        tabsDispatch({type: 'select', payload: SessionStore.getItem(storeMainTab) ?? appTabs.products.id})
+        dispatch(loadColors());
+        dispatch(loadProductsList())
+        dispatch(loadSeasons())
+    }, []);
+
+    const selectTabHandler = (tab: Tab) => {
+        SessionStore.setItem(storeMainTab, tab.id);
+        tabsDispatch({type: 'select', payload: tab.id})
+    }
     return (
         <div>
-            <AppTabs/>
+            <TabList tabs={tabs.tabs} currentTabId={tabs.current || tabList[0].id} onSelectTab={selectTabHandler}/>
             <AlertList/>
             <div>
-                {tab === appTabs.products.id && <ProductScreen/>}
-                {tab === appTabs.colors.id && <ColorScreen/>}
+                {tabs.current === appTabs.products.id && <ProductScreen/>}
+                {tabs.current === appTabs.colors.id && <ColorScreen/>}
             </div>
         </div>
     )

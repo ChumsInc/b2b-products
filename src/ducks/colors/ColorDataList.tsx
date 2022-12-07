@@ -10,7 +10,7 @@ const ColorDataList:React.FC<ColorDataListProps> = ({id, ...props}) => {
     const colors = useSelector(selectColorList);
     return (
         <datalist id={id} {...props} >
-            {colors.map(c => <option key={c.id} value={c.code}>{c.code} / {c.name}</option>)}
+            {Object.values(colors).map(c => <option key={c.id} value={c.code}>{c.code} / {c.name}</option>)}
         </datalist>
     );
 }

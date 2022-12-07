@@ -11,6 +11,7 @@ export const appTabs: AppTabMap = {
 const tabList: Tab[] = [appTabs.products, appTabs.colors];
 
 const AppTabs: React.FC = () => {
+
     return (
         <ConnectedTabs tabKey={tabKey} tabs={tabList} defaultTabId={appTabs.products.id}/>
     )

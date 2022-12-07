@@ -1,29 +1,40 @@
-import React, {ChangeEvent, FormEvent} from "react";
+import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import {SpinnerButton} from "chums-components";
-import {saveColorAction, setCurrentColorAction, updateCurrentColorAction} from "./actions";
-import {ProductColor} from "b2b-types";
+import {saveColor, setCurrentColor} from "./actions";
+import {Editable, ProductColor} from "b2b-types";
 import {selectColorSaving, selectCurrentColor} from "./selectors";
+
+import {defaultColor} from "../../defaults";
 import {useAppDispatch} from "../../app/hooks";
+
+export type EditableProductColor = ProductColor & Editable;
 
 const ColorEditor: React.FC = () => {
     const dispatch = useAppDispatch();
     const current = useSelector(selectCurrentColor);
     const saving = useSelector(selectColorSaving);
+
+    const [color, setColor] = useState<EditableProductColor>(current ?? defaultColor);
+
+    useEffect(() => {
+        setColor(current ?? defaultColor);
+    }, [current]);
+
     const onChangeField = (field: keyof ProductColor) => (ev: ChangeEvent<HTMLInputElement>) => {
         switch (field) {
         case 'code':
         case 'name':
-            dispatch(updateCurrentColorAction({[field]: ev.target.value}));
+            setColor({...color, [field]: ev.target.value, changed: true});
         }
     }
     const submitHandler = (ev: FormEvent) => {
         ev.preventDefault();
-        dispatch(saveColorAction());
+        dispatch(saveColor(color));
     }
 
-    const newImageHandler = () => {
-        dispatch(setCurrentColorAction());
+    const newColorHandler = () => {
+        dispatch(setCurrentColor());
     }
 
     return (
@@ -31,13 +42,13 @@ const ColorEditor: React.FC = () => {
             <div className="input-group input-group-sm mb-1">
                 <span className="input-group-text bi-key-fill"/>
                 <input type="text"
-                       value={current.code} onChange={onChangeField('code')}
+                       value={color.code} onChange={onChangeField('code')}
                        className="form-control form-control-sm"/>
             </div>
             <div className="input-group input-group-sm mb-1">
                 <span className="input-group-text bi-pen"/>
                 <input type="text"
-                       value={current.name || ''} onChange={onChangeField('name')}
+                       value={color.name || ''} onChange={onChangeField('name')}
                        className="form-control form-control-sm"/>
             </div>
             <div className="row g-3 align-items-baseline">
@@ -48,11 +59,12 @@ const ColorEditor: React.FC = () => {
                     <button type="button" className="btn btn-sm btn-outline-secondary">Cancel</button>
                 </div>
                 <div className="col-auto">
-                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={newImageHandler}>New
+                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={newColorHandler}>
+                        New
                     </button>
                 </div>
                 <div className="col-auto">
-                    <pre><code>id = {current.id}</code></pre>
+                    <pre><code>id = {color.id}</code></pre>
                 </div>
             </div>
         </form>

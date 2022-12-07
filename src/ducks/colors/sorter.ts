@@ -1,14 +1,13 @@
-
-import {ColorSorterProps, ColorProductSorterProps} from "../../types/product";
 import {ColorProductUsage, ProductColor} from "b2b-types";
+import {SortProps} from "chums-components";
 
 
-
-export const colorSorter = ({field, ascending}:ColorSorterProps) =>
-    (a:ProductColor, b:ProductColor) => {
+export const colorSorter = ({field, ascending}: SortProps<ProductColor>) =>
+    (a: ProductColor, b: ProductColor) => {
         const asc = ascending ? 1 : -1;
         switch (field) {
         case 'id':
+        case 'active':
             return (a.id - b.id) * asc;
         default:
             const aVal = (a[field] || '').toLowerCase();
@@ -17,8 +16,8 @@ export const colorSorter = ({field, ascending}:ColorSorterProps) =>
         }
     }
 
-export const colorProductUsageSorter = ({field, ascending}:ColorProductSorterProps) =>
-    (a:ColorProductUsage, b:ColorProductUsage) => {
+export const colorProductUsageSorter = ({field, ascending}: SortProps<ColorProductUsage>) =>
+    (a: ColorProductUsage, b: ColorProductUsage) => {
         const asc = ascending ? 1 : -1;
         switch (field) {
         case 'productId':

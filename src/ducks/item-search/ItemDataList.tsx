@@ -1,6 +1,6 @@
 import React, {HTMLAttributes, useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {itemSearchAction, selectItemSearchList} from "./index";
+import {itemSearch, selectItemSearchList} from "./index";
 import {ItemSearchFilter} from "../../types/item-search";
 import {useAppDispatch} from "../../app/hooks";
 
@@ -35,7 +35,7 @@ const ItemDataList: React.FC<ItemDataListProps> = ({
     useEffect(() => {
         window.clearTimeout(timer);
         const newTimer = window.setTimeout(() => {
-            dispatch(itemSearchAction(search, filter, controller.signal))
+            dispatch(itemSearch({search, filter, signal: controller.signal}))
         }, delay);
         setTimer(() => newTimer);
     }, [search]);

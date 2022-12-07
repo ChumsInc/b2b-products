@@ -156,11 +156,13 @@
     }
   }
 
+  .product-image-list,
   .product-color-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 
+    .product-image-item,
     .product-color-item {
       margin: 0.25rem;
       text-align: center;

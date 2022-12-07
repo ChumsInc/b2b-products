@@ -23,7 +23,7 @@ const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: {
-            ignoredActionPaths: ['payload.error'],
+            ignoredActionPaths: ['payload.error', 'meta.arg.signal'],
         }
     })
 });

@@ -1,16 +1,19 @@
 import {combineReducers} from "redux";
-import {default as currentProductReducer} from './currentProductReducer'
-import {default as currentVariantReducer} from './currentVariantReducer'
-import {default as currentColorReducer} from './currentColorReducer'
-import {default as currentMixReducer} from './currentMixReducer'
-
-import {default as listReducer} from './listReducer'
+import {default as currentProductReducer} from './product/index'
+import {default as currentVariantReducer} from './variant/index'
+import {default as currentColorReducer} from './color/index'
+import {default as currentMixReducer} from './mix/index'
+import {default as listReducer} from './list/index'
+import imagesReducer from "./images";
 
 export default combineReducers({
     list: listReducer,
-    currentProduct: currentProductReducer,
-    currentVariant: currentVariantReducer,
-    currentColor: currentColorReducer,
-    currentMix: currentMixReducer,
+    current: combineReducers({
+        product: currentProductReducer,
+        variant: currentVariantReducer,
+        color: currentColorReducer,
+        mix: currentMixReducer,
+        images: imagesReducer,
+    })
 });
 

@@ -8,18 +8,22 @@ import {
     ProductMixComponent,
     ProductMixItem,
     ProductSeason,
-    ProductVariant
+    ProductVariant, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct
 } from "b2b-types/src/products";
-
-export interface Editable {
-    changed?: boolean,
-}
+import {Editable} from "./generics";
+import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS, SellAsSelfProduct} from "b2b-types";
+import {WritableDraft} from "immer/dist/types/types-external";
 
 export interface EditableProductColor extends ProductColor, Editable {
 }
 
-export interface EditableProduct extends Product, Editable {
-}
+export interface EditableSellAsSelfProduct extends SellAsSelfProduct, Editable {}
+export interface EditableSellAsVariantsProduct extends SellAsVariantsProduct, Editable {}
+export interface EditableSellAsMixProduct extends SellAsMixProduct, Editable {}
+export interface EditableSellAsColorsProduct extends SellAsColorsProduct, Editable {}
+
+// export type EditableProduct = EditableSellAsSelfProduct | EditableSellAsVariantsProduct | EditableSellAsMixProduct | EditableSellAsColorsProduct;
+export type EditableProduct = Product & Editable;
 
 export interface EditableVariant extends ProductVariant, Editable {
 }
@@ -66,3 +70,8 @@ export interface ProductListSorterProps extends SorterProps {
 export interface ProductVariantListSorterProps extends SorterProps {
     field: keyof ProductVariant,
 }
+
+export function isSellAsSelfProduct(product:Product): product is SellAsSelfProduct {
+    return (product as SellAsSelfProduct).sellAs === SELL_AS_SELF;
+}
+

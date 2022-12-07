@@ -6,7 +6,7 @@ import classNames from "classnames";
 export interface ProductImage {
     filename: string|null,
     itemCode: string,
-    colorCode: string,
+    colorCode?: string,
     size: ProductImageSize,
     className?: string,
 }

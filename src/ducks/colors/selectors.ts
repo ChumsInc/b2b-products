@@ -1,41 +1,58 @@
 import {RootState} from "../../app/configureStore";
 import {colorSorter} from "./sorter";
 import {createSelector} from "reselect";
-import {selectCurrentPage, selectRowsPerPage, selectTableSort} from "chums-connected-components";
-import {filterPage} from "chums-components";
-import {colorListTableKey} from "./index";
 import {ColorSorterProps} from "../../types/product";
-import {defaultColor} from "../../defaults";
 import {ProductColor} from "b2b-types/src/products";
 
-export const selectColorList = (state: RootState) => Object.values(state.colors.list);
-export const selectColorListLength = (state:RootState) => Object.keys(state.colors.list).length;
+
+export const selectColorList = (state: RootState) => state.colors.list;
+
+export const selectColorListLength = (state: RootState) => Object.keys(state.colors.list).length;
+
 export const selectColorsLoading = (state: RootState) => state.colors.loading;
+
 export const selectColorSaving = (state: RootState) => state.colors.saving;
+
 export const selectCurrentColor = (state: RootState) => state.colors.current;
-export const selectSortedColorList = (sort: ColorSorterProps) => (state: RootState) => selectColorList(state).sort(colorSorter(sort));
-export const selectColorFilter = (state:RootState) => state.colors.filter;
-export const selectColorByCode = (code: string) => (state:RootState):ProductColor => state.colors.list[code] || {...defaultColor};
+
+export const selectColorFilter = (state: RootState) => state.colors.filter;
+
+export const selectColorsFilterInactive = (state:RootState) => state.colors.filterInactive;
+
+export const selectColorCode = (state: RootState, code: string) => code;
+
+export const selectPage = (state: RootState) => state.colors.page;
+
+export const selectRowsPerPage = (state: RootState) => state.colors.rowsPerPage;
+
+export const selectSort = (state: RootState) => state.colors.sort;
+
+export const selectColorByCode = createSelector(
+    [selectColorList, selectColorCode],
+    (list, code): ProductColor => list[code] ?? null
+);
 
 export const selectFilteredList = createSelector(
-    [selectColorList, selectColorFilter],
-    (list, filter) => {
-        let reFilter:RegExp = /^/;
+    [selectColorList, selectColorsFilterInactive, selectColorFilter],
+    (list, filterInactive, filter) => {
+        let reFilter: RegExp = /^/;
         try {
             reFilter = new RegExp(filter, 'i');
-        } catch(err:unknown) {}
-        return list
+        } catch (err: unknown) {
+        }
+        return Object.values(list)
+            .filter(color => !filterInactive || color.active)
             .filter(color => !filter || reFilter.test(color.code) || reFilter.test(color.name || ''));
     }
 )
 export const selectFilteredListLength = createSelector([selectFilteredList], (list) => list.length);
 
 export const selectSortedList = createSelector(
-    [selectFilteredList, selectTableSort(colorListTableKey), selectRowsPerPage(colorListTableKey), selectCurrentPage(colorListTableKey)],
+    [selectFilteredList, selectSort, selectRowsPerPage, selectPage],
     (list, sort, rowsPerPage, page) => {
-        return list
+        return [...list]
             .sort(colorSorter(sort as ColorSorterProps))
-            .filter(filterPage(page, rowsPerPage));
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     });
 
-export const selectWhereUsed = (state:RootState) => state.colors.whereUsed;
+export const selectWhereUsed = (state: RootState) => state.colors.whereUsed.list;
