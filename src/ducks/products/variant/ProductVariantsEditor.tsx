@@ -1,35 +1,16 @@
-import React, {ChangeEvent, FormEvent, useEffect, useReducer, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-components";
 import {selectCurrentVariant, selectCurrentVariantSaving} from "./selectors";
 import {ProductVariant} from "b2b-types/src/products";
-import {Keyword} from "b2b-types";
+import {Editable, Keyword} from "b2b-types";
 import KeywordSelect from "../../keywords/KeywordSelect";
 import {defaultVariant} from "../../../defaults";
-import {Editable} from "../../../types/generics";
 import {loadProduct} from "../product/actions";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "./actions";
 import {selectCurrentProductId} from "../product/selectors";
-import {EditableVariant} from "../../../types/product";
 import {useAppDispatch} from "../../../app/hooks";
 
-
-type LocalActionType =
-    | { type: 'update', payload: Partial<ProductVariant> }
-    | { type: 'set', payload: ProductVariant }
-const localVariantReducer = (state: ProductVariant & Editable, action: LocalActionType) => {
-    switch (action.type) {
-    case 'update':
-        return {
-            ...state,
-            ...action.payload,
-            changed: true,
-        }
-    case 'set':
-        return {...action.payload};
-    }
-    return state;
-}
 
 const colWidth = 9;
 const ProductVariantsEditor: React.FC = () => {
@@ -37,10 +18,7 @@ const ProductVariantsEditor: React.FC = () => {
     const productId = useSelector(selectCurrentProductId);
     const current = useSelector(selectCurrentVariant);
     const saving = useSelector(selectCurrentVariantSaving);
-    const [variant, setVariant] = useState<EditableVariant>(current ?? {...defaultVariant});
-
-
-    const [localVariant, localDispatch] = useReducer(localVariantReducer, {...defaultVariant});
+    const [variant, setVariant] = useState<ProductVariant & Editable>(current ?? {...defaultVariant});
 
     useEffect(() => {
         if (!variant?.id || variant?.parentProductID !== productId) {
@@ -113,7 +91,7 @@ const ProductVariantsEditor: React.FC = () => {
                     </InputGroup>
                 </FormColumn>
                 <FormColumn label="Child" width={colWidth}>
-                    <KeywordSelect pageType="product" value={localVariant.variantProductID}
+                    <KeywordSelect pageType="product" value={variant.variantProductID}
                                    required
                                    onSelectKeyword={keywordChangeHandler}>
 
@@ -125,10 +103,10 @@ const ProductVariantsEditor: React.FC = () => {
                 </FormColumn>
                 <FormColumn label="Name" width={colWidth}>
                     <input type="text" className="form-control form-control-sm"
-                           value={localVariant.title} onChange={changeHandler('title')} required/>
+                           value={variant.title} onChange={changeHandler('title')} required/>
                 </FormColumn>
                 <FormColumn label="Status" width={colWidth} align="baseline">
-                    <FormCheck label='Enabled' checked={localVariant.status} onChange={changeHandler('status')}
+                    <FormCheck label='Enabled' checked={variant.status} onChange={changeHandler('status')}
                                disabled={!variant.product?.status}
                                type="checkbox" inline/>
                 </FormColumn>

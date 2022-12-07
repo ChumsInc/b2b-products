@@ -1,6 +1,5 @@
 import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
-import {ProductMixComponent} from "b2b-types";
-import {EditableProductMixComponent} from "../../../types/product";
+import {Editable, ProductMixComponent} from "b2b-types";
 import {useAppDispatch} from "../../../app/hooks";
 import {saveMixComponent} from "./actions";
 
@@ -11,7 +10,7 @@ export interface ProductMixComponentRowProps {
 
 const ProductMixComponentRow = ({productId, component}: ProductMixComponentRowProps) => {
     const dispatch = useAppDispatch();
-    const [comp, setComp] = useState<EditableProductMixComponent>({...component});
+    const [comp, setComp] = useState<ProductMixComponent & Editable>({...component});
     const id = useId();
 
     useEffect(() => {

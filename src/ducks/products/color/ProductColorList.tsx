@@ -4,7 +4,7 @@ import {selectCurrentColorItem, selectCurrentProductColors} from "./selectors";
 import {selectCurrentProduct} from "../product/selectors";
 import ProductImage from "../../../app/ProductImage";
 import {ProductColorItem} from "b2b-types/src/products";
-import {calcPages, filterPage, FormCheck, Pagination, RowsPerPage, TablePagination} from "chums-components";
+import {FormCheck, TablePagination} from "chums-components";
 import classNames from "classnames";
 import {LocalStore, storeProductItemsRowsPerPage} from "../../../localStore";
 import {useAppDispatch} from "../../../app/hooks";
@@ -69,18 +69,18 @@ const ProductColorList: React.FC = () => {
                 {filteredList
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map(item => (
-                    <div key={item.id} className="product-color-item">
-                        <button type="button" className={classNames('btn btn-sm', {
-                            'btn-secondary': selected?.id === item.id,
-                            'btn-outline-secondary': selected?.id !== item.id
-                        })} onClick={() => selectItemHandler(item)}>
-                            {item.colorCode}
-                        </button>
-                        <ProductImage filename={item.additionalData?.image_filename || product?.image}
-                                      className={classNames({'text-danger': !item.status})}
-                                      colorCode={item.colorCode} itemCode={item.itemCode} size={80}/>
-                    </div>
-                ))}
+                        <div key={item.id} className="product-color-item">
+                            <button type="button" className={classNames('btn btn-sm', {
+                                'btn-secondary': selected?.id === item.id,
+                                'btn-outline-secondary': selected?.id !== item.id
+                            })} onClick={() => selectItemHandler(item)}>
+                                {item.colorCode}
+                            </button>
+                            <ProductImage filename={item.additionalData?.image_filename || product?.image}
+                                          className={classNames({'text-danger': !item.status})}
+                                          colorCode={item.colorCode} itemCode={item.itemCode} size={80}/>
+                        </div>
+                    ))}
             </div>
         </>
     )

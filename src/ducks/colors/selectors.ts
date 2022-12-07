@@ -1,7 +1,6 @@
 import {RootState} from "../../app/configureStore";
 import {colorSorter} from "./sorter";
 import {createSelector} from "reselect";
-import {ColorSorterProps} from "../../types/product";
 import {ProductColor} from "b2b-types/src/products";
 
 
@@ -17,7 +16,7 @@ export const selectCurrentColor = (state: RootState) => state.colors.current;
 
 export const selectColorFilter = (state: RootState) => state.colors.filter;
 
-export const selectColorsFilterInactive = (state:RootState) => state.colors.filterInactive;
+export const selectColorsFilterInactive = (state: RootState) => state.colors.filterInactive;
 
 export const selectColorCode = (state: RootState, code: string) => code;
 
@@ -51,7 +50,7 @@ export const selectSortedList = createSelector(
     [selectFilteredList, selectSort, selectRowsPerPage, selectPage],
     (list, sort, rowsPerPage, page) => {
         return [...list]
-            .sort(colorSorter(sort as ColorSorterProps))
+            .sort(colorSorter(sort))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     });
 

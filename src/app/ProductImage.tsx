@@ -1,7 +1,8 @@
 import React from 'react';
-import {ProductImageSize} from "../types/product";
 import {parseColor} from "../utils";
 import classNames from "classnames";
+
+export type ProductImageSize = 80 | 125 | 250 | 400 | 800 | 2048;
 
 export interface ProductImage {
     filename: string|null,

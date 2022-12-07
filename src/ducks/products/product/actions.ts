@@ -1,12 +1,6 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {
-    deleteVariant,
-    fetchProduct,
-    postProduct,
-    postVariant,
-    putDefaultVariant
-} from "../../../api/productsAPI";
-import {ProductVariant, Product, ProductAdditionalData} from "b2b-types";
+import {fetchProduct, postProduct} from "../../../api/productsAPI";
+import {Product, ProductAdditionalData} from "b2b-types";
 
 
 export const setNewProduct = createAction('products/current/new');
@@ -17,16 +11,16 @@ export const updateProduct = createAction<Partial<Product>>('products/current/up
 
 export const updateProductAdditionalData = createAction<Partial<ProductAdditionalData>>('products/current/updateAdditionalData');
 
-export const loadProduct = createAsyncThunk<Product|null, string>(
+export const loadProduct = createAsyncThunk<Product | null, string>(
     'product/current/load',
-    async (arg, thunkApi) => {
+    async (arg) => {
         return fetchProduct(arg);
     }
 )
 
 export const saveProduct = createAsyncThunk<Product, Product>(
     'product/current/save',
-    async (arg, thunkApi) => {
+    async (arg) => {
         return postProduct(arg);
     }
 )

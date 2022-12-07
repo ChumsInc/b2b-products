@@ -1,8 +1,11 @@
 import {ProductSeason} from "b2b-types";
 import {RootState} from "../../app/configureStore";
 import {fetchSeasons} from "../../api/seasonsAPI";
-import {ProductSeasonList} from "../../types/product";
 import {createAsyncThunk, createReducer} from "@reduxjs/toolkit";
+
+export interface ProductSeasonList {
+    [key: string]: ProductSeason,
+}
 
 export interface SeasonsState {
     list: ProductSeasonList;

@@ -1,10 +1,9 @@
 import {ProductListItem} from "b2b-types";
-import {ProductListSorterProps} from "../../types/product";
 import {ProductColorItem, ProductMixComponent, ProductVariant} from "b2b-types/src/products";
 import {SortProps} from "chums-components";
 
 
-export const productListSorter = ({field, ascending}: ProductListSorterProps) =>
+export const productListSorter = ({field, ascending}: SortProps<ProductListItem>) =>
     (a: ProductListItem, b: ProductListItem): number => {
         const ascMod = ascending ? 1 : -1;
         switch (field) {

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useId, useRef, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useEffect, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectColorList} from "./selectors";
 import {usePopper} from "react-popper";
@@ -13,7 +13,6 @@ export interface ColorAutoCompleteProps {
 }
 
 const ColorAutoComplete = ({value, onChange, onChangeColor}: ColorAutoCompleteProps) => {
-    const id = useId();
     const colorList = useSelector(selectColorList);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -66,7 +65,7 @@ const ColorAutoComplete = ({value, onChange, onChangeColor}: ColorAutoCompletePr
         case 'ArrowDown':
             ev.preventDefault();
             setOpen(true);
-            setIndex((index + 1) % len );
+            setIndex((index + 1) % len);
             return;
         case 'ArrowUp':
             ev.preventDefault();

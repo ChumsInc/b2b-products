@@ -53,7 +53,7 @@ export const initialProductsListState: ProductsListState = {
 
 const productsListReducer = createReducer(initialProductsListState, (builder) => {
     builder
-        .addCase(loadProductsList.pending, (state, action) => {
+        .addCase(loadProductsList.pending, (state) => {
             state.loading = true;
         })
         .addCase(loadProductsList.fulfilled, (state, action) => {

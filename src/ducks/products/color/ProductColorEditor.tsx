@@ -8,9 +8,6 @@ import SeasonSelect from "../../seasons/SeasonSelect";
 import {Editable, ProductColor, ProductSeason} from "b2b-types";
 import SeasonAlert from "../../seasons/SeasonAlert";
 import {defaultColorItem} from "../../../defaults";
-import ColorDataList from "../../colors/ColorDataList";
-import {selectColorByCode} from "../../colors/selectors";
-import {RootState} from "../../../app/configureStore";
 import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
 import ColorAutoComplete from "../../colors/ColorAutoComplete";
@@ -22,13 +19,11 @@ interface EditableProductColorItem extends ProductColorItem, Editable {
 const colWidth = 8;
 const ProductColorEditor: React.FC = () => {
     const dispatch = useAppDispatch();
-    const colorCodeRef = useRef<HTMLInputElement>(null)
     const itemCodeRef = useRef<HTMLInputElement>(null)
     const imageRef = useRef<HTMLInputElement>(null)
     const productId = useSelector(selectCurrentProductId);
     const current = useSelector(selectCurrentColorItem);
     const saving = useSelector(selectCurrentColorItemSaving);
-    const color = useSelector((state: RootState) => selectColorByCode(state, current?.colorCode ?? ''));
 
     const [colorItem, setColorItem] = useState<EditableProductColorItem>(current ?? {...defaultColorItem});
 
@@ -40,16 +35,6 @@ const ProductColorEditor: React.FC = () => {
     useEffect(() => {
         setColorItem(current ?? defaultColorItem);
     }, [current])
-
-    // useEffect(() => {
-    //     if (!colorItem.colorCode && colorCodeRef.current) {
-    //         colorCodeRef.current.focus();
-    //     } else if (!colorItem.itemCode && itemCodeRef.current) {
-    //         itemCodeRef.current.focus()
-    //     } else if (!colorItem.additionalData?.image_filename && imageRef.current) {
-    //         imageRef.current.focus();
-    //     }
-    // }, [current?.id]);
 
     const submitHandler = (ev: FormEvent) => {
         ev.preventDefault();
@@ -64,9 +49,9 @@ const ProductColorEditor: React.FC = () => {
         }
     }
 
-    const onChangeColorCode = (value:string) => setColorItem({...colorItem, colorCode: value, changed: true});
+    const onChangeColorCode = (value: string) => setColorItem({...colorItem, colorCode: value, changed: true});
 
-    const onChangeColor = (color:ProductColor | null) => {
+    const onChangeColor = (color: ProductColor | null) => {
         if (color) {
             return setColorItem({...colorItem, color, colorCode: color.code, changed: true})
         }
@@ -120,7 +105,8 @@ const ProductColorEditor: React.FC = () => {
                     </InputGroup>
                 </FormColumn>
                 <FormColumn label="Color Code" width={colWidth}>
-                    <ColorAutoComplete value={colorItem.colorCode} onChange={onChangeColorCode} onChangeColor={onChangeColor} />
+                    <ColorAutoComplete value={colorItem.colorCode} onChange={onChangeColorCode}
+                                       onChangeColor={onChangeColor}/>
                 </FormColumn>
                 <FormColumn label="Item Code" width={colWidth}>
                     <input type="text" className="form-control form-control-sm" ref={itemCodeRef}

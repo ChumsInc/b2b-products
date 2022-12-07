@@ -5,9 +5,9 @@ import {selectCurrentMix, selectCurrentMixLoading, selectCurrentMixSaving} from 
 import {ProductMixItem} from "b2b-types/src/products";
 import {saveMix} from "./actions";
 import {defaultMixItem} from "../../../defaults";
-import {EditableProductMixItem} from "../../../types/product";
 import {selectCurrentProduct} from "../product/selectors";
 import {useAppDispatch} from "../../../app/hooks";
+import {Editable} from "b2b-types";
 
 
 const colWidth = 8;
@@ -18,7 +18,7 @@ const ProductMixEditor: React.FC = () => {
     const loading = useSelector(selectCurrentMixLoading);
     const saving = useSelector(selectCurrentMixSaving);
 
-    const [mix, setMix] = useState<EditableProductMixItem>(current ?? {...defaultMixItem});
+    const [mix, setMix] = useState<ProductMixItem & Editable>(current ?? {...defaultMixItem});
 
     useEffect(() => {
         setMix({...(current ?? defaultMixItem)});

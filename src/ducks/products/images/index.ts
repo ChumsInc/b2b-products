@@ -66,7 +66,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
         .addCase(setCurrentImage, (state, action) => {
             state.current = action.payload;
         })
-        .addCase(loadImages.pending, (state, action) => {
+        .addCase(loadImages.pending, (state) => {
             state.status = 'loading';
         })
         .addCase(loadImages.fulfilled, (state, action) => {

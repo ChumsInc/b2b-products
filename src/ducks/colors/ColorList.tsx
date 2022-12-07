@@ -6,13 +6,7 @@ import {SortableTable} from 'chums-components';
 
 import {ProductColor} from "b2b-types";
 import {setCurrentColor, setSort} from "./actions";
-import {
-    selectColorListLength,
-    selectColorsLoading,
-    selectCurrentColor,
-    selectSort,
-    selectSortedList
-} from "./selectors";
+import {selectCurrentColor, selectSort, selectSortedList} from "./selectors";
 import {useAppDispatch} from "../../app/hooks";
 import ColorsPagination from "./ColorsPagination";
 import ColorFilterBar from "./ColorFilterBar";

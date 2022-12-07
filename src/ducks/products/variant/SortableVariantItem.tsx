@@ -25,7 +25,7 @@ const style = {
     cursor: 'move',
 }
 
-const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index, moveItem, children}) => {
+const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index, moveItem}) => {
     const dispatch = useAppDispatch();
     const selectedVariant = useSelector(selectCurrentVariant);
     const ref = useRef<HTMLDivElement>(null);
