@@ -56,7 +56,7 @@ export async function postProduct(_product: Product): Promise<Product> {
         }
         const url = `/api/b2b/products/v2/${encodeURIComponent(_product.id)}`;
         const method = _product.id === 0 ? 'POST' : 'PUT';
-        let baseProduct: BasicProduct = _product;
+        let baseProduct: BasicProduct = {..._product};
         if (isSellAsVariantsProduct(_product)) {
             const {variants, ...p} = _product
             baseProduct = p;
@@ -224,6 +224,9 @@ export async function postMixComponent(productId: number, component: ProductMixC
         if (!productId || !component.mixID) {
             return Promise.reject(new Error('Invalid Mix Component: missing product ID or mix ID'));
         }
+        if (!component.colorsId || !component.itemCode) {
+            return Promise.reject(new Error('Mix component is missing component.colorsId or component.itemCode'));
+        }
         const url = '/api/b2b/products/v2/mix/:productId/:mixID/items'
             .replace(':productId', encodeURIComponent(productId))
             .replace(':mixID', encodeURIComponent(component.mixID));
@@ -285,7 +288,7 @@ export async function deleteAltImage(image: ProductAlternateImage): Promise<Prod
         if (!image.productId || !image.image || !image.id) {
             return Promise.reject(new Error('Invalid Image: missing ID, product ID or filename'));
         }
-        const url = '/api/b2b/products/v2/images/:productId/:id'
+        const url = '/api/b2b/products/v2/image/:productId/:id'
             .replace(':productId', encodeURIComponent(image.productId))
             .replace(':id', encodeURIComponent(image.id));
         const {images} = await fetchJSON<{ images: ProductAlternateImage[] }>(url, {method: 'DELETE'});

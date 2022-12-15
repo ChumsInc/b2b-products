@@ -12,30 +12,33 @@ export const selectProductsSearch = (state: RootState) => state.products.list.se
 
 export const selectProductsFilter = (state: RootState) => state.products.list.filter;
 
+export const selectProductsFilterCategoryId = (state: RootState) => state.products.list.filter.categoryId;
+
 export const selectProductsFilterActive = (state: RootState) => state.products.list.filter.isActive;
 
 export const selectProductsFilterOnSale = (state: RootState) => state.products.list.filter.hasSalePrice;
 
 export const selectProductsFilterAvailable = (state: RootState) => state.products.list.filter.isAvailableForSale;
 
-export const selectProductListPage = (state:RootState) => state.products.list.page;
+export const selectProductListPage = (state: RootState) => state.products.list.page;
 
-export const selectProductListRowsPerPage = (state:RootState) => state.products.list.rowsPerPage;
+export const selectProductListRowsPerPage = (state: RootState) => state.products.list.rowsPerPage;
 
-export const selectProductListSort = (state:RootState) => state.products.list.sort;
+export const selectProductListSort = (state: RootState) => state.products.list.sort;
 
 export const selectFilteredList = createSelector(
-    [selectProductList, selectProductsSearch, selectProductsFilterActive, selectProductsFilterAvailable, selectProductsFilterOnSale, selectProductListSort],
-    (list, search, isActive, isAvailableForSale, hasSalePrice, sort) => {
+    [selectProductList, selectProductsSearch, selectProductsFilterActive, selectProductsFilterAvailable, selectProductsFilterOnSale, selectProductsFilterCategoryId, selectProductListSort],
+    (list, search, isActive, isAvailableForSale, hasSalePrice, categoryId, sort) => {
         let reSearch = /^/;
         try {
             reSearch = new RegExp(search, 'i');
-        } catch(err:unknown) {
+        } catch (err: unknown) {
             reSearch = /^/;
         }
         return list.filter(i => !isActive || i.status)
             .filter(i => !isAvailableForSale || i.availableForSale)
             .filter(i => !hasSalePrice || !!i.salePrice)
+            .filter(i => !categoryId || i.defaultCategoriesId === categoryId)
             .filter(i => {
                 return search === ''
                     || reSearch.test(i.keyword) || reSearch.test(i.name) || reSearch.test(i.itemCode)

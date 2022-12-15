@@ -1,8 +1,8 @@
 import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
-import {Alert, FormCheck, FormColumn, InputGroup, noop, SpinnerButton} from "chums-components";
-import {selectCurrentColorItem, selectCurrentColorItemSaving} from "./selectors";
-import {selectCurrentProductId} from "../product/selectors";
+import {Alert, Badge, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-components";
+import {selectCurrentColorItem, selectCurrentColorStatus} from "./selectors";
+import {selectCurrentProduct, selectCurrentProductId} from "../product/selectors";
 import {ProductColorItem, ProductColorItemAdditionalData} from "b2b-types/src/products";
 import SeasonSelect from "../../seasons/SeasonSelect";
 import {Editable, ProductColor, ProductSeason} from "b2b-types";
@@ -22,8 +22,9 @@ const ProductColorEditor: React.FC = () => {
     const itemCodeRef = useRef<HTMLInputElement>(null)
     const imageRef = useRef<HTMLInputElement>(null)
     const productId = useSelector(selectCurrentProductId);
+    const currentProduct = useSelector(selectCurrentProduct);
     const current = useSelector(selectCurrentColorItem);
-    const saving = useSelector(selectCurrentColorItemSaving);
+    const status = useSelector(selectCurrentColorStatus);
 
     const [colorItem, setColorItem] = useState<EditableProductColorItem>(current ?? {...defaultColorItem});
 
@@ -61,7 +62,7 @@ const ProductColorEditor: React.FC = () => {
         switch (field) {
         case 'swatch_code':
         case 'image_filename':
-            const additionalData: ProductColorItemAdditionalData = colorItem?.additionalData || {};
+            const additionalData: ProductColorItemAdditionalData = {...(colorItem?.additionalData ?? {})};
             additionalData[field] = ev.target.value;
             return setColorItem({...colorItem, additionalData, changed: true});
         }
@@ -88,7 +89,7 @@ const ProductColorEditor: React.FC = () => {
     }
 
     const deleteItemHandler = () => {
-        if (!current || !productId || saving) {
+        if (!current || !productId || status !== 'idle') {
             return;
         }
         if (window.confirm(`Are you sure you want to delete item ${current.itemCode}?`)) {
@@ -106,6 +107,7 @@ const ProductColorEditor: React.FC = () => {
                 </FormColumn>
                 <FormColumn label="Color Code" width={colWidth}>
                     <ColorAutoComplete value={colorItem.colorCode} onChange={onChangeColorCode}
+                                       swatchFormat={colorItem.additionalData?.swatch_code ?? currentProduct?.additionalData?.swatch_format}
                                        onChangeColor={onChangeColor}/>
                 </FormColumn>
                 <FormColumn label="Item Code" width={colWidth}>
@@ -113,20 +115,26 @@ const ProductColorEditor: React.FC = () => {
                            value={colorItem.itemCode} onChange={textChangeHandler('itemCode')} required/>
 
                 </FormColumn>
+                <FormColumn label="Image" width={colWidth}>
+                    <input type="text" className="form-control form-control-sm" ref={imageRef}
+                           placeholder={currentProduct?.image}
+                           value={colorItem.additionalData?.image_filename || ''}
+                           onChange={additionalDataChangeHandler('image_filename')}/>
+                </FormColumn>
+                <FormColumn label="Swatch Override" width={colWidth}>
+                    <input type="text" className="form-control form-control-sm" ref={imageRef}
+                           placeholder={currentProduct?.additionalData?.swatch_code ?? ''}
+                           value={colorItem.additionalData?.swatch_code || ''}
+                           onChange={additionalDataChangeHandler('swatch_code')}/>
+                </FormColumn>
                 <FormColumn label="Status" width={colWidth} align="baseline">
                     <FormCheck label='Enabled' checked={colorItem.status} onChange={toggleChangeHandler('status')}
                                type="checkbox" inline/>
-                    <FormCheck label='Inactive' checked={!!colorItem.inactiveItem} onChange={noop} disabled
-                               type="checkbox" inline/>
-                    <FormCheck label='Disco' checked={colorItem.productType === 'D'} onChange={noop} disabled
-                               type="checkbox" inline/>
+                    {(colorItem.inactiveItem || colorItem.productType === 'D') &&
+                        <Badge color="danger">Inactive</Badge>}
+                    {!!colorItem.productStatus && <Badge color="warning">{colorItem.productStatus}</Badge>}
                     {!!colorItem.id && colorItem.productType === null &&
                         <Alert color="danger">Item <strong>{colorItem.itemCode}</strong> does not exist.</Alert>}
-                </FormColumn>
-                <FormColumn label="Image" width={colWidth}>
-                    <input type="text" className="form-control form-control-sm" ref={imageRef}
-                           value={colorItem.additionalData?.image_filename || ''}
-                           onChange={additionalDataChangeHandler('image_filename')}/>
                 </FormColumn>
                 <FormColumn label="Order Type" width={colWidth}>
                     <InputGroup bsSize="sm">
@@ -138,19 +146,23 @@ const ProductColorEditor: React.FC = () => {
                         <SeasonAlert code={colorItem.additionalData?.season?.code}/>}
                 </FormColumn>
 
-                <FormColumn label="" width={colWidth}>
-                    <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1" spinning={saving}
-                                   disabled={!productId}>
-                        Save
-                    </SpinnerButton>
-                    <button type="button" className="btn btn-sm btn-outline-secondary me-1"
-                            disabled={!productId} onClick={newItemHandler}>
-                        New Product
-                    </button>
-                    <button type="button" className="btn btn-sm btn-outline-danger me-1"
-                            onClick={deleteItemHandler} disabled={!current?.id || !productId || saving}>
-                        Delete
-                    </button>
+                <FormColumn label="" width={12}>
+                    <div className="d-flex justify-content-end">
+                        <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1"
+                                       spinning={status === 'saving'}
+                                       disabled={!productId || status !== 'idle'}>
+                            Save
+                        </SpinnerButton>
+                        <button type="button" className="btn btn-sm btn-outline-secondary me-1"
+                                disabled={!productId} onClick={newItemHandler}>
+                            New Product
+                        </button>
+                        <SpinnerButton type="button" color="danger" size="sm" spinning={status === 'deleting'}
+                                       onClick={deleteItemHandler}
+                                       disabled={!current?.id || !productId || status !== 'idle'}>
+                            Delete
+                        </SpinnerButton>
+                    </div>
                 </FormColumn>
                 <FormColumn label="" width={colWidth}>
                     {colorItem.changed && <Alert color="warning">Don't forget to save your changes.</Alert>}

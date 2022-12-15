@@ -1,7 +1,7 @@
 import {ProductList, ProductListItem} from "b2b-types";
 import {createReducer} from "@reduxjs/toolkit";
 import {
-    loadProductsList,
+    loadProductsList, setCategoryFilter,
     setPage,
     setProductsSearch,
     setProductsSort,
@@ -12,18 +12,22 @@ import {
 } from "./actions";
 import {getPreference, localStorageKeys, setPreference} from "../../../api/preferences";
 import {SortProps} from "chums-components";
+import {saveProduct} from "../product/actions";
+import {listItemFromProduct} from "../utils";
 
 
 export interface ProductFilter {
     isActive: boolean,
     isAvailableForSale: boolean,
     hasSalePrice: boolean,
+    categoryId: number|null;
 }
 
 export const defaultFilter: ProductFilter = {
     isActive: true,
     isAvailableForSale: false,
     hasSalePrice: false,
+    categoryId: null,
 };
 
 const defaultSort: SortProps<ProductListItem> = {
@@ -85,6 +89,9 @@ const productsListReducer = createReducer(initialProductsListState, (builder) =>
             state.page = 0;
             state.filter.isAvailableForSale = action.payload ?? !state.filter.isAvailableForSale;
         })
+        .addCase(setCategoryFilter, (state, action) => {
+            state.filter.categoryId = action.payload ?? null;
+        })
         .addCase(setPage, (state, action) => {
             state.page = action.payload;
         })
@@ -96,6 +103,13 @@ const productsListReducer = createReducer(initialProductsListState, (builder) =>
         .addCase(setProductsSort, (state, action) => {
             state.sort = action.payload;
             state.page = 0;
+        })
+        .addCase(saveProduct.fulfilled, (state, action) => {
+            state.list[action.payload.keyword] = listItemFromProduct(action.payload);
+            if (action.payload.defaultParentProductsId) {
+                const [product] = Object.values(state.list).filter(p => p.id === action.payload.defaultParentProductsId);
+                state.list[action.payload.keyword].parentProductKeyword = product.keyword ?? null;
+            }
         })
 })
 

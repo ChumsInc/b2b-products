@@ -1,7 +1,7 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import {useAppDispatch} from "../../../app/hooks";
 import {useSelector} from "react-redux";
-import {removeImage, saveImage, selectCurrentImage, selectImageSaving, setCurrentImage} from "./index";
+import {removeImage, saveImage, selectCurrentImage, selectImagesStatus, setCurrentImage} from "./index";
 import {Editable, ProductAlternateImage} from "b2b-types";
 import {selectCurrentProductId} from "../product/selectors";
 import classNames from "classnames";
@@ -20,8 +20,9 @@ const ProductImageEdit = () => {
     const dispatch = useAppDispatch();
     const productId = useSelector(selectCurrentProductId);
     const current = useSelector(selectCurrentImage);
-    const saving = useSelector(selectImageSaving);
+    const status = useSelector(selectImagesStatus);
     const [image, setImage] = useState<ProductAlternateImage & Editable>(current ?? {...newImage, productId});
+    const filenameRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
         setImage(current || {...newImage, productId});
@@ -45,10 +46,15 @@ const ProductImageEdit = () => {
             return;
         }
         dispatch(saveImage(image));
+        if (image.id === 0) {
+            newImageHandler();
+        }
     }
 
     const newImageHandler = () => {
         dispatch(setCurrentImage(null));
+        setImage({...newImage, productId});
+        filenameRef.current?.focus();
     }
 
     const deleteImageHandler = () => {
@@ -56,6 +62,7 @@ const ProductImageEdit = () => {
             return;
         }
         dispatch(removeImage(image));
+        newImageHandler();
     }
 
     return (
@@ -67,6 +74,7 @@ const ProductImageEdit = () => {
                 </FormColumn>
                 <FormColumn label="File Name">
                     <input type="text" value={image.image} onChange={changeHandler('image')}
+                           ref={filenameRef}
                            className="form-control form-control-sm"/>
                 </FormColumn>
                 <FormColumn label="Alt Text">
@@ -84,16 +92,18 @@ const ProductImageEdit = () => {
                 </FormColumn>
                 <hr/>
                 <div className="d-flex justify-content-between">
-                    <SpinnerButton type="submit" color="primary" size="sm" spinning={saving}
-                                   disabled={!productId || !image.image}>
+                    <SpinnerButton type="submit" color="primary" size="sm" spinning={status === 'saving'}
+                                   disabled={!productId || !image.image || status !== 'idle'}>
                         Save
                     </SpinnerButton>
                     <button type="button" className="btn btn-sm btn-outline-secondary" onClick={newImageHandler}>
                         New Image
                     </button>
-                    <button type="button" className="btn btn-sm btn-danger" onClick={deleteImageHandler}>
+                    <SpinnerButton type="button" size="sm" color="danger" spinning={status === 'deleting'}
+                                   onClick={deleteImageHandler}
+                                   disabled={!productId || !image.id || status !== 'idle'}>
                         Delete
-                    </button>
+                    </SpinnerButton>
                 </div>
                 {image.changed && (
                     <Alert color="warning">Don't forget to save your changes.</Alert>

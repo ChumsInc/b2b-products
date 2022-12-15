@@ -1,5 +1,4 @@
 import React, {useEffect, useReducer} from 'react';
-import {AlertList} from "chums-connected-components";
 import ProductScreen from "../ducks/products/ProductScreen";
 import ColorScreen from "../ducks/colors/ColorScreen";
 import {loadColors} from "../ducks/colors/actions";
@@ -9,6 +8,7 @@ import {SessionStore, storeMainTab} from "../localStore";
 import {loadProductsList} from "../ducks/products/list/actions";
 import {useAppDispatch} from "./hooks";
 import {loadSeasons} from "../ducks/seasons";
+import AlertList from "../ducks/alerts/AlertList";
 
 
 export const appTabs: AppTabMap = {

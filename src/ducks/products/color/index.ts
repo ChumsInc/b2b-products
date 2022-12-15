@@ -1,4 +1,4 @@
-import {ProductColorItem} from "b2b-types";
+import {ActionStatus, ProductColorItem} from "b2b-types";
 import {createReducer} from "@reduxjs/toolkit";
 import {loadProduct} from "../product/actions";
 import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "./actions";
@@ -11,6 +11,7 @@ export interface CurrentColorState {
     colorItem: ProductColorItem | null;
     loading: boolean;
     saving: boolean;
+    status: ActionStatus;
 }
 
 export const initialCurrentColorState: CurrentColorState = {
@@ -19,6 +20,7 @@ export const initialCurrentColorState: CurrentColorState = {
     colorItem: null,
     loading: false,
     saving: false,
+    status: 'idle',
 }
 
 const currentColorReducer = createReducer(initialCurrentColorState, (builder) => {
@@ -37,27 +39,27 @@ const currentColorReducer = createReducer(initialCurrentColorState, (builder) =>
             state.colorItem = action.payload;
         })
         .addCase(saveCurrentColorItem.pending, (state) => {
-            state.saving = true;
+            state.status = 'saving';
         })
         .addCase(saveCurrentColorItem.fulfilled, (state, action) => {
             state.list = action.payload ?? [];
-            state.saving = false;
+            state.status = 'idle';
             const [item] = state.list.filter(item => item.id === state.colorItem?.id);
             state.colorItem = item ?? null;
         })
         .addCase(saveCurrentColorItem.rejected, (state) => {
-            state.saving = false;
+            state.status = 'idle';
         })
         .addCase(removeColorItem.pending, (state) => {
-            state.saving = true;
+            state.status = 'deleting';
         })
         .addCase(removeColorItem.fulfilled, (state, action) => {
-            state.saving = false;
+            state.status = 'idle'
             state.list = action.payload ?? [];
             state.colorItem = null;
         })
         .addCase(removeColorItem.rejected, (state) => {
-            state.saving = false;
+            state.status = 'idle'
         })
 
 })

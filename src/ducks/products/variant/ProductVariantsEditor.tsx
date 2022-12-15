@@ -4,7 +4,7 @@ import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-com
 import {selectCurrentVariant, selectCurrentVariantSaving} from "./selectors";
 import {ProductVariant} from "b2b-types/src/products";
 import {Editable, Keyword} from "b2b-types";
-import KeywordSelect from "../../keywords/KeywordSelect";
+import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import {defaultVariant} from "../../../defaults";
 import {loadProduct} from "../product/actions";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "./actions";
@@ -91,15 +91,15 @@ const ProductVariantsEditor: React.FC = () => {
                     </InputGroup>
                 </FormColumn>
                 <FormColumn label="Child" width={colWidth}>
-                    <KeywordSelect pageType="product" value={variant.variantProductID}
-                                   required
-                                   onSelectKeyword={keywordChangeHandler}>
+                    <KeywordSelectInputGroup pageType="product" value={variant.variantProductID}
+                                             required
+                                             onSelectKeyword={keywordChangeHandler}>
 
                         <button type="button" className="btn btn-sm btn-secondary" onClick={onEditVariantProduct}
                                 disabled={variant.id === 0 || !variant.product}>
                             <span className="bi-pencil-fill"/>
                         </button>
-                    </KeywordSelect>
+                    </KeywordSelectInputGroup>
                 </FormColumn>
                 <FormColumn label="Name" width={colWidth}>
                     <input type="text" className="form-control form-control-sm"

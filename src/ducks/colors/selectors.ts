@@ -8,9 +8,9 @@ export const selectColorList = (state: RootState) => state.colors.list;
 
 export const selectColorListLength = (state: RootState) => Object.keys(state.colors.list).length;
 
-export const selectColorsLoading = (state: RootState) => state.colors.loading;
+export const selectColorsStatus = (state:RootState) => state.colors.status;
 
-export const selectColorSaving = (state: RootState) => state.colors.saving;
+export const selectColorUsageStatus = (state:RootState) => state.colors.whereUsed.status;
 
 export const selectCurrentColor = (state: RootState) => state.colors.current;
 

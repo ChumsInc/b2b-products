@@ -3,14 +3,16 @@ import {createAction, createAsyncThunk, createReducer} from "@reduxjs/toolkit";
 import {loadProduct} from "../product/actions";
 import {RootState} from "../../../app/configureStore";
 import {deleteAltImage, fetchAltImages, postAltImage} from "../../../api/productsAPI";
+import {ActionStatus} from "b2b-types";
+import {SortProps} from "chums-components";
 
-export type ImageStateStatus = 'idle'|'loading'|'saving'|'deleting';
+
 
 export interface ImagesState {
     productId: number | null;
     list: ProductAlternateImage[],
     current: ProductAlternateImage | null,
-    status: ImageStateStatus;
+    status: ActionStatus;
 }
 
 export const initialImagesState: ImagesState = {
@@ -51,13 +53,30 @@ export const selectCurrentImage = (state:RootState) => state.products.current.im
 
 export const selectImageSaving = (state:RootState) => state.products.current.images.status === 'saving';
 
+export const selectImagesStatus = (state:RootState) => state.products.current.images.status;
 
+export const defaultAltImageSort:SortProps<ProductAlternateImage> = {field: 'altText', ascending: true};
+
+export const altImageSort = (sort:SortProps<ProductAlternateImage>) => (a:ProductAlternateImage, b:ProductAlternateImage) => {
+    const sortMod = sort.ascending ? 1 : -1;
+    switch (sort.field) {
+    case 'altText':
+    case 'image':
+        return (a[sort.field].toLowerCase() === b[sort.field].toLowerCase()
+            ? (a.priority === b.priority ? a.id - b.id : a.priority - b.priority)
+            : (a[sort.field].toLowerCase() > b[sort.field].toLowerCase() ? 1 : -1)) * sortMod;
+    case 'priority':
+        return (a.priority === b.priority ? a.id - b.id : (a.priority - b.priority)) * sortMod;
+    default:
+        return a.id - b.id;
+    }
+}
 
 const imagesReducer = createReducer(initialImagesState, (builder) => {
     builder
         .addCase(loadProduct.fulfilled, (state, action) => {
             state.productId = action.payload?.id ?? null;
-            state.list = action.payload?.images ?? [];
+            state.list = [...(action.payload?.images ?? [])].sort(altImageSort(defaultAltImageSort));
             if (state.current) {
                 const [current] = state.list.filter(img => img.id === state.current?.id);
                 state.current = current ?? null;
@@ -71,7 +90,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
         })
         .addCase(loadImages.fulfilled, (state, action) => {
             state.status = 'idle';
-            state.list = action.payload;
+            state.list = [...action.payload].sort(altImageSort(defaultAltImageSort));
             if (state.current) {
                 const [current] = state.list.filter(img => img.id === state.current?.id);
                 state.current = current ?? null;
@@ -85,7 +104,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
         })
         .addCase(saveImage.fulfilled, (state, action) => {
             state.status = 'idle';
-            state.list = action.payload;
+            state.list = [...action.payload].sort(altImageSort(defaultAltImageSort));
             if (state.current) {
                 const [current] = state.list.filter(img => img.id === state.current?.id);
                 state.current = current ?? null;
@@ -99,7 +118,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
         })
         .addCase(removeImage.fulfilled, (state, action) => {
             state.status = 'idle';
-            state.list = action.payload;
+            state.list = [...action.payload].sort(altImageSort(defaultAltImageSort));
             if (state.current) {
                 const [current] = state.list.filter(img => img.id === state.current?.id);
                 state.current = current ?? null;

@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {SpinnerButton} from "chums-components";
 import {saveColor, setCurrentColor} from "./actions";
 import {Editable, ProductColor} from "b2b-types";
-import {selectColorSaving, selectCurrentColor} from "./selectors";
+import {selectColorsStatus, selectCurrentColor} from "./selectors";
 
 import {defaultColor} from "../../defaults";
 import {useAppDispatch} from "../../app/hooks";
@@ -13,7 +13,7 @@ export type EditableProductColor = ProductColor & Editable;
 const ColorEditor: React.FC = () => {
     const dispatch = useAppDispatch();
     const current = useSelector(selectCurrentColor);
-    const saving = useSelector(selectColorSaving);
+    const status = useSelector(selectColorsStatus);
 
     const [color, setColor] = useState<EditableProductColor>(current ?? defaultColor);
 
@@ -53,7 +53,8 @@ const ColorEditor: React.FC = () => {
             </div>
             <div className="row g-3 align-items-baseline">
                 <div className="col-auto">
-                    <SpinnerButton type="submit" size="sm" color="primary" spinning={saving}>Save</SpinnerButton>
+                    <SpinnerButton type="submit" size="sm" color="primary"
+                                   spinning={status === 'saving'}>Save</SpinnerButton>
                 </div>
                 <div className="col-auto">
                     <button type="button" className="btn btn-sm btn-outline-secondary">Cancel</button>

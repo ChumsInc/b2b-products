@@ -3,6 +3,13 @@ import {createReducer} from "@reduxjs/toolkit";
 import {removeVariant, saveCurrentVariant, setCurrentVariant, setDefaultVariant} from "./actions";
 import {loadProduct} from "../product/actions";
 import {isSellAsVariantsProduct} from "../utils";
+import {variantListSorter} from "../sorter";
+import {SortProps} from "chums-components";
+
+export const defaultVariantSort:SortProps<ProductVariant> = {
+    field: "priority",
+    ascending: true,
+}
 
 export interface CurrentVariantState {
     productId: number | null;
@@ -24,7 +31,7 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
     builder
         .addCase(loadProduct.fulfilled, (state, action) => {
             if (action.payload && isSellAsVariantsProduct(action.payload)) {
-                state.list = action.payload.variants ?? [];
+                state.list = [...action.payload.variants].sort(variantListSorter(defaultVariantSort));
                 if (state.productId === action.payload.id && !!state.variant?.id) {
                     const [variant] = state.list.filter(item => item.id === state.variant?.id);
                     state.variant = variant ?? null;
@@ -50,9 +57,10 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
         .addCase(removeVariant.pending, (state) => {
             state.saving = true;
         })
-        .addCase(removeVariant.fulfilled, (state) => {
+        .addCase(removeVariant.fulfilled, (state, action) => {
             state.variant = null;
             state.saving = false;
+            state.list = [...action.payload].sort(variantListSorter(defaultVariantSort))
         })
         .addCase(removeVariant.rejected, (state) => {
             state.saving = false;
@@ -64,6 +72,7 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
             state.saving = false;
             const [variant] = action.payload.filter(v => v.id === action.meta.arg.id);
             state.variant = variant ?? null;
+            state.list = [...action.payload].sort(variantListSorter(defaultVariantSort))
         })
         .addCase(setDefaultVariant.rejected, (state) => {
             state.saving = false;

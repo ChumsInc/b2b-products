@@ -11,18 +11,20 @@ const ProductEditorTitle: React.FC = () => {
     const status = useSelector(selectCurrentProductStatus);
 
     return (
-        <h2>
-            <span className={classNames('me-3', {'text-warning': changed})}>Product Editor</span>
-            <small>
+        <div className="row g-1 align-items-center">
+
+            <h2 className={classNames('col-auto me-3', {'text-warning': changed})}>Product Editor</h2>
+            <div className="col">
                 <span className={classNames({
                     "bi-toggle2-on": status,
                     'bi-toggle2-off': !status,
+                    'text-success': status,
                     'text-danger': !status
                 })}/>
                 {changed && <span className="text-warning  bi-exclamation-triangle-fill ms-1"/>}
-                {loading && <Spinner className="ms-3" color="primary" type="border"/>}
-            </small>
-        </h2>
+                {loading && <Spinner className="ms-3" color="primary" type="border"  bsSize="sm" />}
+            </div>
+        </div>
     )
 }
 

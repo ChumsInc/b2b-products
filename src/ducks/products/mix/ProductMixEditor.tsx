@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {Alert, FormCheck, FormColumn, InputGroup, noop, SpinnerButton} from "chums-components";
-import {selectCurrentMix, selectCurrentMixLoading, selectCurrentMixSaving} from "./selectors";
+import {selectCurrentMix, selectCurrentMixStatus} from "./selectors";
 import {ProductMixItem} from "b2b-types/src/products";
 import {saveMix} from "./actions";
 import {defaultMixItem} from "../../../defaults";
@@ -15,8 +15,7 @@ const ProductMixEditor: React.FC = () => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
     const current = useSelector(selectCurrentMix);
-    const loading = useSelector(selectCurrentMixLoading);
-    const saving = useSelector(selectCurrentMixSaving);
+    const status = useSelector(selectCurrentMixStatus);
 
     const [mix, setMix] = useState<ProductMixItem & Editable>(current ?? {...defaultMixItem});
 
@@ -57,7 +56,7 @@ const ProductMixEditor: React.FC = () => {
                         <input type="text" readOnly value={mix.itemCode} className="form-control form-control-sm"/>
                     </InputGroup>
                 </FormColumn>
-                <FormColumn label="Namer" width={colWidth}>
+                <FormColumn label="Name" width={colWidth}>
                     <input type="text" className="form-control form-control-sm"
                            value={mix.mixName} onChange={textChangeHandler('mixName')} required/>
                 </FormColumn>
@@ -74,8 +73,8 @@ const ProductMixEditor: React.FC = () => {
                 </FormColumn>
 
                 <FormColumn label="" width={colWidth}>
-                    <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1" spinning={saving}
-                                   disabled={!product?.id || loading || saving}>
+                    <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1" spinning={status === 'saving'}
+                                   disabled={!product?.id || status !== 'idle'}>
                         Save
                     </SpinnerButton>
                 </FormColumn>

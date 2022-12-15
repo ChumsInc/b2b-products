@@ -5,7 +5,7 @@ import {selectCurrentProduct, selectCurrentProductSaving} from "./selectors";
 import {Product, ProductAdditionalData} from "b2b-types/src/products";
 import SeasonSelect from "../../seasons/SeasonSelect";
 import {Keyword, ProductSeason} from "b2b-types";
-import KeywordSelect from "../../keywords/KeywordSelect";
+import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import ProductSellAsToggle from "./ProductSellAsToggle";
 import ProductItemCodeInput from "./ProductItemCodeInput";
 import SeasonAlert from "../../seasons/SeasonAlert";
@@ -174,15 +174,15 @@ const MainEditForm: React.FC = () => {
 
                 <hr/>
                 <FormColumn label="Category" width={colWidth}>
-                    <KeywordSelect pageType="category" value={product.defaultCategoriesId} required
-                                   onSelectKeyword={keywordChangeHandler('defaultCategoriesId')}/>
+                    <KeywordSelectInputGroup pageType="category" value={product.defaultCategoriesId} required
+                                             onSelectKeyword={keywordChangeHandler('defaultCategoriesId')}/>
                 </FormColumn>
                 <FormColumn label="Parent" width={colWidth}>
-                    <KeywordSelect pageType="product" value={product.defaultParentProductsId}
-                                   required={product.redirectToParent}
-                                   onSelectKeyword={keywordChangeHandler('defaultParentProductsId')}>
+                    <KeywordSelectInputGroup pageType="product" value={product.defaultParentProductsId}
+                                             required={product.redirectToParent}
+                                             onSelectKeyword={keywordChangeHandler('defaultParentProductsId')}>
                         <RedirectToParent/>
-                    </KeywordSelect>
+                    </KeywordSelectInputGroup>
                 </FormColumn>
                 <FormColumn label="Sell As" width={colWidth}>
                     <ProductSellAsToggle/>

@@ -7,3 +7,5 @@ export const selectCurrentColorItem = (state: RootState) => state.products.curre
 export const selectCurrentColorItemLoading = (state: RootState): boolean => state.products.current.color.loading;
 
 export const selectCurrentColorItemSaving = (state: RootState): boolean => state.products.current.color.saving;
+
+export const selectCurrentColorStatus = (state:RootState) => state.products.current.color.status;

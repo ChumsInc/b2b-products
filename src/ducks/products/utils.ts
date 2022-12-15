@@ -1,6 +1,6 @@
 import {Product, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types/src/products";
 import {WritableDraft} from "immer/dist/types/types-external";
-import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "b2b-types";
+import {ProductListItem, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "b2b-types";
 
 export function isSellAsVariantsProduct(product:Product|WritableDraft<Product>): product is SellAsVariantsProduct {
     return (product as SellAsVariantsProduct).sellAs === SELL_AS_VARIANTS;
@@ -12,4 +12,43 @@ export function isSellAsMixProduct(product:Product): product is SellAsMixProduct
 
 export function isSellAsColorsProduct(product:Product): product is SellAsColorsProduct {
     return (product as SellAsColorsProduct).sellAs === SELL_AS_COLORS;
+}
+
+export function listItemFromProduct(product:Product):ProductListItem {
+    const {id, keyword, name, itemCode, status, sellAs, image, manufacturersId,
+        defaultParentProductsId, redirectToParent, availableForSale, product_season_id,
+        defaultCategoriesId,
+    } = product;
+    const variantsCount = isSellAsVariantsProduct(product) ? product.variants.length : 0;
+    const selfCount = 0;
+    const mixesCount = isSellAsVariantsProduct(product)
+        ? product.variants.filter(v => !!v.product && isSellAsMixProduct(v.product)).length
+        : 0;
+    const colorsCount = isSellAsVariantsProduct(product)
+        ? product.variants.filter(v => !!v.product && isSellAsColorsProduct(v.product))
+            .map(v => v.product as SellAsColorsProduct)
+            .reduce((ct, product) => ct + product.items.filter(i => i.status).length, 0)
+        : 0;
+
+    return {
+        id,
+        keyword,
+        name,
+        itemCode,
+        status,
+        sellAs,
+        image,
+        manufacturersId,
+        defaultParentProductsId,
+        variantsCount,
+        selfCount,
+        mixesCount,
+        colorsCount,
+        redirectToParent,
+        availableForSale,
+        product_season_id,
+        parentProductKeyword: null,
+        defaultCategoriesId,
+        season_code: null,
+    }
 }

@@ -11,6 +11,7 @@ import ProductColorsTab from "./color/ProductColorsTab";
 import ProductMixTab from "./mix/ProductMixTab";
 import ProductDetailsTab from "./product/ProductDetailsTab";
 import ProductImagesTab from "./images/ProductImagesTab";
+import {ErrorBoundary} from "chums-components";
 
 const ProductScreen: React.FC = () => {
     const tab = useSelector(selectCurrentTab(productEditTabsKey));
@@ -23,15 +24,17 @@ const ProductScreen: React.FC = () => {
                 <ProductTable/>
             </div>
             <div className="col-5">
-                <ProductEditorTitle/>
-                <ProductEditTabs/>
-                {tab === productTabs.main.id && <MainEditForm />}
-                {tab === productTabs.details.id && <ProductDetailsTab/>}
-                {tab === productTabs.variant.id && <VariantsTabContent/>}
-                {tab === productTabs.json.id && <ProductJSON/>}
-                {tab === productTabs.colors.id && <ProductColorsTab/>}
-                {tab === productTabs.mix.id && <ProductMixTab/>}
-                {tab === productTabs.images.id && <ProductImagesTab/>}
+                <ErrorBoundary>
+                    <ProductEditorTitle/>
+                    <ProductEditTabs/>
+                    {tab === productTabs.main.id && <MainEditForm />}
+                    {tab === productTabs.details.id && <ProductDetailsTab/>}
+                    {tab === productTabs.variant.id && <VariantsTabContent/>}
+                    {tab === productTabs.json.id && <ProductJSON/>}
+                    {tab === productTabs.colors.id && <ProductColorsTab/>}
+                    {tab === productTabs.mix.id && <ProductMixTab/>}
+                    {tab === productTabs.images.id && <ProductImagesTab/>}
+                </ErrorBoundary>
             </div>
         </div>
     )

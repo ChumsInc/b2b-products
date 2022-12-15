@@ -23,3 +23,5 @@ export const setPage = createAction<number>('products/list/setPage');
 export const setRowsPerPage = createAction<number>('products/list/setRowsPerPage');
 
 export const setProductsSort = createAction<SortProps<ProductListItem>>('products/list/setSort');
+
+export const setCategoryFilter = createAction<number|null>('products/list/filterCategory');

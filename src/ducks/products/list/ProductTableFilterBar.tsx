@@ -4,20 +4,23 @@ import {
     selectProductListLoading,
     selectProductsFilterActive,
     selectProductsFilterAvailable,
+    selectProductsFilterCategoryId,
     selectProductsFilterOnSale,
     selectProductsSearch
 } from "./selectors";
 import {FormCheck, SpinnerButton} from "chums-components";
-import {setNewProduct} from "../product/actions";
 import {selectCurrentProductChanged} from "../product/selectors";
 import {
     loadProductsList,
+    setCategoryFilter,
     setProductsSearch,
     toggleFilterActive,
     toggleFilterAvailable,
     toggleFilterOnSale
 } from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
+import {Keyword} from "b2b-types";
+import KeywordSelect from "../../keywords/KeywordSelect";
 
 const ProductTableFilterBar: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -26,7 +29,7 @@ const ProductTableFilterBar: React.FC = () => {
     const filterAvailable = useSelector(selectProductsFilterAvailable);
     const search = useSelector(selectProductsSearch);
     const loading = useSelector(selectProductListLoading);
-    const changed = useSelector(selectCurrentProductChanged);
+    const categoryId = useSelector(selectProductsFilterCategoryId);
 
     const searchChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => dispatch(setProductsSearch(ev.target.value));
     const filterActiveClickHandler = () => {
@@ -39,10 +42,8 @@ const ProductTableFilterBar: React.FC = () => {
         dispatch(toggleFilterAvailable(!filterAvailable));
     }
 
-    const newProductHandler = () => {
-        if (!changed || window.confirm('Are you sure you want to discard your changes?')) {
-            dispatch(setNewProduct());
-        }
+    const filterCategoryChangeHandler = (kw: Keyword | null) => {
+        dispatch(setCategoryFilter(kw?.id ?? null));
     }
 
     const reloadHandler = () => dispatch(loadProductsList());
@@ -57,24 +58,23 @@ const ProductTableFilterBar: React.FC = () => {
                 </div>
             </div>
             <div className="col-auto">
-                <FormCheck label="Filter Active" checked={filterActive} onChange={filterActiveClickHandler}
+                <FormCheck label="Active" checked={filterActive} onChange={filterActiveClickHandler}
                            type={"checkbox"}/>
             </div>
             <div className="col-auto">
-                <FormCheck label="Filter On Sale" checked={filterOnSale} onChange={filterOnSaleClickHandler}
+                <FormCheck label="On Sale" checked={filterOnSale} onChange={filterOnSaleClickHandler}
                            type={"checkbox"}/>
             </div>
             <div className="col-auto">
-                <FormCheck label="Filter Available" checked={filterAvailable} onChange={filterAvailableClickHandler}
+                <FormCheck label="Available" checked={filterAvailable} onChange={filterAvailableClickHandler}
                            type={"checkbox"}/>
+            </div>
+            <div className="col">
+                <KeywordSelect pageType="category" value={categoryId ?? ''}
+                               onSelectKeyword={filterCategoryChangeHandler}/>
             </div>
             <div className="col-auto">
                 <SpinnerButton spinning={loading} type="button" onClick={reloadHandler} size="sm">Reload</SpinnerButton>
-            </div>
-            <div className="col-auto">
-                <button type="button" className="btn btn-sm btn-outline-secondary" onClick={newProductHandler}>New
-                    Product
-                </button>
             </div>
         </div>
     )

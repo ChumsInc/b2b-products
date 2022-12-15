@@ -37,6 +37,6 @@ module.exports = merge(common, {
     },
     devtool: 'eval-source-map',
     plugins: [
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
     ]
 });

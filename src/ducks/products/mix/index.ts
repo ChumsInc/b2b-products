@@ -1,19 +1,17 @@
 import {isSellAsMixProduct} from "../utils";
 import {createReducer} from "@reduxjs/toolkit";
 import {loadProduct, saveProduct, setNewProduct} from "../product/actions";
-import {ProductMixItem} from "b2b-types";
+import {ActionStatus, ProductMixItem} from "b2b-types";
 import {saveMix, saveMixComponent} from "./actions";
 
 export interface CurrentMixState {
     mix: ProductMixItem | null;
-    loading: boolean;
-    saving: boolean;
+    status: ActionStatus;
 }
 
 export const initialCurrentMixState: CurrentMixState = {
     mix: null,
-    loading: false,
-    saving: false,
+    status: 'idle'
 }
 
 const currentMixReducer = createReducer(initialCurrentMixState, (builder) => {
@@ -36,24 +34,24 @@ const currentMixReducer = createReducer(initialCurrentMixState, (builder) => {
             }
         })
         .addCase(saveMix.pending, (state) => {
-            state.saving = true;
+            state.status = 'saving';
         })
         .addCase(saveMix.fulfilled, (state, action) => {
             state.mix = action.payload;
-            state.saving = false;
+            state.status = 'idle';
         })
         .addCase(saveMix.rejected, (state) => {
-            state.saving = false;
+            state.status = 'idle';
         })
         .addCase(saveMixComponent.pending, (state) => {
-            state.saving = true;
+            state.status = 'saving';
         })
         .addCase(saveMixComponent.fulfilled, (state, action) => {
-            state.saving = false;
+            state.status = 'idle';
             state.mix = action.payload;
         })
         .addCase(saveMixComponent.rejected, (state) => {
-            state.saving = false;
+            state.status = 'idle';
         })
 });
 

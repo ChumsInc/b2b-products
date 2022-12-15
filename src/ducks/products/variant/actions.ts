@@ -13,7 +13,7 @@ export const saveCurrentVariant = createAsyncThunk<ProductVariant|null, ProductV
 )
 
 export const removeVariant = createAsyncThunk<ProductVariant[], ProductVariant>(
-    'products/current/deleteVariant',
+    'products/current/removeVariant',
     async (arg) => {
         return deleteVariant(arg);
     }

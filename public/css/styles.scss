@@ -6,7 +6,13 @@
   --sell-as-colors-color: #ce0e2d;
 }
 #app {
-  
+
+  h2 {
+    font-size: 1.5rem;
+  }
+  .row .col-0 {
+    display: none;
+  }
   figure.product-image {
     &.image-80 {
       max-width: calc(2rem + 80px);
@@ -25,6 +31,8 @@
       }
     }
   }
+
+
 
   .form-label {
     font-weight: 300;
@@ -181,5 +189,12 @@
         color: inherit;
       }
     }
+  }
+
+  .color-swatch {
+    width: 2rem;
+    background-size: cover;
+    background-position: center;
+    text-decoration: none;
   }
 }

@@ -5,14 +5,16 @@ import {usePopper} from "react-popper";
 import {ProductColor} from "b2b-types";
 import useClickOutside from "../../hooks/click-outside";
 import classNames from "classnames";
+import {parseColor} from "../../utils";
 
 export interface ColorAutoCompleteProps {
     value: string;
-    onChange: (value: string) => void;
+    swatchFormat?: string|null;
+    onChange?: (value: string) => void;
     onChangeColor?: (color: ProductColor) => void;
 }
 
-const ColorAutoComplete = ({value, onChange, onChangeColor}: ColorAutoCompleteProps) => {
+const ColorAutoComplete = ({value, swatchFormat, onChange, onChangeColor}: ColorAutoCompleteProps) => {
     const colorList = useSelector(selectColorList);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +44,9 @@ const ColorAutoComplete = ({value, onChange, onChangeColor}: ColorAutoCompletePr
         if (onChangeColor) {
             return onChangeColor(color);
         }
-        onChange(color.code);
+        if (onChange) {
+            onChange(color.code);
+        }
     }
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +54,9 @@ const ColorAutoComplete = ({value, onChange, onChangeColor}: ColorAutoCompletePr
         if (onChangeColor) {
             return onChangeColor(color);
         }
-        onChange(ev.target.value);
+        if (onChange) {
+            onChange(ev.target.value);
+        }
     }
 
     const inputHandler = (ev: KeyboardEvent<HTMLInputElement>) => {
@@ -80,7 +86,9 @@ const ColorAutoComplete = ({value, onChange, onChangeColor}: ColorAutoCompletePr
             if (current && onChangeColor) {
                 return onChangeColor(current);
             }
-            onChange(current.code);
+            if (onChange) {
+                onChange(current.code);
+            }
         }
     }
     return (
@@ -89,7 +97,7 @@ const ColorAutoComplete = ({value, onChange, onChangeColor}: ColorAutoCompletePr
                 <input type="search" className="form-control form-control-sm" value={value} onChange={changeHandler}
                        onKeyDown={inputHandler}
                        ref={setInputElement} onFocus={() => setOpen(true)}/>
-                <div className="input-group-text">{color?.name ?? ''}</div>
+                <div className={classNames('input-group-text color-swatch', {[parseColor(`color-swatch--${swatchFormat || '?'}`, color?.code)]: !!color?.code})} />
             </div>
             {open && (
                 <div ref={setPopperElement} style={{
