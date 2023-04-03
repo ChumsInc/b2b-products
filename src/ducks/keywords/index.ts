@@ -27,6 +27,12 @@ export const loadKeywords = createAsyncThunk(
     'keywords/load',
     async () => {
         return await fetchKeywords();
+    },
+    {
+        condition: (arg, {getState}) => {
+            const state = getState() as RootState;
+            return !selectKeywordsLoading(state);
+        }
     }
 );
 

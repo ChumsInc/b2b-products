@@ -24,3 +24,5 @@ export const saveProduct = createAsyncThunk<Product, Product>(
         return postProduct(arg);
     }
 )
+
+

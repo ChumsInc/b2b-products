@@ -1,6 +1,7 @@
 import {RootState} from "../../../app/configureStore";
-import {createSelector} from "reselect";
+
 import {productListSorter} from "../sorter";
+import {createSelector} from "reselect";
 
 export const selectProductList = (state: RootState) => Object.values(state.products.list.list);
 

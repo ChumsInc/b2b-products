@@ -24,6 +24,12 @@ export const loadSeasons = createAsyncThunk<ProductSeason[]>(
     'seasons/load',
     async () => {
         return await fetchSeasons();
+    },
+    {
+        condition: (arg, {getState}) => {
+            const state = getState() as RootState;
+            return !selectSeasonsLoading(state);
+        }
     }
 )
 

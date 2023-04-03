@@ -138,7 +138,7 @@ const MainEditForm: React.FC = () => {
             <form onSubmit={submitHandler} className="mt-3">
                 <FormColumn label="ID" width={colWidth}>
                     <InputGroup bsSize="sm">
-                        <input type="number" readOnly value={product.id} className="form-control form-control-sm"/>
+                        <input type="number" disabled readOnly value={product.id} className="form-control form-control-sm"/>
                         <button type="button" className="btn btn-sm btn-warning" onClick={duplicateHandler}>
                             Duplicate
                         </button>
@@ -151,6 +151,11 @@ const MainEditForm: React.FC = () => {
                         <a href={`https://b2b.chums.com/products/${product.keyword}`} target="b2b-preview"
                            className="input-group-text bi-link-45deg"/>
                     </InputGroup>
+                </FormColumn>
+                <FormColumn label="Title" width={colWidth}>
+                    <input type="text" className="form-control form-control-sm"
+                           value={product.name || ''}
+                           onChange={textChangeHandler('name')}/>
                 </FormColumn>
                 <hr/>
                 <FormColumn label="Status" width={colWidth} align="baseline">

@@ -1,8 +1,8 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useEffect, useState} from 'react';
 import ProductScreen from "../ducks/products/ProductScreen";
 import ColorScreen from "../ducks/colors/ColorScreen";
 import {loadColors} from "../ducks/colors/actions";
-import {initialTabState, Tab, TabList, tabsReducer} from "chums-components";
+import {Tab, TabList} from "chums-components";
 import {AppTabMap} from "./types";
 import {SessionStore, storeMainTab} from "../localStore";
 import {loadProductsList} from "../ducks/products/list/actions";
@@ -19,11 +19,9 @@ const tabList: Tab[] = [appTabs.products, appTabs.colors];
 
 const App: React.FC = () => {
     const dispatch = useAppDispatch();
-    const [tabs, tabsDispatch] = useReducer(tabsReducer, initialTabState);
+    const [tab, setTab] = useState<Tab>(appTabs.products);
 
     useEffect(() => {
-        tabsDispatch({type: 'add', payload: tabList});
-        tabsDispatch({type: 'select', payload: SessionStore.getItem(storeMainTab) ?? appTabs.products.id})
         dispatch(loadColors());
         dispatch(loadProductsList())
         dispatch(loadSeasons())
@@ -31,15 +29,15 @@ const App: React.FC = () => {
 
     const selectTabHandler = (tab: Tab) => {
         SessionStore.setItem(storeMainTab, tab.id);
-        tabsDispatch({type: 'select', payload: tab.id})
+        setTab(tab);
     }
     return (
         <div>
-            <TabList tabs={tabs.tabs} currentTabId={tabs.current || tabList[0].id} onSelectTab={selectTabHandler}/>
+            <TabList tabs={tabList} currentTabId={tab.id} onSelectTab={selectTabHandler}/>
             <AlertList/>
             <div>
-                {tabs.current === appTabs.products.id && <ProductScreen/>}
-                {tabs.current === appTabs.colors.id && <ColorScreen/>}
+                {tab.id === appTabs.products.id && <ProductScreen/>}
+                {tab.id === appTabs.colors.id && <ColorScreen/>}
             </div>
         </div>
     )

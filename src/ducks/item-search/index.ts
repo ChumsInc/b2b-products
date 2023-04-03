@@ -22,6 +22,9 @@ export const itemSearch = createAsyncThunk<ItemSearchRecord[], { search: string,
     'item-search/load',
     async (arg) => {
         return await loadItemSearchAPI(arg.search, arg.filter, arg.signal);
+    },
+    {
+        condition: (arg) => !!arg.search
     }
 )
 

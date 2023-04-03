@@ -9,7 +9,6 @@ import {
     selectProductsSearch
 } from "./selectors";
 import {FormCheck, SpinnerButton} from "chums-components";
-import {selectCurrentProductChanged} from "../product/selectors";
 import {
     loadProductsList,
     setCategoryFilter,
@@ -50,7 +49,7 @@ const ProductTableFilterBar: React.FC = () => {
 
     return (
         <div className="row g-3 align-items-baseline">
-            <div className="col-auto">
+            <div className="col">
                 <div className="input-group input-group-sm">
                     <span className="input-group-text bi-search"/>
                     <input type="search" className="form-control form-control-sm"
@@ -69,9 +68,12 @@ const ProductTableFilterBar: React.FC = () => {
                 <FormCheck label="Available" checked={filterAvailable} onChange={filterAvailableClickHandler}
                            type={"checkbox"}/>
             </div>
-            <div className="col">
-                <KeywordSelect pageType="category" value={categoryId ?? ''}
-                               onSelectKeyword={filterCategoryChangeHandler}/>
+            <div className="col-auto">
+                <div className="input-group input-group-sm">
+                    <div className="input-group-text">Category</div>
+                    <KeywordSelect pageType="category" value={categoryId ?? ''} style={{maxWidth: '15rem'}}
+                                   onSelectKeyword={filterCategoryChangeHandler}/>
+                </div>
             </div>
             <div className="col-auto">
                 <SpinnerButton spinning={loading} type="button" onClick={reloadHandler} size="sm">Reload</SpinnerButton>

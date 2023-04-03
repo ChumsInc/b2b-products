@@ -11,9 +11,8 @@ import {
 import {variantListSorter} from "../sorter";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "../variant/actions";
 import {SortProps} from "chums-components";
-import {Editable, ProductVariant} from "b2b-types";
+import {Editable, isSellAsVariants, ProductVariant} from "b2b-types";
 import {Product} from "b2b-types/src/products";
-import {isSellAsVariantsProduct} from "../utils";
 
 export type EditableProduct = Product & Editable;
 
@@ -33,6 +32,7 @@ export const initialCurrentProductState: CurrentProductState = {
     loading: false,
     saving: false,
 }
+
 
 const currentProductReducer = createReducer(initialCurrentProductState, (builder) => {
     builder
@@ -79,7 +79,7 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
         })
         .addCase(saveCurrentVariant.fulfilled, (state, action) => {
             state.saving = false;
-            if (action.payload && state.product && isSellAsVariantsProduct(state.product)) {
+            if (action.payload && state.product && isSellAsVariants(state.product)) {
                 state.product.variants = [
                     ...state.product.variants.filter(v => v.id !== action.payload?.id),
                     action.payload,
@@ -100,7 +100,7 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
             state.saving = true;
         })
         .addCase(removeVariant.fulfilled, (state, action) => {
-            if (state.product && isSellAsVariantsProduct(state.product)) {
+            if (state.product && isSellAsVariants(state.product)) {
                 state.product.variants = action.payload.sort(variantListSorter(defaultVariantSorterProps));
             }
             state.saving = false;
@@ -112,7 +112,7 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
             state.saving = true;
         })
         .addCase(setDefaultVariant.fulfilled, (state, action) => {
-            if (state.product && isSellAsVariantsProduct(state.product)) {
+            if (state.product && isSellAsVariants(state.product)) {
                 state.product.variants = action.payload.sort(variantListSorter(defaultVariantSorterProps));
             }
             state.saving = false;

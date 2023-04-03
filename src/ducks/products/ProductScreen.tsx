@@ -1,8 +1,7 @@
 import React from "react";
 import ProductTable from "./list/ProductTable";
-import ProductEditTabs, {productEditTabsKey, productTabs} from "./product/ProductEditTabs";
+import ProductEditTabs from "./tabs/ProductEditTabs";
 import {useSelector} from "react-redux";
-import {selectCurrentTab} from "chums-connected-components";
 import MainEditForm from "./product/MainEditForm";
 import ProductJSON from "./product/ProductJSON";
 import ProductEditorTitle from "./product/ProductEditorTitle";
@@ -12,10 +11,11 @@ import ProductMixTab from "./mix/ProductMixTab";
 import ProductDetailsTab from "./product/ProductDetailsTab";
 import ProductImagesTab from "./images/ProductImagesTab";
 import {ErrorBoundary} from "chums-components";
+import {selectCurrentTab, selectTabList} from "./tabs";
 
 const ProductScreen: React.FC = () => {
-    const tab = useSelector(selectCurrentTab(productEditTabsKey));
-
+    const productTabs = useSelector(selectTabList);
+    const tab = useSelector(selectCurrentTab)
 
     return (
         <div className="row g-3">
@@ -27,7 +27,7 @@ const ProductScreen: React.FC = () => {
                 <ErrorBoundary>
                     <ProductEditorTitle/>
                     <ProductEditTabs/>
-                    {tab === productTabs.main.id && <MainEditForm />}
+                    {tab === productTabs.main.id && <MainEditForm/>}
                     {tab === productTabs.details.id && <ProductDetailsTab/>}
                     {tab === productTabs.variant.id && <VariantsTabContent/>}
                     {tab === productTabs.json.id && <ProductJSON/>}

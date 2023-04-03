@@ -1,6 +1,6 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import {SortableTableField} from "chums-connected-components";
+import {SortableTable, SortableTableField} from "chums-components";
 import {ProductListItem} from "b2b-types";
 import SeasonIcon from "../../seasons/SeasonIcon";
 import ProductSellAsIcon from "./ProductSellAsIcon";
@@ -12,18 +12,13 @@ import {loadProduct} from "../product/actions";
 import {setProductsSort} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
 import ProductTableFilterBar from "./ProductTableFilterBar";
-import {SortableTable} from "chums-components";
 import {selectPagedList} from "./selectors";
 import {selectSort} from "../../colors/selectors";
 import ProductTablePagination from "./ProductTablePagination";
 import {selectCurrentProduct} from "../product/selectors";
 
 
-interface ProductTableField extends SortableTableField {
-    field: keyof ProductListItem,
-}
-
-const fields: ProductTableField[] = [
+const fields: SortableTableField<ProductListItem>[] = [
     {field: 'id', title: 'ID', sortable: true},
     {field: 'keyword', title: 'Keyword', sortable: true},
     {field: 'itemCode', title: 'Item Code', sortable: true},

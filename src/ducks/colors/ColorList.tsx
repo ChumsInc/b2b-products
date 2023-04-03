@@ -1,32 +1,26 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-
-import {SortableTableField} from "chums-connected-components";
-import {SortableTable} from 'chums-components';
-
+import {SortableTable, SortableTableField} from 'chums-components';
 import {ProductColor} from "b2b-types";
 import {setCurrentColor, setSort} from "./actions";
 import {selectCurrentColor, selectSort, selectSortedList} from "./selectors";
 import {useAppDispatch} from "../../app/hooks";
 import ColorsPagination from "./ColorsPagination";
 import ColorFilterBar from "./ColorFilterBar";
+import classNames from "classnames";
 
 
-interface ColorTableField extends SortableTableField {
-    field: keyof ProductColor,
-}
-
-const colorFields: ColorTableField[] = [
+const colorFields: SortableTableField<ProductColor>[] = [
     {field: 'id', title: 'ID', sortable: true, className: 'text-end'},
     {field: 'code', title: 'Color Code', sortable: true},
     {field: 'name', title: 'Color Name', sortable: true}
 ];
 
 const rowClassName = (row: ProductColor) => {
-    return {
+    return classNames({
         'text-danger': row.active === false,
         'text-warning': row.active === null,
-    }
+    })
 }
 
 

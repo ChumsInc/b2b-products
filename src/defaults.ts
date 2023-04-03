@@ -53,7 +53,7 @@ export const defaultProduct: Product = {
     upc: null,
     name: '',
     keyword: '',
-    sellAs: 0,
+    sellAs: 1,
     image: '',
     manufacturersId: 12,
     defaultParentProductsId: 0,

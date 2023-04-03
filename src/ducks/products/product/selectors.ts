@@ -14,3 +14,5 @@ export const selectCurrentProductChanged = (state: RootState): boolean => state.
 export const selectCurrentProductLoading = (state: RootState) => state.products.current.product.loading;
 
 export const selectCurrentProductSaving = (state: RootState) => state.products.current.product.saving;
+
+export const selectTabs = (state:RootState) => state.products.current;
