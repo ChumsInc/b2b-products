@@ -35,7 +35,10 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
                 if (state.productId === action.payload.id && !!state.variant?.id) {
                     const [variant] = state.list.filter(item => item.id === state.variant?.id);
                     state.variant = variant ?? null;
+                } else {
+                    state.variant = {...defaultVariant, parentProductID: action.payload.id}
                 }
+
             } else {
                 state.list = [];
             }
@@ -50,6 +53,12 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
         .addCase(saveCurrentVariant.fulfilled, (state, action) => {
             state.saving = false;
             state.variant = action.payload;
+            if (action.payload) {
+                state.list = [
+                    ...state.list.filter(v => v.id !== action.payload?.id),
+                    action.payload,
+                ].sort(variantListSorter(defaultVariantSort));
+            }
         })
         .addCase(saveCurrentVariant.rejected, (state) => {
             state.saving = false;

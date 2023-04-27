@@ -10,6 +10,7 @@ import {loadProduct} from "../product/actions";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "./actions";
 import {selectCurrentProductId} from "../product/selectors";
 import {useAppDispatch} from "../../../app/hooks";
+import {JSONView} from "@chumsinc/json-view";
 
 
 const colWidth = 9;
@@ -22,7 +23,9 @@ const ProductVariantsEditor: React.FC = () => {
 
     useEffect(() => {
         if (!variant?.id || variant?.parentProductID !== productId) {
-            setVariant({...defaultVariant, parentProductID: productId});
+            const variant: ProductVariant = {...defaultVariant, parentProductID: productId};
+            console.log('useEffect()', productId, variant);
+            setVariant(variant);
         }
     }, [productId]);
 
@@ -38,10 +41,10 @@ const ProductVariantsEditor: React.FC = () => {
 
     const changeHandler = (field: keyof ProductVariant) => (ev: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => {
         switch (field) {
-        case 'title':
-            return setVariant({...variant, [field]: ev.target.value, changed: true});
-        case 'status':
-            return setVariant({...variant, [field]: ev.target.checked, changed: true});
+            case 'title':
+                return setVariant({...variant, [field]: ev.target.value, changed: true});
+            case 'status':
+                return setVariant({...variant, [field]: ev.target.checked, changed: true});
         }
     }
 
@@ -138,6 +141,7 @@ const ProductVariantsEditor: React.FC = () => {
                     {variant.changed && <Alert color="warning">Don't forget to save your changes.</Alert>}
                 </FormColumn>
             </form>
+            <JSONView data={variant}/>
         </>
     )
 }
