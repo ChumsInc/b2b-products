@@ -1,5 +1,5 @@
 import {Keyword} from "b2b-types";
-import {fetchJSON} from "chums-components/dist/fetch";
+import {fetchJSON} from "chums-components";
 
 export const fetchKeywords = async ():Promise<Keyword[]> => {
     try {
