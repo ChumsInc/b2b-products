@@ -2,6 +2,7 @@ import {Keyword} from "b2b-types";
 import {fetchKeywords} from "../../api/keywordsAPI";
 import {RootState} from "../../app/configureStore";
 import {createAsyncThunk, createReducer} from "@reduxjs/toolkit";
+import {saveProduct} from "../products/product/actions";
 
 export interface KeywordsState {
     list: Keyword[];
@@ -48,6 +49,18 @@ const keywordsReducer = createReducer(initialKeywordsState, (builder) => {
         })
         .addCase(loadKeywords.rejected, (state) => {
             state.loading = false;
+        })
+        .addCase(saveProduct.fulfilled, (state, action) => {
+            if (action.payload) {
+                const {id, keyword, name, parentProductKeyword, redirectToParent, status} = action.payload;
+                if (!state.list.filter(kw => kw.keyword === keyword)) {
+                    const newKeyword:Keyword = {id, keyword, pagetype: 'product', title: name, parent: parentProductKeyword ?? '', redirect_to_parent: redirectToParent ? 1 : 0, status};
+                    state.list = [
+                        ...state.list,
+                        newKeyword
+                    ].sort((a, b) => a.keyword > b.keyword ? 1 : -1)
+                }
+            }
         })
 });
 
