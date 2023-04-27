@@ -1,7 +1,7 @@
 import React from "react";
 import {useSelector} from "react-redux";
 import {selectCurrentProduct} from "./selectors";
-import {JSONTree} from 'react-json-tree';
+import {JSONView} from "@chumsinc/json-view";
 
 const theme = {
     scheme: 'monokai',
@@ -35,7 +35,7 @@ const ProductJSON: React.FC = () => {
     }
     return (
         <div style={style}>
-            <JSONTree data={product} theme={theme} invertTheme={true} />
+            <JSONView data={product}/>
         </div>
     )
 }
