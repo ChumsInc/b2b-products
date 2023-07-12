@@ -10,7 +10,7 @@ import {useAppDispatch} from "../../app/hooks";
 
 export type EditableProductColor = ProductColor & Editable;
 
-const ColorEditor: React.FC = () => {
+const ColorEditor = () => {
     const dispatch = useAppDispatch();
     const current = useSelector(selectCurrentColor);
     const status = useSelector(selectColorsStatus);

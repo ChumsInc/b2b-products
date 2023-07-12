@@ -3,7 +3,7 @@ import ProductColorEditor from "./ProductColorEditor";
 import ProductColorList from "./ProductColorList";
 import ProductColorImage from "./ProductColorImage";
 
-const ProductColorsTab:React.FC = () => {
+const ProductColorsTab = () => {
 
     return (
         <div>

@@ -12,7 +12,7 @@ interface ProductSellAsIconProps {
     product: ProductListItem,
 }
 
-const ProductSellAsIcon:React.FC<ProductSellAsIconProps> = ({product}) => {
+const ProductSellAsIcon = ({product}:ProductSellAsIconProps) => {
     return (
         <span className="sell-as-icons">
             {product.sellAs === SELL_AS_VARIANTS && <Badge color="custom" colorCode={variantsColor}>V:{product.variantsCount}</Badge>}

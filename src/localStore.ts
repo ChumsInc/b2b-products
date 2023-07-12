@@ -1,4 +1,4 @@
-
+export const storeProductFilterActive = 'b2b-products::product::list::filterActive';
 export const storeProductListRowsPerPage = 'b2b-products:product:list:rowsPerPage';
 export const storeColorsListRowsPerPage = 'b2b-products:colors:list:rowsPerPage';
 export const storeProductItemsRowsPerPage = 'b2b-products:products:items:rowsPerPage';
@@ -10,10 +10,10 @@ export class LocalStore {
         window.localStorage.clear();
     }
 
-    static getItem(key:string):any {
+    static getItem(key:string, defaultValue:any = null):any {
         const data = window.localStorage.getItem(key);
         if (!data) {
-            return null;
+            return defaultValue;
         }
         try {
             return JSON.parse(data);

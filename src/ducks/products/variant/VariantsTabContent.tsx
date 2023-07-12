@@ -2,7 +2,7 @@ import React from "react";
 import ProductVariantsEditor from "./ProductVariantsEditor";
 import SortableVariantList from "./SortableVariantList";
 
-const VariantsTabContent:React.FC = () => {
+const VariantsTabContent = () => {
 
     return (
         <div>

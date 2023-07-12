@@ -3,7 +3,7 @@ import ColorList from "./ColorList";
 import ColorEditor from "./ColorEditor";
 import ColorUsageList from "./ColorUsageList";
 
-const ColorScreen: React.FC = () => {
+const ColorScreen = () => {
 
     return (
         <div className="container">

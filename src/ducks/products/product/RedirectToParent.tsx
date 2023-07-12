@@ -6,7 +6,7 @@ import classNames from "classnames";
 import {updateProduct} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
 
-const RedirectToParent: React.FC = () => {
+const RedirectToParent = () => {
     const dispatch = useAppDispatch();
     const {redirectToParent, defaultParentProductsId} = useSelector(selectCurrentProduct) ?? {};
     const onChange = () => dispatch(updateProduct({redirectToParent: !redirectToParent}))

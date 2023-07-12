@@ -4,6 +4,7 @@ import {fetchProducts} from "../../../api/productsAPI";
 import {SortProps} from "chums-components";
 import {RootState} from "../../../app/configureStore";
 import {selectProductListLoading} from "./selectors";
+import {getPreference, localStorageKeys, setPreference} from "../../../api/preferences";
 
 export const loadProductsList = createAsyncThunk<ProductListItem[]>(
     'products/list/load',
@@ -20,7 +21,13 @@ export const loadProductsList = createAsyncThunk<ProductListItem[]>(
 
 export const setProductsSearch = createAction<string>('products/list/setSearch');
 
-export const toggleFilterActive = createAction<boolean | undefined>('products/list/filterActive');
+export const toggleFilterActive = createAction('products/list/filterActive', (checked:boolean|undefined) => {
+    const filterActive = checked ?? !getPreference(localStorageKeys.products.filterActive, true)
+    setPreference(localStorageKeys.products.filterActive, filterActive);
+    return {
+        payload: filterActive,
+    }
+});
 
 export const toggleFilterOnSale = createAction<boolean | undefined>('products/list/filterOnSale');
 
@@ -28,7 +35,12 @@ export const toggleFilterAvailable = createAction<boolean | undefined>('products
 
 export const setPage = createAction<number>('products/list/setPage');
 
-export const setRowsPerPage = createAction<number>('products/list/setRowsPerPage');
+export const setRowsPerPage = createAction('products/list/setRowsPerPage', (rpp: number) => {
+    setPreference(localStorageKeys.products.rowsPerPage, rpp);
+    return {
+        payload: rpp
+    }
+});
 
 export const setProductsSort = createAction<SortProps<ProductListItem>>('products/list/setSort');
 

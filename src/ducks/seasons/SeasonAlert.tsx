@@ -6,7 +6,7 @@ export interface SeasonAlertProps {
     code: string,
 }
 
-const SeasonAlert: React.FC<SeasonAlertProps> = ({code}) => {
+const SeasonAlert = ({code}:SeasonAlertProps) => {
     const seasons = useSelector(selectSeasons);
     const message = seasons[code]?.product_teaser || null;
     if (!message) {

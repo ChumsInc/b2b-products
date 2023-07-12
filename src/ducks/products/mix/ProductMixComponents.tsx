@@ -13,7 +13,7 @@ import {ProductColor} from "b2b-types";
 
 
 const colWidth = 8;
-const ProductMixComponents: React.FC = () => {
+const ProductMixComponents = () => {
     const dispatch = useAppDispatch();
     const mix = useSelector(selectCurrentMix);
     const components = useSelector(selectCurrentMixComponents);

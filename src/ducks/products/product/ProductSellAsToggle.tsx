@@ -7,7 +7,7 @@ import {updateProduct} from "./actions";
 import {selectCurrentProductSellAs} from "./selectors";
 import {useAppDispatch} from "../../../app/hooks";
 
-const ProductSellAsToggle: React.FC = () => {
+const ProductSellAsToggle = () => {
     const dispatch = useAppDispatch();
     const sellAs = useSelector(selectCurrentProductSellAs);
 

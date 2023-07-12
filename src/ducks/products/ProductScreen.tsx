@@ -14,7 +14,7 @@ import {ErrorBoundary} from "react-error-boundary";
 import {selectCurrentTab, selectTabList} from "./tabs";
 import fallbackRender from "../../app/fallbackRender";
 
-const ProductScreen: React.FC = () => {
+const ProductScreen = () => {
     const productTabs = useSelector(selectTabList);
     const tab = useSelector(selectCurrentTab)
 

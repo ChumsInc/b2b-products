@@ -7,7 +7,7 @@ import {selectColorFilter, selectColorsFilterInactive, selectColorsStatus} from 
 import {useAppDispatch} from "../../app/hooks";
 
 
-const ColorFilterBar: React.FC = () => {
+const ColorFilterBar = () => {
     const dispatch = useAppDispatch();
     const status = useSelector(selectColorsStatus);
     const filter = useSelector(selectColorFilter);
