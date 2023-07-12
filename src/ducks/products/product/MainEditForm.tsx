@@ -22,7 +22,7 @@ import {useAppDispatch} from "../../../app/hooks";
 
 
 const colWidth = 8;
-const MainEditForm: React.FC = () => {
+const MainEditForm = () => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
     const saving = useSelector(selectCurrentProductSaving);
