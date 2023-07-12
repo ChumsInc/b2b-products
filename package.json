@@ -1,6 +1,6 @@
 {
   "name": "b2b-products",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "Chums B2B Product Admin",
   "main": "index.tsx",
   "scripts": {
