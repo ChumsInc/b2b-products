@@ -62,7 +62,7 @@ const ProductMixComponents: React.FC = () => {
                     <div>
                         <input type="text" value={component.itemCode} className="form-control form-control-sm"
                                required ref={itemCodeRef}
-                               list="pmc--item-code-list"
+                               list="pmc--item-code-colors"
                                onChange={updateNewComponent('itemCode')}/>
                         <ItemDataList id="pmc--item-code-list" search={component.itemCode}/>
                     </div>

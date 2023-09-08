@@ -9,6 +9,8 @@ import {loadProductsList} from "../ducks/products/list/actions";
 import {useAppDispatch} from "./hooks";
 import {loadSeasons} from "../ducks/seasons";
 import AlertList from "../ducks/alerts/AlertList";
+import {Route, Routes} from "react-router";
+import AppContent from "./AppContent";
 
 
 export const appTabs: AppTabMap = {
@@ -32,14 +34,15 @@ const App: React.FC = () => {
         setTab(tab);
     }
     return (
-        <div>
-            <TabList tabs={tabList} currentTabId={tab.id} onSelectTab={selectTabHandler}/>
-            <AlertList/>
-            <div>
-                {tab.id === appTabs.products.id && <ProductScreen/>}
-                {tab.id === appTabs.colors.id && <ColorScreen/>}
-            </div>
-        </div>
+        <Routes>
+            <Route element={<AppContent />}>
+                <Route index element={<ProductScreen />} />
+                <Route path="/products" element={<ProductScreen />} />
+                <Route path="/colors" element={<ColorScreen />}>
+                    <Route path=":code" element={<ColorScreen />} />
+                </Route>
+            </Route>
+        </Routes>
     )
 }
 

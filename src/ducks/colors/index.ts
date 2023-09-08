@@ -1,7 +1,6 @@
 import {ActionStatus, ColorProductUsage, ProductColor} from "b2b-types";
 import {colorProductUsageSorter} from "./sorter";
 import {SortProps} from "chums-components";
-import {getPreference, localStorageKeys, setPreference} from "../../api/preferences";
 import {createReducer} from "@reduxjs/toolkit";
 import {
     loadColors,
@@ -9,8 +8,7 @@ import {
     saveColor,
     setColorFilter,
     setCurrentColor,
-    setPage,
-    setRowsPerPage,
+    setCurrentColorByCode,
     setSort,
     toggleFilterInactiveColors
 } from "./actions";
@@ -30,108 +28,99 @@ export interface ProductColorList {
 }
 
 export interface ColorsState {
-    list: ProductColorList,
-    status: ActionStatus;
-    current: ProductColor | null;
-    filter: string;
-    filterInactive: boolean;
-    whereUsed: {
-        list: ColorProductUsage[];
+    list: {
+        colors: ProductColorList;
+        loading: boolean;
+        filter: string;
+        filterInactive: boolean;
+        sort: SortProps<ProductColor>;
+    },
+    current: {
+        code: string;
+        color: ProductColor | null;
         status: ActionStatus;
-    };
-    sort: SortProps<ProductColor>;
-    page: number;
-    rowsPerPage: number;
+        whereUsed: {
+            list: ColorProductUsage[];
+            loading: boolean;
+        };
+    }
 }
 
 export const initialColorsState: ColorsState = {
-    list: {},
-    status: 'idle',
-    current: null,
-    filter: '',
-    filterInactive: true,
-    whereUsed: {
-        list: [],
-        status: 'idle',
+    list: {
+        colors: {},
+        loading: false,
+        filter: '',
+        filterInactive: true,
+        sort: {...defaultColorSort},
     },
-    sort: {...defaultColorSort},
-    page: 0,
-    rowsPerPage: getPreference(localStorageKeys.colors.rowsPerPage, 25),
+    current: {
+        code: '',
+        color: null,
+        status: "idle",
+        whereUsed: {
+            list: [],
+            loading: false,
+        },
+    }
 }
-export const colorListTableKey = 'color-list';
 
 const colorsReducer = createReducer(initialColorsState, (builder) => {
     builder
         .addCase(loadColors.pending, (state) => {
-            state.status = 'loading';
+            state.list.loading = true;
         })
         .addCase(loadColors.fulfilled, (state, action) => {
-            state.status = 'idle';
-            state.list = {};
+            state.list.loading = false;
+            state.list.colors = {};
             action.payload.forEach(color => {
-                state.list[color.code] = color;
+                state.list.colors[color.code] = color;
             })
-            if (state.current) {
-                const [color] = action.payload.filter(color => color.id === state.current?.id);
-                state.current = color ?? null;
-            }
-            if (state.page > (Object.keys(action.payload).length % state.rowsPerPage)) {
-                state.page = 0;
-            }
+            state.current.color = state.list.colors[state.current.code] ?? null;
         })
         .addCase(loadColors.rejected, (state) => {
-            state.status = 'idle';
+            state.list.loading = false
         })
         .addCase(saveColor.pending, (state) => {
-            state.status = 'saving';
+            state.current.status = 'saving';
         })
         .addCase(saveColor.fulfilled, (state, action) => {
-            state.list = {};
+            state.list.colors = {};
             action.payload.list.forEach(color => {
-                state.list[color.code] = color;
+                state.list.colors[color.code] = color;
             });
-            state.current = action.payload.color;
-            state.status = 'idle';
-
-            if (state.page > (Object.keys(action.payload).length % state.rowsPerPage)) {
-                state.page = 0;
-            }
+            state.current.color = state.list.colors[state.current.code] ?? null;
+            state.current.status = 'idle';
         })
         .addCase(saveColor.rejected, (state) => {
-            state.status = 'idle';
+            state.current.status = 'idle';
         })
         .addCase(setCurrentColor, (state, action) => {
-            state.current = action.payload ?? null;
-            state.whereUsed.list = [];
+            state.current.color = action.payload ?? null;
+            state.current.whereUsed.list = [];
         })
         .addCase(setColorFilter, (state, action) => {
-            state.filter = action.payload;
-            state.page = 0;
+            state.list.filter = action.payload;
         })
         .addCase(toggleFilterInactiveColors, (state, action) => {
-            state.filterInactive = action.payload ?? !state.filterInactive;
+            state.list.filterInactive = action.payload ?? !state.list.filterInactive;
         })
         .addCase(loadColorUsage.pending, (state) => {
-            state.whereUsed.status = 'loading';
+            state.current.whereUsed.loading = true;
         })
         .addCase(loadColorUsage.fulfilled, (state, action) => {
-            state.whereUsed.list = action.payload.sort(colorProductUsageSorter(defaultColorProductUsageSort));
-            state.whereUsed.status = 'idle';
+            state.current.whereUsed.list = action.payload.sort(colorProductUsageSorter(defaultColorProductUsageSort));
+            state.current.whereUsed.loading = false
         })
         .addCase(loadColorUsage.rejected, (state) => {
-            state.whereUsed.status = 'idle';
-        })
-        .addCase(setPage, (state, action) => {
-            state.page = action.payload;
-        })
-        .addCase(setRowsPerPage, (state, action) => {
-            setPreference(localStorageKeys.colors.rowsPerPage, action.payload);
-            state.rowsPerPage = action.payload;
-            state.page = 0;
+            state.current.whereUsed.loading = false;
         })
         .addCase(setSort, (state, action) => {
-            state.page = 0;
-            state.sort = action.payload;
+            state.list.sort = action.payload;
+        })
+        .addCase(setCurrentColorByCode, (state, action) => {
+            state.current.code = action.payload ?? '';
+            state.current.color = state.list.colors[action.payload ?? ''] ?? null;
         })
 })
 

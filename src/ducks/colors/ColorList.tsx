@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {SortableTable, SortableTableField} from 'chums-components';
+import {SortableTable, SortableTableField, TablePagination} from 'chums-components';
 import {ProductColor} from "b2b-types";
-import {setCurrentColor, setSort} from "./actions";
+import {setCurrentColorByCode, setSort} from "./actions";
 import {selectCurrentColor, selectSort, selectSortedList} from "./selectors";
 import {useAppDispatch} from "../../app/hooks";
-import ColorsPagination from "./ColorsPagination";
 import ColorFilterBar from "./ColorFilterBar";
 import classNames from "classnames";
+import {useNavigate, useParams} from "react-router";
+import {getPreference, localStorageKeys, setPreference} from "../../api/preferences";
 
 
 const colorFields: SortableTableField<ProductColor>[] = [
@@ -27,13 +28,33 @@ const rowClassName = (row: ProductColor) => {
 const ColorList: React.FC = () => {
     const dispatch = useAppDispatch();
     const selected = useSelector(selectCurrentColor);
-    const pagedList = useSelector(selectSortedList);
+    const list = useSelector(selectSortedList);
     const sort = useSelector(selectSort);
+    const navigate = useNavigate();
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(getPreference(localStorageKeys.colors.rowsPerPage, 25));
+    const params = useParams<{ code: string }>();
+
+    useEffect(() => {
+        setCurrentColorByCode(params.code);
+    }, [params.code]);
+
+    useEffect(() => {
+        setPage(0);
+    }, [sort, list]);
 
     const onSelectColor = (color: ProductColor) => {
-        dispatch(setCurrentColor(color));
+        const url = `/colors/${color.code}`;
+        navigate(url);
     }
 
+    const rowsPerPageChangeHandler = (rpp: number) => {
+        setPreference(localStorageKeys.colors.rowsPerPage, rpp);
+        setPage(0);
+        setRowsPerPage(rpp);
+    }
+
+    const pagedList = list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     return (
         <div>
             <ColorFilterBar/>
@@ -44,7 +65,10 @@ const ColorList: React.FC = () => {
                            rowClassName={rowClassName}
                            onSelectRow={onSelectColor}
                            data={pagedList}/>
-            <ColorsPagination/>
+            <TablePagination page={page} onChangePage={setPage} bsSize="sm"
+                             rowsPerPage={rowsPerPage} onChangeRowsPerPage={rowsPerPageChangeHandler}
+                             showFirst showLast
+                             count={list.length}/>
         </div>
     )
 

@@ -34,7 +34,7 @@ export const ProductItemCodeInput: React.FC = () => {
             <div className="input-group input-group-sm">
                 <input type="text" id="product-main--item-code" className="form-control form-control-sm"
                        value={itemCode} onChange={changeHandler}
-                       list="product-main--item-code-list"/>
+                       list="product-main--item-code-colors"/>
                 <button type="button" className="btn btn-secondary" onClick={onCopyToName}>
                     <span className="bi-card-text" title={items[itemCode]?.ItemCodeDesc || ''}/>
                 </button>

@@ -30,7 +30,6 @@ export const defaultProductBase: ProductBase = {
 }
 
 export const defaultProduct: Product = {
-    variants: [],
     images: [],
     options: undefined,
     anticipatedPrice: undefined,

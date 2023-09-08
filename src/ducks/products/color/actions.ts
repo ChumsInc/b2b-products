@@ -4,7 +4,7 @@ import {deleteColorItem, postColorItem} from "../../../api/productsAPI";
 import {selectColorByCode} from "../../colors/selectors";
 import {RootState} from "../../../app/configureStore";
 
-export const setCurrentColorItem = createAction<ProductColorItem|null>('products/current/colors/setItem');
+export const setCurrentColorItem = createAction<ProductColorItem | null>('products/current/colors/setItem');
 
 export const saveCurrentColorItem = createAsyncThunk<ProductColorItem[], ProductColorItem>(
     'products/current/colors/saveItem',

@@ -45,7 +45,7 @@ const initialState:ProductTabsState = {
     currentTab: 'main',
 }
 
-export const setCurrentTab = createAction<ProductTabId>('products/list/setTab');
+export const setCurrentTab = createAction<ProductTabId>('products/colors/setTab');
 
 export const selectTabList = (state:RootState) => state.products.tabs.list;
 export const selectCurrentTab = (state:RootState) => state.products.tabs.currentTab;

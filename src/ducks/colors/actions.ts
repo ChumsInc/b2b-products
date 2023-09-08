@@ -3,7 +3,7 @@ import {fetchColors, fetchWhereUsed, postColor} from "../../api/colorsAPI";
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {SortProps} from "chums-components";
 import {RootState} from "../../app/configureStore";
-import {selectColorsStatus} from "./selectors";
+import {selectColorsLoading, selectColorUsageLoading} from "./selectors";
 
 export const loadColors = createAsyncThunk<ProductColor[]>(
     'colors/load',
@@ -13,7 +13,7 @@ export const loadColors = createAsyncThunk<ProductColor[]>(
     {
         condition: (arg, {getState}) => {
             const state = getState() as RootState
-            return selectColorsStatus(state) === 'idle'
+            return !selectColorsLoading(state);
         }
     }
 );
@@ -29,15 +29,23 @@ export const saveColor = createAsyncThunk<{ list: ProductColor[], color: Product
 
 export const setCurrentColor = createAction<ProductColor | undefined>('colors/setCurrent');
 
+export const setCurrentColorByCode = createAction<string | undefined>('colors/setCurrent/code');
+
 
 export const setColorFilter = createAction<string>('colors/setFilter');
 
-export const toggleFilterInactiveColors = createAction<boolean|undefined>('colors/toggleFilterInactive');
+export const toggleFilterInactiveColors = createAction<boolean | undefined>('colors/toggleFilterInactive');
 
 export const loadColorUsage = createAsyncThunk<ColorProductUsage[], number>(
     'colors/loadUsage',
     async (arg) => {
         return await fetchWhereUsed(arg);
+    },
+    {
+        condition: (arg, {getState}) => {
+            const state = getState() as RootState;
+            return !!arg && !selectColorUsageLoading(state);
+        }
     }
 );
 
