@@ -13,6 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "@chumsinc/json-view": "^1.1.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.8",
     "@popperjs/core": "^2.11.6",
     "@reduxjs/toolkit": "^1.8.1",
     "@types/tinycolor2": "^1.4.3",

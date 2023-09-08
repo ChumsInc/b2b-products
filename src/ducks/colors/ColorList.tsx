@@ -14,7 +14,8 @@ import {getPreference, localStorageKeys, setPreference} from "../../api/preferen
 const colorFields: SortableTableField<ProductColor>[] = [
     {field: 'id', title: 'ID', sortable: true, className: 'text-end'},
     {field: 'code', title: 'Color Code', sortable: true},
-    {field: 'name', title: 'Color Name', sortable: true}
+    {field: 'name', title: 'Color Name', sortable: true},
+    // {field: 'swatchCode', title: 'Swatch Code', sortable: true},
 ];
 
 const rowClassName = (row: ProductColor) => {

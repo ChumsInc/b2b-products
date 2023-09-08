@@ -3,13 +3,13 @@ import {useSelector} from "react-redux";
 
 import {FormCheck, SpinnerButton} from "chums-components";
 import {loadColors, setColorFilter, toggleFilterInactiveColors} from "./actions";
-import {selectColorFilter, selectColorsFilterInactive, selectColorsStatus} from "./selectors";
+import {selectColorFilter, selectColorsFilterInactive, selectColorsLoading, selectColorsStatus} from "./selectors";
 import {useAppDispatch} from "../../app/hooks";
 
 
 const ColorFilterBar: React.FC = () => {
     const dispatch = useAppDispatch();
-    const status = useSelector(selectColorsStatus);
+    const loading = useSelector(selectColorsLoading);
     const filter = useSelector(selectColorFilter);
     const filterInactive = useSelector(selectColorsFilterInactive);
 
@@ -36,7 +36,7 @@ const ColorFilterBar: React.FC = () => {
                 </div>
             </div>
             <div className="col-auto">
-                <SpinnerButton type="button" color="outline-primary" spinning={status === 'loading'} size="sm"
+                <SpinnerButton type="button" color="outline-primary" spinning={loading} size="sm"
                                onClick={() => dispatch(loadColors())}>
                     Reload
                 </SpinnerButton>
