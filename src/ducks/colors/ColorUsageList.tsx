@@ -8,7 +8,7 @@ import {FormCheck, TablePagination} from "chums-components";
 import {useAppDispatch} from "../../app/hooks";
 
 
-const ColorUsageList = () => {
+const ColorUsageList: React.FC = () => {
     const dispatch = useAppDispatch();
     const selected = useSelector(selectCurrentColor);
     const whereUsed = useSelector(selectWhereUsed);

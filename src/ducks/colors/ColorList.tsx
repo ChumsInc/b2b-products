@@ -26,7 +26,7 @@ const rowClassName = (row: ProductColor) => {
 }
 
 
-const ColorList = () => {
+const ColorList: React.FC = () => {
     const dispatch = useAppDispatch();
     const selected = useSelector(selectCurrentColor);
     const list = useSelector(selectSortedList);

@@ -7,7 +7,7 @@ import {selectColorFilter, selectColorsFilterInactive, selectColorsLoading, sele
 import {useAppDispatch} from "../../app/hooks";
 
 
-const ColorFilterBar = () => {
+const ColorFilterBar: React.FC = () => {
     const dispatch = useAppDispatch();
     const loading = useSelector(selectColorsLoading);
     const filter = useSelector(selectColorFilter);
