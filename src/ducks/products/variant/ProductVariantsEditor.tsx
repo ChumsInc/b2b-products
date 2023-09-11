@@ -14,7 +14,7 @@ import {JSONView} from "@chumsinc/json-view";
 
 
 const colWidth = 9;
-const ProductVariantsEditor: React.FC = () => {
+const ProductVariantsEditor = () => {
     const dispatch = useAppDispatch();
     const productId = useSelector(selectCurrentProductId);
     const current = useSelector(selectCurrentVariant);

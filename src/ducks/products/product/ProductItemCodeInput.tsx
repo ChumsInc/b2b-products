@@ -7,7 +7,7 @@ import {updateProduct} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
 
 
-export const ProductItemCodeInput: React.FC = () => {
+export const ProductItemCodeInput = () => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
 

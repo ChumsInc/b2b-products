@@ -14,6 +14,7 @@ export const localStorageKeys = {
     },
     products: {
         rowsPerPage: `${localStoragePrefix}/products/rowsPerPage`,
+        filterActive: `${localStoragePrefix}/products/filterActive`,
     }
 }
 function getStorage(key:string):Storage {

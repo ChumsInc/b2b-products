@@ -1,23 +1,9 @@
-import React, {useEffect} from "react";
+import React from "react";
 import ColorList from "./ColorList";
 import ColorEditor from "./ColorEditor";
 import ColorUsageList from "./ColorUsageList";
-import {useParams} from "react-router";
-import {setCurrentColorByCode} from "./actions";
-import {useAppDispatch} from "../../app/hooks";
-import {useSelector} from "react-redux";
-import {selectCurrentColorCode} from "./selectors";
 
-const ColorScreen: React.FC = () => {
-    const dispatch = useAppDispatch();
-    const colorCode = useSelector(selectCurrentColorCode);
-    const params = useParams<{code:string}>();
-
-    useEffect(() => {
-        if (params.code !== colorCode) {
-            dispatch(setCurrentColorByCode(params.code));
-        }
-    }, [params.code, colorCode]);
+const ColorScreen = () => {
 
     return (
         <div className="container">

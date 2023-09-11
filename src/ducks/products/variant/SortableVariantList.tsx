@@ -16,7 +16,7 @@ export const variantPrioritySort: SortProps<ProductVariant> = {
     ascending: true,
 }
 
-const SortableVariantList: React.FC = () => {
+const SortableVariantList = () => {
     const dispatch = useAppDispatch();
     const variants = useSelector(selectCurrentProductVariants);
     const saving = false;

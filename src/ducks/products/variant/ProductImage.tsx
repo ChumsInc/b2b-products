@@ -10,12 +10,12 @@ interface ProductImageProps {
     imageUrl?: string,
 }
 
-const ProductImage: React.FC<ProductImageProps> = ({
+const ProductImage = ({
                                                        image,
                                                        size = '80',
                                                        defaultColor,
                                                        imageUrl
-                                                   }) => {
+                                                   }:ProductImageProps) => {
     const imageFile = parseColor(imageUrl || image || 'missing.png', defaultColor || '');
     const src = 'https://intranet.chums.com/images/products/:size/:imageFile'
         .replace(':size', encodeURIComponent(size))

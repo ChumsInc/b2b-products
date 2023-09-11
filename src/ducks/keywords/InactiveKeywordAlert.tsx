@@ -17,7 +17,7 @@ const pageType = (kw:Keyword) => {
     default: return '???'
     }
 }
-const InactiveKeywordAlert:React.FC<InactiveKeywordAlertProps> = ({keyword}) => {
+const InactiveKeywordAlert = ({keyword}:InactiveKeywordAlertProps) => {
     if (!keyword || !!keyword.status) {
         return null;
     }

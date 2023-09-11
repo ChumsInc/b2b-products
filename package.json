@@ -1,6 +1,6 @@
 {
   "name": "b2b-products",
-  "version": "2.3.2",
+  "version": "2.3.4",
   "description": "Chums B2B Product Admin",
   "main": "index.tsx",
   "scripts": {
@@ -30,6 +30,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.10",
     "react-popper": "^2.3.0",
     "react-redux": "^8.0.2",
     "react-router": "^6.15.0",
