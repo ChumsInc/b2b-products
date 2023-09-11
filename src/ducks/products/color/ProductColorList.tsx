@@ -11,7 +11,7 @@ import {useAppDispatch} from "../../../app/hooks";
 import {setCurrentColorItem} from "./actions";
 
 
-const ProductColorList = () => {
+const ProductColorList: React.FC = () => {
     const dispatch = useAppDispatch();
     const list = useSelector(selectCurrentProductColors);
     const product = useSelector(selectCurrentProduct);
@@ -23,13 +23,8 @@ const ProductColorList = () => {
     const [rowsPerPage, setRowsPerPage] = useState(25);
 
     useEffect(() => {
-        setPage(0);
-    }, [product?.id]);
-
-    useEffect(() => {
         const rowsPerPage = LocalStore.getItem(storeProductItemsRowsPerPage) || 25;
         setRowsPerPage(rowsPerPage);
-        setPage(0);
     }, [])
 
     const [checked, setChecked] = useState(true);

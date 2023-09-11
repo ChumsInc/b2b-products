@@ -11,7 +11,7 @@ import {Editable} from "b2b-types";
 
 
 const colWidth = 8;
-const ProductMixEditor = () => {
+const ProductMixEditor: React.FC = () => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
     const current = useSelector(selectCurrentMix);

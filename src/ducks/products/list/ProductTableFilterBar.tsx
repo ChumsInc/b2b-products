@@ -21,7 +21,7 @@ import {useAppDispatch} from "../../../app/hooks";
 import {Keyword} from "b2b-types";
 import KeywordSelect from "../../keywords/KeywordSelect";
 
-const ProductTableFilterBar = () => {
+const ProductTableFilterBar: React.FC = () => {
     const dispatch = useAppDispatch();
     const filterActive = useSelector(selectProductsFilterActive);
     const filterOnSale = useSelector(selectProductsFilterOnSale);

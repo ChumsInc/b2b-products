@@ -12,13 +12,13 @@ export interface ItemDataListProps extends HTMLAttributes<HTMLDataListElement> {
     filter?: ItemSearchFilter,
 }
 
-const ItemDataList = ({
+const ItemDataList: React.FC<ItemDataListProps> = ({
                                                        id,
                                                        search,
                                                        delay = 600,
                                                        filter,
                                                        ...props
-                                                   }:ItemDataListProps) => {
+                                                   }) => {
     const controller = new AbortController();
     const dispatch = useAppDispatch();
     const items = useSelector(selectItemSearchList);

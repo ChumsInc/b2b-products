@@ -4,7 +4,7 @@ import ProductMixComponents from "./ProductMixComponents";
 import {useSelector} from "react-redux";
 import {selectCurrentMix} from "./selectors";
 
-const ProductMixTab = () => {
+const ProductMixTab: React.FC = () => {
     const mix = useSelector(selectCurrentMix);
     return (
         <div>

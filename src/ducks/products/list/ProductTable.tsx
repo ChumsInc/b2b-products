@@ -45,7 +45,7 @@ const rowClassName = (row: ProductListItem) => {
         'text-success': row.redirectToParent && !!row.defaultParentProductsId
     })
 }
-const ProductTable = () => {
+const ProductTable: React.FC = () => {
     const dispatch = useAppDispatch();
     const sort = useSelector(selectSort);
     const pagedList = useSelector(selectPagedList);

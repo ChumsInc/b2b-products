@@ -3,7 +3,11 @@ import {useSelector} from "react-redux";
 import {selectSeasons} from "./index";
 import {Badge} from "chums-components";
 
-const SeasonIcon = ({code}: { code:string|null }) => {
+export interface SeasonIcon {
+    code: string|null,
+}
+
+const SeasonIcon:React.FC<SeasonIcon> = ({code}) => {
     const seasons = useSelector(selectSeasons);
     if (!code) {
         return null;

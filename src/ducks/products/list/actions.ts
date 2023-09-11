@@ -4,10 +4,9 @@ import {fetchProducts} from "../../../api/productsAPI";
 import {SortProps} from "chums-components";
 import {RootState} from "../../../app/configureStore";
 import {selectProductListLoading} from "./selectors";
-import {getPreference, localStorageKeys, setPreference} from "../../../api/preferences";
 
 export const loadProductsList = createAsyncThunk<ProductListItem[]>(
-    'products/list/load',
+    'products/colors/load',
     async () => {
         return await fetchProducts();
     },
@@ -19,29 +18,18 @@ export const loadProductsList = createAsyncThunk<ProductListItem[]>(
     }
 )
 
-export const setProductsSearch = createAction<string>('products/list/setSearch');
+export const setProductsSearch = createAction<string>('products/colors/setSearch');
 
-export const toggleFilterActive = createAction('products/list/filterActive', (checked:boolean|undefined) => {
-    const filterActive = checked ?? !getPreference(localStorageKeys.products.filterActive, true)
-    setPreference(localStorageKeys.products.filterActive, filterActive);
-    return {
-        payload: filterActive,
-    }
-});
+export const toggleFilterActive = createAction<boolean | undefined>('products/colors/filterActive');
 
-export const toggleFilterOnSale = createAction<boolean | undefined>('products/list/filterOnSale');
+export const toggleFilterOnSale = createAction<boolean | undefined>('products/colors/filterOnSale');
 
-export const toggleFilterAvailable = createAction<boolean | undefined>('products/list/filterAvailable');
+export const toggleFilterAvailable = createAction<boolean | undefined>('products/colors/filterAvailable');
 
-export const setPage = createAction<number>('products/list/setPage');
+export const setPage = createAction<number>('products/colors/setPage');
 
-export const setRowsPerPage = createAction('products/list/setRowsPerPage', (rpp: number) => {
-    setPreference(localStorageKeys.products.rowsPerPage, rpp);
-    return {
-        payload: rpp
-    }
-});
+export const setRowsPerPage = createAction<number>('products/colors/setRowsPerPage');
 
-export const setProductsSort = createAction<SortProps<ProductListItem>>('products/list/setSort');
+export const setProductsSort = createAction<SortProps<ProductListItem>>('products/colors/setSort');
 
-export const setCategoryFilter = createAction<number | null>('products/list/filterCategory');
+export const setCategoryFilter = createAction<number | null>('products/colors/filterCategory');

@@ -23,7 +23,7 @@ const theme = {
     base0E: '#ae81ff',
     base0F: '#cc6633',
 };
-const ProductJSON = () => {
+const ProductJSON: React.FC = () => {
     const product = useSelector(selectCurrentProduct)
 
     const style = {

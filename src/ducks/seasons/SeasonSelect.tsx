@@ -8,7 +8,7 @@ interface SeasonSelectProps {
     onlyActive: boolean,
     onChange: (season:ProductSeason|null) => void,
 }
-const SeasonSelect = ({value, onlyActive, onChange}:SeasonSelectProps) => {
+const SeasonSelect:React.FC<SeasonSelectProps> = ({value, onlyActive, onChange}) => {
     const seasons = useSelector(selectSeasons);
     const changeHandler = (ev:ChangeEvent<HTMLSelectElement>) => {
         const season = seasons[ev.target.value]

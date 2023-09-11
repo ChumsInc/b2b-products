@@ -33,13 +33,9 @@ const KeywordSelect = ({pageType, value, onSelectKeyword, ...rest}: KeywordSelec
             <option value="">-</option>
             {keywords
                 .filter(kw => kw.pagetype === pageType)
-                .filter(kw => !!kw.status || kw.id === value)
-                .map(kw => (
-                    <option key={kw.keyword} value={kw.id}
-                                    disabled={!(kw.status || kw.keyword === value)}>
-                        {kw.keyword} - {kw.title}
-                    </option>
-                ))}
+                .filter(kw => !!kw.status)
+                .map(kw => (<option key={kw.keyword} value={kw.id}
+                                    disabled={!kw.status}>{kw.keyword} - {kw.title}</option>))}
         </select>
     )
 }

@@ -5,7 +5,7 @@ import {useSelector} from "react-redux";
 import {selectCurrentProduct, selectCurrentProductChanged, selectCurrentProductLoading} from "./selectors";
 import {selectCurrentProductStatus} from "./selectors";
 
-const ProductEditorTitle = () => {
+const ProductEditorTitle: React.FC = () => {
     const product = useSelector(selectCurrentProduct);
     const loading = useSelector(selectCurrentProductLoading);
     const changed = useSelector(selectCurrentProductChanged);

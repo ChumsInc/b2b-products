@@ -11,7 +11,7 @@ interface ModalEditorProps {
     onCancel: () => void,
 }
 
-const ModalEditor = ({title, content, onClose, onCancel}:ModalEditorProps) => {
+const ModalEditor: React.FC<ModalEditorProps> = ({title, content, onClose, onCancel}) => {
     const [html, setHTML] = useState(content || '');
 
     useEffect(() => {

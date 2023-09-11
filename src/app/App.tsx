@@ -19,7 +19,7 @@ export const appTabs: AppTabMap = {
 }
 const tabList: Tab[] = [appTabs.products, appTabs.colors];
 
-const App = () => {
+const App: React.FC = () => {
     const dispatch = useAppDispatch();
     const [tab, setTab] = useState<Tab>(appTabs.products);
 

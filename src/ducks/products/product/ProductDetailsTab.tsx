@@ -11,7 +11,7 @@ import CodeEditButton from "./CodeEditButton";
 
 
 const colWidth = 8;
-const ProductDetailsTab = () => {
+const ProductDetailsTab: React.FC = () => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
     const saving = useSelector(selectCurrentProductSaving);

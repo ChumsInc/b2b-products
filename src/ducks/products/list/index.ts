@@ -14,7 +14,6 @@ import {getPreference, localStorageKeys, setPreference} from "../../../api/prefe
 import {SortProps} from "chums-components";
 import {saveProduct} from "../product/actions";
 import {listItemFromProduct} from "../utils";
-import {LocalStore, storeProductFilterActive} from "../../../localStore";
 
 
 export interface ProductFilter {
@@ -25,7 +24,7 @@ export interface ProductFilter {
 }
 
 export const defaultFilter: ProductFilter = {
-    isActive: getPreference(localStorageKeys.products.filterActive, true),
+    isActive: true,
     isAvailableForSale: false,
     hasSalePrice: false,
     categoryId: null,

@@ -6,7 +6,7 @@ import numeral from "numeral";
 export interface ProductPriceProps {
     product: ProductListItem,
 }
-const ProductPrice = ({product}:ProductPriceProps) => {
+const ProductPrice:React.FC<ProductPriceProps> = ({product}) => {
     if (!product.minPrice && !product.maxPrice && !product.salePrice) {
         return null;
     }

@@ -8,7 +8,7 @@ export interface ProductRedirectIconProps {
     product: ProductListItem,
 }
 
-const ProductRedirectIcon = ({product}:ProductRedirectIconProps) => {
+const ProductRedirectIcon: React.FC<ProductRedirectIconProps> = ({product}) => {
     const dispatch = useAppDispatch();
     if (!product.redirectToParent) {
         return null;

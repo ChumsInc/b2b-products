@@ -17,7 +17,7 @@ interface EditableProductColorItem extends ProductColorItem, Editable {
 
 
 const colWidth = 8;
-const ProductColorEditor = () => {
+const ProductColorEditor: React.FC = () => {
     const dispatch = useAppDispatch();
     const itemCodeRef = useRef<HTMLInputElement>(null)
     const imageRef = useRef<HTMLInputElement>(null)

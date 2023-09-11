@@ -10,11 +10,10 @@ import ProductColorsTab from "./color/ProductColorsTab";
 import ProductMixTab from "./mix/ProductMixTab";
 import ProductDetailsTab from "./product/ProductDetailsTab";
 import ProductImagesTab from "./images/ProductImagesTab";
-import {ErrorBoundary} from "react-error-boundary";
+import {ErrorBoundary} from "chums-components";
 import {selectCurrentTab, selectTabList} from "./tabs";
-import fallbackRender from "../../app/fallbackRender";
 
-const ProductScreen = () => {
+const ProductScreen: React.FC = () => {
     const productTabs = useSelector(selectTabList);
     const tab = useSelector(selectCurrentTab)
 
@@ -25,7 +24,7 @@ const ProductScreen = () => {
                 <ProductTable/>
             </div>
             <div className="col-5">
-                <ErrorBoundary fallbackRender={fallbackRender}>
+                <ErrorBoundary>
                     <ProductEditorTitle/>
                     <ProductEditTabs/>
                     {tab === productTabs.main.id && <MainEditForm/>}

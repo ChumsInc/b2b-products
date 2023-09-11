@@ -12,7 +12,7 @@ export interface ProductImage {
     className?: string,
 }
 
-const ProductImage = ({filename, itemCode, colorCode, size, className}:ProductImage) => {
+const ProductImage:React.FC<ProductImage> = ({filename, itemCode, colorCode, size, className}) => {
     if (!filename) {
         filename = 'missing.png';
     }
