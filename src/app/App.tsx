@@ -11,6 +11,7 @@ import {loadSeasons} from "../ducks/seasons";
 import AlertList from "../ducks/alerts/AlertList";
 import {Route, Routes} from "react-router";
 import AppContent from "./AppContent";
+import WhereUsedPage from "../ducks/where-used/WhereUsedPage";
 
 
 export const appTabs: AppTabMap = {
@@ -41,6 +42,7 @@ const App: React.FC = () => {
                 <Route path="/colors" element={<ColorScreen />}>
                     <Route path=":code" element={<ColorScreen />} />
                 </Route>
+                <Route path="/where-used" element={<WhereUsedPage />} />
             </Route>
         </Routes>
     )

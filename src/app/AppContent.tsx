@@ -8,10 +8,12 @@ import {useSearchParams} from "react-router-dom";
 export const appTabs: AppTabMap = {
     products: {id: 'products', title: 'Products'},
     colors: {id: 'colors', title: 'Colors'},
+    whereUsed: {id: 'where-used', title: 'Where Used'}
 }
 const tabList: NavItemElement[] = [
     {id: 'products', title: 'Products'},
     {id: 'colors', title: 'Colors'},
+    {id: 'where-used', title: 'Where Used'}
 ];
 
 const AppContent = () => {

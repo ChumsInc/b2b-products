@@ -6,6 +6,7 @@ import {default as keywordsReducer} from '../ducks/keywords';
 import {default as productsReducer} from '../ducks/products';
 import {default as seasonsReducer} from '../ducks/seasons';
 import alertsReducer from "../ducks/alerts";
+import whereUsedReducer from "../ducks/where-used";
 
 const rootReducer = combineReducers({
     alerts: alertsReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     keywords: keywordsReducer,
     products: productsReducer,
     seasons: seasonsReducer,
+    whereUsed: whereUsedReducer,
 });
 
 const store = configureStore({
