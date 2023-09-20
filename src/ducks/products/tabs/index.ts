@@ -2,7 +2,7 @@ import {Tab} from "chums-components";
 import {createAction, createReducer} from "@reduxjs/toolkit";
 import {loadProduct, saveProduct, setNewProduct} from "../product/actions";
 import {Product} from "b2b-types/src/products";
-import {isSellAsColors, isSellAsMix, isSellAsVariants} from "b2b-types";
+import {isSellAsColors, isSellAsMix, isSellAsVariants} from "../../../utils";
 import {defaultProduct} from "../../../defaults";
 import {RootState} from "../../../app/configureStore";
 

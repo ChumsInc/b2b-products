@@ -1,5 +1,6 @@
 import React, {useRef} from "react";
-import {ProductVariant, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "b2b-types";
+import {ProductVariant} from "b2b-types";
+import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils";
 import {useSelector} from "react-redux";
 import {selectCurrentVariant} from "./selectors";
 import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";

@@ -1,10 +1,11 @@
-import {defaultVariant, ProductVariant} from "b2b-types";
+import {ProductVariant} from "b2b-types";
 import {createReducer} from "@reduxjs/toolkit";
 import {removeVariant, saveCurrentVariant, setCurrentVariant, setDefaultVariant} from "./actions";
 import {loadProduct} from "../product/actions";
 import {isSellAsVariantsProduct} from "../utils";
 import {variantListSorter} from "../sorter";
 import {SortProps} from "chums-components";
+import {defaultVariant} from "../../../utils";
 
 export const defaultVariantSort:SortProps<ProductVariant> = {
     field: "priority",

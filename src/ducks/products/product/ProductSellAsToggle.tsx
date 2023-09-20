@@ -1,7 +1,8 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import classNames from "classnames";
-import {ProductSellAs, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "b2b-types";
+import {ProductSellAs} from "b2b-types";
+import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from '../../../utils'
 
 import {updateProduct} from "./actions";
 import {selectCurrentProductSellAs} from "./selectors";

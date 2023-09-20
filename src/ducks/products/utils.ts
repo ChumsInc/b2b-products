@@ -1,6 +1,7 @@
 import {Product, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types/src/products";
 
-import {ProductListItem, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "b2b-types";
+import {ProductListItem} from "b2b-types";
+import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "../../utils";
 
 export function isSellAsVariantsProduct(product:Product): product is SellAsVariantsProduct {
     return (product as SellAsVariantsProduct).sellAs === SELL_AS_VARIANTS;

@@ -6,7 +6,7 @@ import {RootState} from "../../app/configureStore";
 import {selectColorsLoading, selectColorsStatus, selectColorUsageLoading} from "./selectors";
 
 export const loadColors = createAsyncThunk<ProductColor[]>(
-    'colors/list/=load',
+    'colors/list/load',
     async () => {
         return await fetchColors();
     },
