@@ -18,7 +18,7 @@ export const initialItemSearchState: ItemSearchState = {
 export const selectItemSearchList = (state: RootState): ItemSearchList => state.itemSearch.list;
 export const selectItemSearchLoading = (state: RootState): boolean => state.itemSearch.loading;
 
-export const itemSearch = createAsyncThunk<ItemSearchRecord[], { search: string, filter?: ItemSearchFilter, signal?: AbortSignal }>(
+export const loadItemSearch = createAsyncThunk<ItemSearchRecord[], { search: string, filter?: ItemSearchFilter, signal?: AbortSignal }>(
     'item-search/load',
     async (arg) => {
         return await loadItemSearchAPI(arg.search, arg.filter, arg.signal);
@@ -31,17 +31,17 @@ export const itemSearch = createAsyncThunk<ItemSearchRecord[], { search: string,
 
 const itemSearchReducer = createReducer(initialItemSearchState, (builder) => {
     builder
-        .addCase(itemSearch.pending, (state) => {
+        .addCase(loadItemSearch.pending, (state) => {
             state.loading = true;
         })
-        .addCase(itemSearch.fulfilled, (state, action) => {
+        .addCase(loadItemSearch.fulfilled, (state, action) => {
             state.list = {};
             action.payload.forEach(item => {
                 state.list[item.ItemCode] = {...item, LabelKey: `${item.ItemCode} - ${item.ItemCodeDesc}`};
             })
             state.loading = false;
         })
-        .addCase(itemSearch.rejected, (state) => {
+        .addCase(loadItemSearch.rejected, (state) => {
             state.loading = false;
         })
 });

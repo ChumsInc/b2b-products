@@ -19,6 +19,7 @@ export function listItemFromProduct(product:Product):ProductListItem {
     const {id, keyword, name, itemCode, status, sellAs, image, manufacturersId,
         defaultParentProductsId, redirectToParent, availableForSale, product_season_id,
         defaultCategoriesId,
+        season_code,
     } = product;
     const variantsCount = isSellAsVariantsProduct(product) ? product.variants.length : 0;
     const selfCount = 0;
@@ -50,6 +51,6 @@ export function listItemFromProduct(product:Product):ProductListItem {
         product_season_id,
         parentProductKeyword: null,
         defaultCategoriesId,
-        season_code: null,
+        season_code: season_code,
     }
 }

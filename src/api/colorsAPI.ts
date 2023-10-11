@@ -7,7 +7,7 @@ const debug = Debug('chums:api:colorAPI');
 export async function fetchColors():Promise<ProductColor[]> {
     try {
         const url = '/node-b2b/products/colors';
-        const {colors} = await fetchJSON<{colors:ProductColor[]}>(url);
+        const {colors} = await fetchJSON<{colors:ProductColor[]}>(url, {cache: 'no-cache'});
         return colors;
     } catch(err:unknown) {
         if (err instanceof Error) {
@@ -38,7 +38,7 @@ export async function postColor(_color:ProductColor):Promise<{list:ProductColor[
 export async function fetchWhereUsed(id:number):Promise<ColorProductUsage[]> {
     try {
         const url = `/node-b2b/products/colors/${id}/items`;
-        const {items} = await fetchJSON<{items:ColorProductUsage[]}>(url);
+        const {items} = await fetchJSON<{items:ColorProductUsage[]}>(url, {cache: 'no-cache'});
         return items;
     } catch(err:unknown) {
         if (err instanceof Error) {

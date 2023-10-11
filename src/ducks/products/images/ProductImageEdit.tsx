@@ -40,12 +40,12 @@ const ProductImageEdit = () => {
         }
     }
 
-    const submitHandler = (ev: FormEvent) => {
+    const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
         if (!productId || !image.image) {
             return;
         }
-        dispatch(saveImage(image));
+        await dispatch(saveImage(image));
         if (image.id === 0) {
             newImageHandler();
         }
@@ -57,11 +57,11 @@ const ProductImageEdit = () => {
         filenameRef.current?.focus();
     }
 
-    const deleteImageHandler = () => {
+    const deleteImageHandler = async () => {
         if (!productId || !image.id || !window.confirm('Are you sure you want to delete this image?')) {
             return;
         }
-        dispatch(removeImage(image));
+        await dispatch(removeImage(image));
         newImageHandler();
     }
 

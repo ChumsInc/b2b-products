@@ -19,7 +19,7 @@ export const manufacturerId__CHUMS = 12;
 export async function fetchProducts(): Promise<ProductListItem[]> {
     try {
         const url = `/api/b2b/products/v2/list/${manufacturerId__CHUMS}`;
-        const {products} = await fetchJSON<{ products: ProductListItem[] }>(url);
+        const {products} = await fetchJSON<{ products: ProductListItem[] }>(url, {cache: 'no-cache'});
         return products;
     } catch (err: unknown) {
         if (err instanceof Error) {
@@ -34,7 +34,7 @@ export async function fetchProducts(): Promise<ProductListItem[]> {
 export async function fetchProduct(keyword: string): Promise<Product> {
     try {
         const url = `/api/b2b/products/v2/keyword/${encodeURIComponent(keyword)}`;
-        const {products} = await fetchJSON<{ products: Product[] }>(url);
+        const {products} = await fetchJSON<{ products: Product[] }>(url, {cache: 'no-cache'});
         if (!products.length) {
             return {...defaultProduct};
         }
@@ -249,7 +249,7 @@ export async function fetchAltImages(productId: number): Promise<ProductAlternat
     try {
         const url = '/api/b2b/products/v2/images/product/:productId'
             .replace(':productId', encodeURIComponent(productId));
-        const {images} = await fetchJSON<{ images: ProductAlternateImage[] }>(url);
+        const {images} = await fetchJSON<{ images: ProductAlternateImage[] }>(url, {cache: 'no-cache'});
         return images;
     } catch (err: unknown) {
         if (err instanceof Error) {

@@ -19,12 +19,12 @@ const ProductDetailsTab: React.FC = () => {
     const [showEditor, setShowEditor] = useState(false);
     const [editorField, setEditorField] = useState<'details' | 'description'>('details');
 
-    const submitHandler = (ev: FormEvent) => {
+    const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
         if (!product) {
             return;
         }
-        dispatch(saveProduct(product));
+        await dispatch(saveProduct(product));
     }
 
     const textChangeHandler = (field: keyof Product) => (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

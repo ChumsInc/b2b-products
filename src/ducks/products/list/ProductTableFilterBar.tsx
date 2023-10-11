@@ -20,6 +20,9 @@ import {
 import {useAppDispatch} from "../../../app/hooks";
 import {Keyword} from "b2b-types";
 import KeywordSelect from "../../keywords/KeywordSelect";
+import {loadKeywords} from "../../keywords";
+import {loadColors} from "../../colors/actions";
+import {loadSeasons} from "../../seasons";
 
 const ProductTableFilterBar: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -45,7 +48,12 @@ const ProductTableFilterBar: React.FC = () => {
         dispatch(setCategoryFilter(kw?.id ?? null));
     }
 
-    const reloadHandler = () => dispatch(loadProductsList());
+    const reloadHandler = () => {
+        dispatch(loadProductsList());
+        dispatch(loadKeywords())
+        dispatch(loadColors());
+        dispatch(loadSeasons());
+    }
 
     return (
         <div className="row g-3 align-items-baseline">

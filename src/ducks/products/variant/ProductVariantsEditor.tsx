@@ -34,9 +34,9 @@ const ProductVariantsEditor: React.FC = () => {
         setVariant(current ? {...current} : {...defaultVariant, parentProductID: productId});
     }, [current?.id, current?.timestamp]);
 
-    const submitHandler = (ev: FormEvent) => {
+    const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
-        dispatch(saveCurrentVariant(variant));
+        await dispatch(saveCurrentVariant(variant));
     }
 
     const changeHandler = (field: keyof ProductVariant) => (ev: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => {
@@ -61,12 +61,12 @@ const ProductVariantsEditor: React.FC = () => {
         }
     }
 
-    const deleteVariantHandler = () => {
+    const deleteVariantHandler = async () => {
         if (!current) {
             return;
         }
         if (window.confirm('Are you sure you want to delete this variant?')) {
-            dispatch(removeVariant(current));
+            await dispatch(removeVariant(current));
         }
     }
 
@@ -79,9 +79,9 @@ const ProductVariantsEditor: React.FC = () => {
         }
     }
 
-    const onEditVariantProduct = () => {
+    const onEditVariantProduct = async () => {
         if (variant.product?.keyword) {
-            dispatch(loadProduct(variant.product.keyword));
+            await dispatch(loadProduct(variant.product.keyword));
         }
     }
 

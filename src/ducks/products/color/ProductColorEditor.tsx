@@ -37,9 +37,9 @@ const ProductColorEditor: React.FC = () => {
         setColorItem(current ?? defaultColorItem);
     }, [current])
 
-    const submitHandler = (ev: FormEvent) => {
+    const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
-        dispatch(saveCurrentColorItem({...colorItem}));
+        await dispatch(saveCurrentColorItem({...colorItem, productId}));
     }
 
     const textChangeHandler = (field: keyof ProductColorItem) => (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

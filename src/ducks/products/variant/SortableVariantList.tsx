@@ -36,8 +36,8 @@ const SortableVariantList: React.FC = () => {
         setItems(sorted.map((item, index) => ({...item, priority: index})));
     }
 
-    const saveClickHandler = () => {
-        dispatch(saveVariantsSort(items));
+    const saveClickHandler = async () => {
+        await dispatch(saveVariantsSort(items));
     }
 
     return (
