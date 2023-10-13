@@ -37,6 +37,7 @@ const ColorEditor: React.FC = () => {
     const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
         await dispatch(saveColor(color));
+        setColor({...defaultColor});
     }
 
     const newColorHandler = () => {

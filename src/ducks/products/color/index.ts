@@ -44,7 +44,10 @@ const currentColorReducer = createReducer(initialCurrentColorState, (builder) =>
         .addCase(saveCurrentColorItem.fulfilled, (state, action) => {
             state.list = action.payload ?? [];
             state.status = 'idle';
-            const [item] = state.list.filter(item => item.id === state.colorItem?.id);
+            let [item] = state.list.filter(item => item.id === state.colorItem?.id);
+            if (!item && !state.colorItem?.id) {
+                [item] = state.list.filter(item => item.colorCode === action.meta.arg.colorCode);
+            }
             state.colorItem = item ?? null;
         })
         .addCase(saveCurrentColorItem.rejected, (state) => {

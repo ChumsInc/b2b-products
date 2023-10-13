@@ -106,7 +106,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
                 Edit
             </button>
             <div className="sortable-item-padding">
-                <ProductImage imageUrl={variant.product?.image} defaultColor={variant.product?.defaultColor} size="80"/>
+
                 <div className={classNames({'text-primary': variant.isDefaultVariant})}>{variant.title}</div>
                 <div><small>{variant.product?.itemCode}</small></div>
             </div>

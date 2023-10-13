@@ -94,10 +94,18 @@ const ColorAutoComplete = ({value, swatchFormat, onChange, onChangeColor}: Color
     return (
         <div ref={containerRef}>
             <div className="input-group input-group-sm">
+                <div className={classNames("input-group-text", {'text-danger': !color?.id, 'text-success': !!color?.id})}>
+                    <span className={classNames(!!color?.id ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-down-fill', {
+                        'bi-hand-thumbs-up-fill': !!color?.id,
+                        'bi-hand-thumbs-down-fill': !!value && !color?.id,
+                        'bi-hand-thumbs-down': !value && !color?.id,
+                    })} />
+                </div>
                 <input type="search" className="form-control form-control-sm" value={value} onChange={changeHandler}
                        onKeyDown={inputHandler}
                        ref={setInputElement} onFocus={() => setOpen(true)}/>
                 <div className={classNames('input-group-text color-swatch', {[parseColor(`color-swatch--${swatchFormat || '?'}`, color?.code)]: !!color?.code})} />
+
             </div>
             {open && (
                 <div ref={setPopperElement} style={{

@@ -14,6 +14,7 @@ import {SortProps} from "chums-components";
 import {Editable, ProductVariant} from "b2b-types";
 import {Product} from "b2b-types/src/products";
 import {isSellAsVariants} from "../../../utils";
+import {saveCurrentColorItem} from "../color/actions";
 
 export type EditableProduct = Product & Editable;
 

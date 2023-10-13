@@ -34,12 +34,13 @@ const ProductColorEditor: React.FC = () => {
     }, [productId]);
 
     useEffect(() => {
-        setColorItem(current ?? defaultColorItem);
+        setColorItem({...(current ?? defaultColorItem), productId});
     }, [current])
 
     const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
         await dispatch(saveCurrentColorItem({...colorItem, productId}));
+        // setColorItem({...defaultColorItem, productId});
     }
 
     const textChangeHandler = (field: keyof ProductColorItem) => (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

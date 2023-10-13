@@ -106,6 +106,10 @@ const productsListReducer = createReducer(initialProductsListState, (builder) =>
         })
         .addCase(saveProduct.fulfilled, (state, action) => {
             state.list[action.payload.keyword] = listItemFromProduct(action.payload);
+            const [old] = Object.values(state.list).filter(p => p.id === action.payload.id && p.keyword !== action.payload.keyword);
+            if (old) {
+                delete state.list[old.keyword];
+            }
             if (action.payload.defaultParentProductsId) {
                 const [product] = Object.values(state.list).filter(p => p.id === action.payload.defaultParentProductsId);
                 state.list[action.payload.keyword].parentProductKeyword = product.keyword ?? null;

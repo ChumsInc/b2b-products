@@ -21,7 +21,9 @@ const ProductImageList = () => {
             <TablePagination bsSize="sm" page={page} onChangePage={setPage} rowsPerPage={rowsPerPage}
                              onChangeRowsPerPage={setRowsPerPage} count={images.length}/>
             <div className="product-image-list">
-                {images.map(image => (
+                {images
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(image => (
                     <div key={image.id} className="product-image-item" onClick={() => clickHandler(image)}>
                         <ProductImage filename={image.image}
                                       className={classNames({'text-danger': !image.status})}
