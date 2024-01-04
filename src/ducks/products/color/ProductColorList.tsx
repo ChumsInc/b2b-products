@@ -9,9 +9,10 @@ import classNames from "classnames";
 import {LocalStore, storeProductItemsRowsPerPage} from "../../../localStore";
 import {useAppDispatch} from "../../../app/hooks";
 import {setCurrentColorItem} from "./actions";
+import SeasonIcon from "../../seasons/SeasonIcon";
 
 
-const ProductColorList: React.FC = () => {
+const ProductColorList = () => {
     const dispatch = useAppDispatch();
     const list = useSelector(selectCurrentProductColors);
     const product = useSelector(selectCurrentProduct);
@@ -79,6 +80,7 @@ const ProductColorList: React.FC = () => {
                             <ProductImage filename={item.additionalData?.image_filename || product?.image}
                                           className={classNames({'text-danger': !item.status})}
                                           colorCode={item.colorCode} itemCode={item.itemCode} size={80}/>
+                            <SeasonIcon code={item.additionalData?.season?.code} />
                         </div>
                     ))}
             </div>

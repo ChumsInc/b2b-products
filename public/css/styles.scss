@@ -15,6 +15,7 @@
     display: none;
   }
   figure.product-image {
+    margin-bottom: 0;
     &.image-80 {
       max-width: calc(2rem + 80px);
     }

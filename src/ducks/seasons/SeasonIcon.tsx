@@ -4,7 +4,7 @@ import {selectSeasons} from "./index";
 import {Badge} from "chums-components";
 
 export interface SeasonIcon {
-    code: string|null,
+    code?: string|null,
 }
 
 const SeasonIcon:React.FC<SeasonIcon> = ({code}) => {

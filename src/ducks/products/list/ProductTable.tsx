@@ -16,6 +16,7 @@ import {selectPagedList} from "./selectors";
 import {selectSort} from "../../colors/selectors";
 import ProductTablePagination from "./ProductTablePagination";
 import {selectCurrentProduct} from "../product/selectors";
+import ProductTableCategoryName from "./ProductTableCategoryName";
 
 
 const fields: SortableTableField<ProductListItem>[] = [
@@ -23,6 +24,7 @@ const fields: SortableTableField<ProductListItem>[] = [
     {field: 'keyword', title: 'Keyword', sortable: true},
     {field: 'itemCode', title: 'Item Code', sortable: true},
     {field: 'name', title: 'Name', sortable: true},
+    {field: 'defaultCategoriesId', title: 'Category', render: (row) => <ProductTableCategoryName categoryId={row.defaultCategoriesId} />},
     {field: 'season_code', title: 'Season', sortable: true, render: (row) => <SeasonIcon code={row.season_code}/>},
     {
         field: 'defaultParentProductsId',

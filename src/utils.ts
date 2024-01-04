@@ -117,3 +117,15 @@ export const defaultVariant:ProductVariant = {
     status: true,
     priority: 0,
 }
+
+export const reloadSwatchCSSFile = () => {
+    const links = document.querySelectorAll('link');
+    links.forEach(link => {
+        if (link.href.includes('swatches')) {
+            const [file, params] = link.href.split('?');
+            const search = new URLSearchParams(params);
+            search.set('ts', new Date().valueOf().toString(36));
+            link.href = `${file}?${search.toString()}`;
+        }
+    })
+}

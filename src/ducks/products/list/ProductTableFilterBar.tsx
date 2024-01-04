@@ -23,6 +23,7 @@ import KeywordSelect from "../../keywords/KeywordSelect";
 import {loadKeywords} from "../../keywords";
 import {loadColors} from "../../colors/actions";
 import {loadSeasons} from "../../seasons";
+import {reloadSwatchCSSFile} from "../../../utils";
 
 const ProductTableFilterBar: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -53,6 +54,7 @@ const ProductTableFilterBar: React.FC = () => {
         dispatch(loadKeywords())
         dispatch(loadColors());
         dispatch(loadSeasons());
+        reloadSwatchCSSFile();
     }
 
     return (
