@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {Alert, FormCheck, FormColumn, InputGroup, noop, SpinnerButton} from "chums-components";
 import {selectCurrentMix, selectCurrentMixStatus} from "./selectors";
 import {ProductMixItem} from "b2b-types/src/products";
-import {saveMix} from "./actions";
+import {loadMixBOM, saveMix} from "./actions";
 import {defaultMixItem} from "../../../defaults";
 import {selectCurrentProduct} from "../product/selectors";
 import {useAppDispatch} from "../../../app/hooks";
@@ -22,6 +22,12 @@ const ProductMixEditor: React.FC = () => {
     useEffect(() => {
         setMix({...(current ?? defaultMixItem)});
     }, [current]);
+
+    useEffect(() => {
+        if (current) {
+            dispatch(loadMixBOM(current.itemCode));
+        }
+    }, [current?.itemCode]);
 
 
     const submitHandler = (ev: FormEvent) => {

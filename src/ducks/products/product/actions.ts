@@ -17,6 +17,14 @@ export const loadProduct = createAsyncThunk<Product | null, string>(
     'product/current/load',
     async (arg) => {
         return fetchProduct(arg);
+    },
+    {
+        condition: (arg, {getState}) => {
+            const state = getState() as RootState;
+            return !!arg
+                && !selectCurrentProductLoading(state)
+                && !selectCurrentProductSaving(state);
+        }
     }
 )
 

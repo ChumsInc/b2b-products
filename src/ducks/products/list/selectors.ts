@@ -1,7 +1,7 @@
 import {RootState} from "../../../app/configureStore";
 
 import {productListSorter} from "../sorter";
-import {createSelector} from "reselect";
+import {createSelector} from "@reduxjs/toolkit";
 
 export const selectProductList = (state: RootState) => Object.values(state.products.list.list);
 

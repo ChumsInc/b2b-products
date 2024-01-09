@@ -10,6 +10,7 @@ import ProductMixComponentRow from "./ProductMixComponentRow";
 import {useAppDispatch} from "../../../app/hooks";
 import ColorAutoComplete from "../../colors/ColorAutoComplete";
 import {ProductColor} from "b2b-types";
+import BOMDetail from "./BOMDetail";
 
 
 const colWidth = 8;
@@ -56,62 +57,71 @@ const ProductMixComponents: React.FC = () => {
     return (
         <>
             <hr/>
-            <h4>New Component</h4>
-            <form onSubmit={submitHandler} className="mt-3">
-                <FormColumn label="Item Code" width={colWidth}>
-                    <div>
-                        <input type="text" value={component.itemCode} className="form-control form-control-sm"
-                               required ref={itemCodeRef}
-                               list="pmc--item-code-colors"
-                               onChange={updateNewComponent('itemCode')}/>
-                        <ItemDataList id="pmc--item-code-list" search={component.itemCode}/>
-                    </div>
-                    {!!components
-                        .filter(comp => comp.itemCode === component.itemCode || comp.colorsId === component.colorsId)
-                        .length && (
-                        <Alert color="danger">That item already exists in this mix.</Alert>
-                    )}
-                </FormColumn>
-                <FormColumn label="Color Code" width={colWidth}>
-                    <ColorAutoComplete value={component.color_code ?? ''} onChangeColor={onChangeColor}/>
-                </FormColumn>
-                <FormColumn label="Quantity" width={colWidth}>
-                    <input type="number" className="form-control form-control-sm"
-                           min={1}
-                           value={component.itemQuantity || ''} onChange={updateNewComponent('itemQuantity')}
-                           required/>
-                </FormColumn>
-                <FormColumn label="" width={colWidth}>
-                    <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1" spinning={status === 'saving'}
-                                   disabled={!mix?.productId || status !== 'idle'}>
-                        Add New Component
-                    </SpinnerButton>
-                </FormColumn>
-            </form>
+            <div className="row g-3">
+                <div className="col-md-6 col-lg-5">
+                    <h4>New Component</h4>
+                    <form onSubmit={submitHandler} className="mt-3">
+                        <FormColumn label="Item Code" width={colWidth}>
+                            <div>
+                                <input type="text" value={component.itemCode} className="form-control form-control-sm"
+                                       required ref={itemCodeRef}
+                                       list="pmc--item-code-colors"
+                                       onChange={updateNewComponent('itemCode')}/>
+                                <ItemDataList id="pmc--item-code-list" search={component.itemCode}/>
+                            </div>
+                            {!!components
+                                .filter(comp => comp.itemCode === component.itemCode || comp.colorsId === component.colorsId)
+                                .length && (
+                                <Alert color="danger">That item already exists in this mix.</Alert>
+                            )}
+                        </FormColumn>
+                        <FormColumn label="Color Code" width={colWidth}>
+                            <ColorAutoComplete value={component.color_code ?? ''} onChangeColor={onChangeColor}/>
+                        </FormColumn>
+                        <FormColumn label="Quantity" width={colWidth}>
+                            <input type="number" className="form-control form-control-sm"
+                                   min={1}
+                                   value={component.itemQuantity || ''} onChange={updateNewComponent('itemQuantity')}
+                                   required/>
+                        </FormColumn>
+                        <FormColumn label="" width={colWidth}>
+                            <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1"
+                                           spinning={status === 'saving'}
+                                           disabled={!mix?.productId || status !== 'idle'}>
+                                Add New Component
+                            </SpinnerButton>
+                        </FormColumn>
+                    </form>
+                </div>
+                <div className="col-md-6 col-lg-7">
+                    <h4>Components</h4>
+                    <table className="table table-sm">
+                        <thead>
+                        <tr>
+                            <th>Item Code</th>
+                            <th>Color Code</th>
+                            <th>Color Desc</th>
+                            <th>Quantity</th>
+                            <th className="text-center">Update</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {components.map(comp => (
+                            <ProductMixComponentRow key={comp.id} productId={mix?.productId ?? 0} component={comp}/>
+                        ))}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th colSpan={2}>Total</th>
+                            <th>{components.reduce((total, comp) => total + (comp?.itemQuantity || 0), 0)}</th>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
             <hr/>
-            <h4>Components</h4>
-            <table className="table table-sm">
-                <thead>
-                <tr>
-                    <th>Item Code</th>
-                    <th>Color Code</th>
-                    <th>Quantity</th>
-                    <th className="text-center">Update</th>
-                </tr>
-                </thead>
-                <tbody>
-                {components.map(comp => (
-                    <ProductMixComponentRow key={comp.id} productId={mix?.productId ?? 0} component={comp}/>
-                ))}
-                </tbody>
-                <tfoot>
-                <tr>
-                    <th colSpan={2}>Total</th>
-                    <th>{components.reduce((total, comp) => total + (comp?.itemQuantity || 0), 0)}</th>
-                    <th></th>
-                </tr>
-                </tfoot>
-            </table>
+            <BOMDetail />
         </>
     )
 }

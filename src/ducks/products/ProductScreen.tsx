@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ProductTable from "./list/ProductTable";
 import ProductEditTabs from "./tabs/ProductEditTabs";
 import {useSelector} from "react-redux";
@@ -13,10 +13,28 @@ import ProductImagesTab from "./images/ProductImagesTab";
 import {ErrorBoundary} from "react-error-boundary";
 import {selectCurrentTab, selectTabList} from "./tabs";
 import ErrorFallbackComponent from "../../app/ErrorFallbackComponent";
+import {useParams} from "react-router";
+import {useAppDispatch} from "../../app/hooks";
+import {loadProduct, setNewProduct} from "./product/actions";
+import {selectCurrentKeyword} from "./keyword";
 
 const ProductScreen = () => {
+    const dispatch = useAppDispatch();
     const productTabs = useSelector(selectTabList);
     const tab = useSelector(selectCurrentTab)
+    const keyword = useSelector(selectCurrentKeyword);
+    const params = useParams<{ keyword: string }>();
+
+    useEffect(() => {
+        if (!params.keyword) {
+            dispatch(setNewProduct());
+            return;
+        }
+        if (params.keyword !== keyword) {
+            dispatch(loadProduct(params.keyword));
+        }
+    }, [params.keyword, keyword]);
+
 
     return (
         <div className="row g-3">

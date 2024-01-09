@@ -3,13 +3,14 @@ import classNames from "classnames";
 import {ProductListItem} from "b2b-types";
 import {loadProduct} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
+import {useNavigate} from "react-router";
 
 export interface ProductRedirectIconProps {
     product: ProductListItem,
 }
 
 const ProductRedirectIcon: React.FC<ProductRedirectIconProps> = ({product}) => {
-    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     if (!product.redirectToParent) {
         return null;
     }
@@ -19,7 +20,8 @@ const ProductRedirectIcon: React.FC<ProductRedirectIconProps> = ({product}) => {
         }
         ev.preventDefault();
         ev.stopPropagation();
-        dispatch(loadProduct(product.parentProductKeyword))
+        const url = `/products/${encodeURIComponent(product.parentProductKeyword)}`
+        navigate(url);
     }
 
     const className = classNames('redirect-icon', {

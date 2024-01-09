@@ -4,6 +4,7 @@ import {ProductSellAs} from "b2b-types";
 export const selectCurrentProduct = (state: RootState) => state.products.current.product.product;
 
 export const selectCurrentProductId = (state: RootState): number => state.products.current.product.product?.id ?? 0;
+export const selectCurrentProductKeyword = (state:RootState):string => state.products.current.product.product?.keyword ?? '';
 
 export const selectCurrentProductStatus = (state: RootState) => state.products.current.product.product?.status ?? false;
 

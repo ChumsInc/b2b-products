@@ -19,6 +19,7 @@ import {
     updateProductAdditionalData
 } from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
+import {useNavigate} from "react-router";
 
 
 const colWidth = 8;
@@ -26,6 +27,7 @@ const MainEditForm: React.FC = () => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
     const saving = useSelector(selectCurrentProductSaving);
+    const navigate = useNavigate();
 
 
     const submitHandler = async (ev: FormEvent) => {
@@ -115,7 +117,8 @@ const MainEditForm: React.FC = () => {
         }
 
         if (!product.changed || window.confirm('Are you sure you want to discard your changes?')) {
-            dispatch(setNewProduct());
+            navigate('/products');
+            // dispatch(setNewProduct());
         }
     }
     const reloadHandler = () => {
@@ -148,8 +151,13 @@ const MainEditForm: React.FC = () => {
                     <InputGroup bsSize="sm">
                         <input type="text" className="form-control form-control-sm"
                                value={product.keyword} onChange={textChangeHandler('keyword')} required/>
-                        <a href={`https://b2b.chums.com/products/${product.keyword}`} target="b2b-preview"
-                           className="input-group-text bi-link-45deg"/>
+                        {!!product.id && (
+                            <a href={`https://b2b.chums.com/products/${product.keyword}`} target="b2b-preview"
+                               className="input-group-text">
+                                View Page <span className="ms-1 bi-link-45deg"/>
+                            </a>
+
+                        )}
                     </InputGroup>
                 </FormColumn>
                 <FormColumn label="Title" width={colWidth}>
@@ -231,8 +239,8 @@ const MainEditForm: React.FC = () => {
                     <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1"
                                    spinning={saving}>Save</SpinnerButton>
                     <button type="button" className="btn btn-sm btn-outline-secondary me-1"
-                            onClick={newProductHandler}>New
-                        Product
+                            onClick={newProductHandler}>
+                        New Product
                     </button>
                     <button type="button" className="btn btn-sm btn-outline-secondary me-1"
                             disabled={!product.keyword || !product.id} onClick={reloadHandler}>

@@ -17,6 +17,7 @@ import {selectSort} from "../../colors/selectors";
 import ProductTablePagination from "./ProductTablePagination";
 import {selectCurrentProduct} from "../product/selectors";
 import ProductTableCategoryName from "./ProductTableCategoryName";
+import {useNavigate} from "react-router";
 
 
 const fields: SortableTableField<ProductListItem>[] = [
@@ -49,12 +50,14 @@ const rowClassName = (row: ProductListItem) => {
 }
 const ProductTable: React.FC = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const sort = useSelector(selectSort);
     const pagedList = useSelector(selectPagedList);
     const current = useSelector(selectCurrentProduct);
 
     const onSelectRow = (row: ProductListItem) => {
-        dispatch(loadProduct(row.keyword));
+        const url = `/products/${encodeURIComponent(row.keyword)}`;
+        navigate(url);
     }
 
     return (

@@ -11,6 +11,7 @@ import {
 } from "b2b-types/src/products";
 import {defaultProduct} from "../defaults";
 import {isSellAsColorsProduct, isSellAsMixProduct, isSellAsVariantsProduct} from "../ducks/products/utils";
+import {BOMResult} from "../types/item-search";
 
 const debug = Debug('chums:api:productsAPI');
 
@@ -300,5 +301,19 @@ export async function deleteAltImage(image: ProductAlternateImage): Promise<Prod
         }
         console.debug("deleteAltImage()", err);
         return Promise.reject(new Error('Error in postAltImage()'));
+    }
+}
+
+export async function fetchMixBOM(itemCode: string):Promise<BOMResult> {
+    try {
+        const url = `/api/operations/production/bill/chums/${itemCode}`;
+        return await fetchJSON<BOMResult>(url, {cache: 'no-cache'});
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            console.debug("loadMixBOM()", err.message);
+            return Promise.reject(err);
+        }
+        console.debug("loadMixBOM()", err);
+        return Promise.reject(new Error('Error in loadMixBOM()'));
     }
 }
