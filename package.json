@@ -60,7 +60,7 @@
     "core-js": "^3.10.1",
     "css-loader": "^6.2.0",
     "sass": "^1.35.1",
-    "sass-loader": "^13.0.0",
+    "sass-loader": "^14.1.0",
     "style-loader": "^3.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "ts-loader": "^9.2.3",

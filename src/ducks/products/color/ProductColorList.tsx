@@ -28,21 +28,21 @@ const ProductColorList = () => {
         setRowsPerPage(rowsPerPage);
     }, [])
 
-    const [checked, setChecked] = useState(true);
-    const [filteredList, setFilteredList] = useState<ProductColorItem[]>(list.filter(row => !checked || row.status))
+    const [showInactive, setShowInactive] = useState(false);
+    const [filteredList, setFilteredList] = useState<ProductColorItem[]>(list.filter(row => showInactive || row.selfStatus))
 
     useEffect(() => {
-        const filteredList = list.filter(row => !checked || row.status);
+        const filteredList = list.filter(row => showInactive || row.selfStatus);
         setFilteredList(filteredList);
         setPage(1);
     }, [product?.id]);
 
     useEffect(() => {
-        const filteredList = list.filter(row => !checked || row.status);
+        const filteredList = list.filter(row => showInactive || row.selfStatus);
         const nextPage = Math.floor(filteredList.length / rowsPerPage) < page ? 0 : page;
         setFilteredList(filteredList);
         setPage(nextPage);
-    }, [list, checked, rowsPerPage]);
+    }, [list, showInactive, rowsPerPage]);
 
     const onChangeRowsPerPage = (value: number) => {
         LocalStore.setItem(storeProductItemsRowsPerPage, value);
@@ -56,8 +56,8 @@ const ProductColorList = () => {
         <>
             <div className="row g-3 align-items-baseline">
                 <div className="col-auto">
-                    <FormCheck label="Filter Inactive" checked={checked}
-                               onChange={() => setChecked(!checked)} type="checkbox"/>
+                    <FormCheck label="Show Inactive" checked={showInactive}
+                               onChange={() => setShowInactive(!showInactive)} type="checkbox"/>
                 </div>
                 <div className="col">
                     <TablePagination bsSize="sm"
