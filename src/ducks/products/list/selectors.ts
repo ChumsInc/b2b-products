@@ -26,10 +26,11 @@ export const selectProductListPage = (state: RootState) => state.products.list.p
 export const selectProductListRowsPerPage = (state: RootState) => state.products.list.rowsPerPage;
 
 export const selectProductListSort = (state: RootState) => state.products.list.sort;
+export const selectProductSeasonFilter = (state:RootState) => state.products.list.filter.season;
 
 export const selectFilteredList = createSelector(
-    [selectProductList, selectProductsSearch, selectProductsFilterActive, selectProductsFilterAvailable, selectProductsFilterOnSale, selectProductsFilterCategoryId, selectProductListSort],
-    (list, search, isActive, isAvailableForSale, hasSalePrice, categoryId, sort) => {
+    [selectProductList, selectProductsSearch, selectProductsFilterActive, selectProductsFilterAvailable, selectProductsFilterOnSale, selectProductsFilterCategoryId, selectProductSeasonFilter, selectProductListSort],
+    (list, search, isActive, isAvailableForSale, hasSalePrice, categoryId, season, sort) => {
         let reSearch = /^/;
         try {
             reSearch = new RegExp(search, 'i');
@@ -40,6 +41,7 @@ export const selectFilteredList = createSelector(
             .filter(i => !isAvailableForSale || i.availableForSale)
             .filter(i => !hasSalePrice || !!i.salePrice)
             .filter(i => !categoryId || i.defaultCategoriesId === categoryId)
+            .filter(i => !season || i.season_code === season)
             .filter(i => {
                 return search === ''
                     || reSearch.test(i.keyword) || reSearch.test(i.name) || reSearch.test(i.itemCode)

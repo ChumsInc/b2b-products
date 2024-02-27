@@ -1,19 +1,24 @@
-import  React from 'react';
+import React from 'react';
 import {useSelector} from "react-redux";
 import {selectSeasons} from "./index";
-import {Badge} from "chums-components";
+import MiniChip from "../../components/MiniChip";
+
 
 export interface SeasonIcon {
-    code?: string|null,
+    code?: string | null;
+    seasonAvailable?: boolean;
 }
 
-const SeasonIcon:React.FC<SeasonIcon> = ({code}) => {
+const SeasonIcon: React.FC<SeasonIcon> = ({code, seasonAvailable}) => {
     const seasons = useSelector(selectSeasons);
     if (!code) {
         return null;
     }
     const colorCode = seasons[code]?.properties?.color || undefined;
-    return <Badge color="custom" colorCode={colorCode} text={code}/>
+    const badgeText = seasonAvailable === false ? `${code} !!` : code;
+    return (
+        <MiniChip variant="filled" bgColor={colorCode ?? '#FFF'} label={badgeText}/>
+    )
 }
 
 export default SeasonIcon;

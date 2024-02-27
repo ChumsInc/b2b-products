@@ -52,5 +52,6 @@ export function listItemFromProduct(product:Product):ProductListItem {
         parentProductKeyword: null,
         defaultCategoriesId,
         season_code: season_code,
+        seasonAvailable: (product.additionalData?.seasonAvailable ?? false) || !product.season_code,
     }
 }

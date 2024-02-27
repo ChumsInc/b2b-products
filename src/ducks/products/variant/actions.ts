@@ -4,6 +4,7 @@ import {deleteVariant, postVariant, putVariantSort, putDefaultVariant} from "../
 import {selectCurrentVariantSaving} from "./selectors";
 import {RootState} from "../../../app/configureStore";
 import {selectCurrentProductLoading} from "../product/selectors";
+import {VariantSortArgs} from "../../../types/variant";
 
 
 export const setCurrentVariant = createAction<ProductVariant|null>('products/current/variant/set');
@@ -47,7 +48,7 @@ export const setDefaultVariant = createAsyncThunk<ProductVariant[], ProductVaria
     }
 )
 
-export const saveVariantsSort = createAsyncThunk<ProductVariant[], ProductVariant[]>(
+export const saveVariantsSort = createAsyncThunk<ProductVariant[], VariantSortArgs[]>(
     'products/current/saveVariantsSort',
     async (arg) => {
         return putVariantSort(arg);

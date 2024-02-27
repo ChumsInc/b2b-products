@@ -4,3 +4,4 @@ export const selectCurrentProductVariants = (state: RootState) => state.products
 
 export const selectCurrentVariant = (state: RootState) => state.products.current.variant.variant;
 export const selectCurrentVariantSaving = (state: RootState) => state.products.current.variant.saving;
+export const selectCurrentVariantSort = (state:RootState) => state.products.current.variant.currentSort;

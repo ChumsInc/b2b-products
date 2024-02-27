@@ -1,14 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {SortProps, SpinnerButton} from "chums-components";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {useSelector} from "react-redux";
-import {selectCurrentProductVariants} from "./selectors";
+import {selectCurrentProductVariants, selectCurrentVariantSort} from "./selectors";
 import {variantListSorter} from "../sorter";
 import SortableVariantItem from "./SortableVariantItem";
 import {saveVariantsSort} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
 import {ProductVariant} from "b2b-types";
+import update from 'immutability-helper';
+import {VariantSortArgs} from "../../../types/variant";
+import {variantSortKey} from "./utils";
 
 
 export const variantPrioritySort: SortProps<ProductVariant> = {
@@ -19,6 +22,7 @@ export const variantPrioritySort: SortProps<ProductVariant> = {
 const SortableVariantList: React.FC = () => {
     const dispatch = useAppDispatch();
     const variants = useSelector(selectCurrentProductVariants);
+    const currentSort = useSelector(selectCurrentVariantSort);
     const saving = false;
 
     const [items, setItems] = useState([...variants].sort(variantListSorter(variantPrioritySort)));
@@ -28,23 +32,33 @@ const SortableVariantList: React.FC = () => {
     }, [variants]);
 
 
-    const onMoveItem = (dragIndex: number, hoverIndex: number) => {
-        const sorted = [...items];
-        const movingItem = sorted[dragIndex];
-        sorted.splice(dragIndex, 1);
-        sorted.splice(hoverIndex, 0, movingItem);
-        setItems(sorted.map((item, index) => ({...item, priority: index})));
-    }
+    const onMoveItem = useCallback((dragIndex: number, hoverIndex: number) => {
+        setItems((prevItems: ProductVariant[]) =>
+            update(prevItems, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, prevItems[dragIndex] as ProductVariant]
+                ]
+            })
+        )
+    }, [variants]);
+
+    const renderVariant = useCallback((variant: ProductVariant, index: number) => {
+        return (
+            <SortableVariantItem key={variant.id} variant={variant} index={index} moveItem={onMoveItem}/>
+        )
+    }, [variants])
 
     const saveClickHandler = async () => {
-        await dispatch(saveVariantsSort(items));
+        const sorted:VariantSortArgs[] = items.map((item, index) => ({parentProductID: item.parentProductID, id: item.id, priority: index}))
+        await dispatch(saveVariantsSort(sorted));
     }
 
     return (
         <div>
             <div className="row g-3 my-1 align-items-baseline">
                 <div className="col-auto">
-                    <SpinnerButton type="button" color="outline-secondary" spinning={saving} size="sm"
+                    <SpinnerButton type="button" color={currentSort === variantSortKey(items) ? "outline-secondary" : 'warning'} spinning={saving} size="sm"
                                    onClick={saveClickHandler}>
                         Save Current Sort
                     </SpinnerButton>
@@ -52,11 +66,7 @@ const SortableVariantList: React.FC = () => {
             </div>
             <DndProvider backend={HTML5Backend}>
                 <div className="sortable-variant-list">
-                    {[...items]
-                        .map((v, index) => (
-                            <SortableVariantItem key={v.id} variant={v} index={index} moveItem={onMoveItem}/>
-                        ))
-                    }
+                    {[...items].map((v, index) => renderVariant(v, index))}
                 </div>
             </DndProvider>
         </div>

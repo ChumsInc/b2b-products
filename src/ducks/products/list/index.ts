@@ -5,7 +5,7 @@ import {
     setPage,
     setProductsSearch,
     setProductsSort,
-    setRowsPerPage,
+    setRowsPerPage, setSeasonFilter,
     toggleFilterActive,
     toggleFilterAvailable,
     toggleFilterOnSale
@@ -18,9 +18,10 @@ import {listItemFromProduct} from "../utils";
 
 export interface ProductFilter {
     isActive: boolean,
-    isAvailableForSale: boolean,
+    isAvailableForSale: boolean;
     hasSalePrice: boolean,
     categoryId: number|null;
+    season: string;
 }
 
 export const defaultFilter: ProductFilter = {
@@ -28,6 +29,7 @@ export const defaultFilter: ProductFilter = {
     isAvailableForSale: false,
     hasSalePrice: false,
     categoryId: null,
+    season: '',
 };
 
 const defaultSort: SortProps<ProductListItem> = {
@@ -91,6 +93,9 @@ const productsListReducer = createReducer(initialProductsListState, (builder) =>
         })
         .addCase(setCategoryFilter, (state, action) => {
             state.filter.categoryId = action.payload ?? null;
+        })
+        .addCase(setSeasonFilter, (state, action) => {
+            state.filter.season = action.payload;
         })
         .addCase(setPage, (state, action) => {
             state.page = action.payload;

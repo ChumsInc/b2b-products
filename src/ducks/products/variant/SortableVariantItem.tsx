@@ -8,6 +8,7 @@ import classNames from "classnames";
 import ProductImage from "./ProductImage";
 import {setCurrentVariant} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
+import type {Identifier, XYCoord} from 'dnd-core'
 
 interface SortableVariantItemProps {
     variant: ProductVariant,
@@ -31,38 +32,39 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
     const selectedVariant = useSelector(selectCurrentVariant);
     const ref = useRef<HTMLDivElement>(null);
 
-    const [collectedProps, drop] = useDrop({
+    const [collectedProps, drop] = useDrop<DragItem, void, {handlerId: Identifier|null}>({
         accept: 'item',
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
             }
         },
-        hover(item: unknown, monitor: DropTargetMonitor) {
+        hover(item: DragItem, monitor: DropTargetMonitor) {
             if (!ref.current) {
                 return;
             }
-            const dragIndex = (item as DragItem).index;
+            const dragIndex = item.index;
             const hoverIndex = index;
             if (dragIndex === hoverIndex) {
                 return;
             }
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
             const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-            const hoverMiddleX = (hoverBoundingRect.left - hoverBoundingRect.right) / 2;
             const clientOffset = monitor.getClientOffset();
             if (!clientOffset) {
                 return;
             }
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-            const hoverClientX = clientOffset.x - hoverBoundingRect.left;
 
-            if (dragIndex < hoverIndex && (hoverClientX < hoverMiddleX || hoverClientY < hoverMiddleY)) {
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return;
+            }
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
                 return;
             }
 
             moveItem(dragIndex, hoverIndex);
-            (item as DragItem).index = hoverIndex;
+            item.index = hoverIndex;
         },
     });
 

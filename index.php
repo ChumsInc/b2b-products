@@ -18,7 +18,7 @@ $description = "";
 $ui = new WebUI($bodyPath, $title, $description, true, 5);
 $ui->bodyClassName = 'container-fluid';
 $ui->AddCSS("public/css/styles.css");
-$ui->AddCSS("https://b2b.chums.com/css/swatches-2020.css");
+$ui->AddCSS("https://b2b.chums.com/b2b-swatches/swatches.css");
 $ui->addManifest('public/js/manifest.json');
 
 $ui->Send();

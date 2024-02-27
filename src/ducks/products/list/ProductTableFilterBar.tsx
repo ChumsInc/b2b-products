@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import {useSelector} from "react-redux";
 import {
-    selectProductListLoading,
+    selectProductListLoading, selectProductSeasonFilter,
     selectProductsFilterActive,
     selectProductsFilterAvailable,
     selectProductsFilterCategoryId,
@@ -12,7 +12,7 @@ import {FormCheck, SpinnerButton} from "chums-components";
 import {
     loadProductsList,
     setCategoryFilter,
-    setProductsSearch,
+    setProductsSearch, setSeasonFilter,
     toggleFilterActive,
     toggleFilterAvailable,
     toggleFilterOnSale
@@ -24,6 +24,7 @@ import {loadKeywords} from "../../keywords";
 import {loadColors} from "../../colors/actions";
 import {loadSeasons} from "../../seasons";
 import {reloadSwatchCSSFile} from "../../../utils";
+import SeasonSelect from "../../seasons/SeasonSelect";
 
 const ProductTableFilterBar: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -33,6 +34,7 @@ const ProductTableFilterBar: React.FC = () => {
     const search = useSelector(selectProductsSearch);
     const loading = useSelector(selectProductListLoading);
     const categoryId = useSelector(selectProductsFilterCategoryId);
+    const season = useSelector(selectProductSeasonFilter);
 
     const searchChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => dispatch(setProductsSearch(ev.target.value));
     const filterActiveClickHandler = () => {
@@ -77,6 +79,12 @@ const ProductTableFilterBar: React.FC = () => {
             <div className="col-auto">
                 <FormCheck label="Available" checked={filterAvailable} onChange={filterAvailableClickHandler}
                            type={"checkbox"}/>
+            </div>
+            <div className="col-auto">
+                <div className="input-group input-group-sm">
+                    <label className="input-group-text">Season</label>
+                    <SeasonSelect value={season} onChange={(season) => dispatch(setSeasonFilter(season?.code ?? ''))} />
+                </div>
             </div>
             <div className="col-auto">
                 <div className="input-group input-group-sm">

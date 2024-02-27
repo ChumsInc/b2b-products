@@ -10,6 +10,7 @@ import {LocalStore, storeProductItemsRowsPerPage} from "../../../localStore";
 import {useAppDispatch} from "../../../app/hooks";
 import {setCurrentColorItem} from "./actions";
 import SeasonIcon from "../../seasons/SeasonIcon";
+import MiniChip from "../../../components/MiniChip";
 
 
 const ProductColorList = () => {
@@ -54,6 +55,7 @@ const ProductColorList = () => {
     }
     return (
         <>
+            <hr />
             <div className="row g-3 align-items-baseline">
                 <div className="col-auto">
                     <FormCheck label="Show Inactive" checked={showInactive}
@@ -71,16 +73,22 @@ const ProductColorList = () => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map(item => (
                         <div key={item.id} className="product-color-item">
-                            <button type="button" className={classNames('btn btn-sm', {
+                            <button type="button" className={classNames('btn btn-sm d-flex justify-content-between', {
                                 'btn-secondary': selected?.id === item.id,
                                 'btn-outline-secondary': selected?.id !== item.id
                             })} onClick={() => selectItemHandler(item)}>
-                                {item.colorCode}
+                                <div>
+                                    {item.colorCode}
+                                </div>
+                                <div className={`color-swatch color-swatch--${item.colorCode}`}>
+                                    &nbsp;
+                                </div>
                             </button>
                             <ProductImage filename={item.additionalData?.image_filename || product?.image}
                                           className={classNames({'text-danger': !item.status})}
                                           colorCode={item.colorCode} itemCode={item.itemCode} size={80}/>
-                            <SeasonIcon code={item.additionalData?.season?.code} />
+                            <SeasonIcon code={item.additionalData?.season?.code} seasonAvailable={item.additionalData?.seasonAvailable === true} />
+                            {!!item.productStatus && (<MiniChip variant="filled" bgColor="#000" label={item.productStatus} />)}
                         </div>
                     ))}
             </div>

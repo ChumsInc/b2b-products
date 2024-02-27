@@ -2,10 +2,12 @@ import React from 'react';
 import {ProductListItem} from "b2b-types";
 import {Badge} from "chums-components";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils";
+import classNames from "classnames";
+import MiniChip from "../../../components/MiniChip";
 
 export const mixColor = '#4e9b5b';
 export const colorsColor = '#ce0e2d';
-export const selfColor = 'primary';
+export const selfColor = '#00F';
 export const variantsColor = '#a9a8a8';
 
 
@@ -19,16 +21,16 @@ const ProductSellAsIcon = ({product}:ProductSellAsIconProps) => {
             {!product.availableForSale && <span className="bi-lightbulb text-dark me-1" />}
             {product.availableForSale && <span className="bi-lightbulb-fill text-warning me-1"  />}
             {product.sellAs === SELL_AS_VARIANTS &&
-                <Badge color="custom" colorCode={variantsColor}>V:{product.variantsCount}</Badge>}
+                <MiniChip bgColor={variantsColor} label={`V:${product.variantsCount}`} />}
             {product.sellAs === SELL_AS_VARIANTS && !!product.selfCount &&
-                <Badge color={selfColor}>S:{product.selfCount}</Badge>}
-            {product.sellAs === SELL_AS_SELF && <Badge color={selfColor}>Self</Badge>}
+                <MiniChip bgColor={selfColor} label={`S:${product.selfCount}`} />}
+            {product.sellAs === SELL_AS_SELF && <MiniChip bgColor={selfColor} label="Self" />}
             {product.sellAs === SELL_AS_VARIANTS && !!product.mixesCount &&
-                <Badge color="custom" colorCode={mixColor}>M:{product.mixesCount}</Badge>}
+                <MiniChip bgColor={mixColor} label={`M:${product.mixesCount}`} />}
             {product.sellAs === SELL_AS_MIX && <Badge color="custom" colorCode={mixColor}>Mix</Badge>}
             {product.sellAs === SELL_AS_VARIANTS && !!product.colorsCount &&
-                <Badge color="custom" colorCode={colorsColor}>C:{product.colorsCount}</Badge>}
-            {product.sellAs === SELL_AS_COLORS && <Badge color="custom" colorCode={colorsColor}>Colors</Badge>}
+                <MiniChip bgColor={colorsColor} label={`C:${product.colorsCount}`} />}
+            {product.sellAs === SELL_AS_COLORS && <MiniChip bgColor={colorsColor} label="Colors" />}
         </span>
     )
 }

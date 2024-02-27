@@ -10,14 +10,7 @@ import ProductSellAsToggle from "./ProductSellAsToggle";
 import ProductItemCodeInput from "./ProductItemCodeInput";
 import SeasonAlert from "../../seasons/SeasonAlert";
 import RedirectToParent from "./RedirectToParent";
-import {
-    duplicateProduct,
-    loadProduct,
-    saveProduct,
-    setNewProduct,
-    updateProduct,
-    updateProductAdditionalData
-} from "./actions";
+import {duplicateProduct, loadProduct, saveProduct, updateProduct, updateProductAdditionalData} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
 import {useNavigate} from "react-router";
 
@@ -40,33 +33,33 @@ const MainEditForm: React.FC = () => {
 
     const textChangeHandler = (field: keyof Product) => (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         switch (field) {
-        case 'keyword':
-        case 'dateAvailable':
-        case 'itemCode':
-        case 'name':
-        case 'image':
-        case 'defaultColor':
-        case 'description':
-        case 'details':
-            return dispatch(updateProduct({[field]: ev.target.value}));
+            case 'keyword':
+            case 'dateAvailable':
+            case 'itemCode':
+            case 'name':
+            case 'image':
+            case 'defaultColor':
+            case 'description':
+            case 'details':
+                return dispatch(updateProduct({[field]: ev.target.value}));
         }
     }
     const additionalDataChangeHandler = (field: keyof ProductAdditionalData) => (ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 
         switch (field) {
-        case 'subtitle':
-        case 'size':
-        case 'formatted_name':
-        case 'swatch_format':
-            return dispatch(updateProductAdditionalData({[field]: ev.target.value}));
+            case 'subtitle':
+            case 'size':
+            case 'formatted_name':
+            case 'swatch_format':
+                return dispatch(updateProductAdditionalData({[field]: ev.target.value}));
         }
     }
 
     const keywordChangeHandler = (field: keyof Product) => (kw: Keyword | null) => {
         switch (field) {
-        case 'defaultCategoriesId':
-        case "defaultParentProductsId":
-            return dispatch(updateProduct({[field]: kw?.id || 0}))
+            case 'defaultCategoriesId':
+            case "defaultParentProductsId":
+                return dispatch(updateProduct({[field]: kw?.id || 0}))
         }
     }
 
@@ -75,11 +68,11 @@ const MainEditForm: React.FC = () => {
             return;
         }
         switch (field) {
-        case 'status':
-        case 'availableForSale':
-        case 'canDome':
-        case 'canScreenPrint':
-            return dispatch(updateProduct({[field]: !product[field]}));
+            case 'status':
+            case 'availableForSale':
+            case 'canDome':
+            case 'canScreenPrint':
+                return dispatch(updateProduct({[field]: !product[field]}));
         }
     }
 
@@ -89,9 +82,13 @@ const MainEditForm: React.FC = () => {
         }
         const checked = (!!product.additionalData ? !!product.additionalData[field] : false);
         switch (field) {
-        case 'best_seller':
-        case 'upcycled':
-            return dispatch(updateProductAdditionalData({[field]: !checked}));
+            case 'best_seller':
+            case 'upcycled':
+            case 'seasonAvailable':
+            case 'heatTransfer':
+            case 'sublimation':
+            case 'rfidBlocking':
+                return dispatch(updateProductAdditionalData({[field]: !checked}));
         }
     }
 
@@ -101,6 +98,7 @@ const MainEditForm: React.FC = () => {
             season_code: season?.code || ''
         }));
     }
+
 
     const duplicateHandler = () => {
         if (!product) {
@@ -141,7 +139,8 @@ const MainEditForm: React.FC = () => {
             <form onSubmit={submitHandler} className="mt-3">
                 <FormColumn label="ID" width={colWidth}>
                     <InputGroup bsSize="sm">
-                        <input type="number" disabled readOnly value={product.id} className="form-control form-control-sm"/>
+                        <input type="number" disabled readOnly value={product.id}
+                               className="form-control form-control-sm"/>
                         <button type="button" className="btn btn-sm btn-warning" onClick={duplicateHandler}>
                             Duplicate
                         </button>
@@ -172,11 +171,18 @@ const MainEditForm: React.FC = () => {
                     <FormCheck label='Available for Sale' checked={product.availableForSale}
                                onChange={toggleChangeHandler('availableForSale')} type="checkbox" inline/>
                 </FormColumn>
-                <FormColumn label="Order Type" width={colWidth}>
+                <FormColumn label="Product Season" width={colWidth}>
                     <InputGroup bsSize="sm">
                         <span className="input-group-text">Season</span>
-                        <SeasonSelect value={product.season_code || ''} onlyActive={true}
+                        <SeasonSelect value={product.season?.code || ''}
                                       onChange={seasonChangeHandler}/>
+                        <div className="input-group-text">
+                            <label className="form-check-label me-3"
+                                   htmlFor="product-season-available">Available</label>
+                            <input type="checkbox" id="product-season-available" className="form-check-input"
+                                   checked={product.additionalData?.seasonAvailable ?? false}
+                                   onChange={toggleAdditionalDataChangeHandler('seasonAvailable')}/>
+                        </div>
                     </InputGroup>
                     {product.season_code && <SeasonAlert code={product.season_code}/>}
                 </FormColumn>
@@ -233,6 +239,12 @@ const MainEditForm: React.FC = () => {
                                onChange={toggleChangeHandler('canDome')} type="checkbox"/>
                     <FormCheck label="Screen Print" inline checked={product.canScreenPrint || false}
                                onChange={toggleChangeHandler('canScreenPrint')} type="checkbox"/>
+                    <FormCheck label="Heat Transfer" inline checked={product.additionalData?.heatTransfer || false}
+                               onChange={toggleAdditionalDataChangeHandler('heatTransfer')} type="checkbox"/>
+                    <FormCheck label="Sublimation" inline checked={product.additionalData?.sublimation || false}
+                               onChange={toggleAdditionalDataChangeHandler('sublimation')} type="checkbox"/>
+                    <FormCheck label="RFID-Blocking" inline checked={product.additionalData?.rfidBlocking || false}
+                               onChange={toggleAdditionalDataChangeHandler('rfidBlocking')} type="checkbox"/>
                 </FormColumn>
                 <hr/>
                 <FormColumn label="" width={colWidth}>

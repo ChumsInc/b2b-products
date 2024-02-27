@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
 import {Alert, Badge, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-components";
 import {selectCurrentColorItem, selectCurrentColorStatus} from "./selectors";
@@ -11,6 +11,9 @@ import {defaultColorItem} from "../../../defaults";
 import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
 import ColorAutoComplete from "../../colors/ColorAutoComplete";
+import classNames from "classnames";
+import TextareaAutosize from "react-textarea-autosize";
+import color from "./index";
 
 interface EditableProductColorItem extends ProductColorItem, Editable {
 }
@@ -25,6 +28,7 @@ const ProductColorEditor: React.FC = () => {
     const currentProduct = useSelector(selectCurrentProduct);
     const current = useSelector(selectCurrentColorItem);
     const status = useSelector(selectCurrentColorStatus);
+    const seasonAvailableId = useId();
 
     const [colorItem, setColorItem] = useState<EditableProductColorItem>(current ?? {...defaultColorItem});
 
@@ -45,9 +49,9 @@ const ProductColorEditor: React.FC = () => {
 
     const textChangeHandler = (field: keyof ProductColorItem) => (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         switch (field) {
-        case 'itemCode':
-        case 'colorCode':
-            return setColorItem({...colorItem, [field]: ev.target.value, changed: true});
+            case 'itemCode':
+            case 'colorCode':
+                return setColorItem({...colorItem, [field]: ev.target.value, changed: true});
         }
     }
 
@@ -59,20 +63,34 @@ const ProductColorEditor: React.FC = () => {
         }
     }
 
-    const additionalDataChangeHandler = (field: keyof ProductColorItemAdditionalData) => (ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const additionalDataChangeHandler = (field: keyof ProductColorItemAdditionalData) => (ev: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+        const additionalData: ProductColorItemAdditionalData = {...(colorItem?.additionalData ?? {})};
         switch (field) {
-        case 'swatch_code':
-        case 'image_filename':
-            const additionalData: ProductColorItemAdditionalData = {...(colorItem?.additionalData ?? {})};
-            additionalData[field] = ev.target.value;
-            return setColorItem({...colorItem, additionalData, changed: true});
+            case 'seasonAvailable':
+                additionalData[field] = (ev as ChangeEvent<HTMLInputElement>).target.checked;
+                return setColorItem({...colorItem, additionalData, changed: true});
+            case 'swatch_code':
+            case 'image_filename':
+            case 'message':
+                additionalData[field] = ev.target.value;
+                return setColorItem({...colorItem, additionalData, changed: true});
+        }
+    }
+
+    const additionalDataSelectChangeHandler = (field: keyof ProductColorItemAdditionalData) => (ev: ChangeEvent<HTMLSelectElement>) => {
+        const additionalData: ProductColorItemAdditionalData = {...(colorItem?.additionalData ?? {})};
+        switch (field) {
+            case 'swatch_code':
+            case 'image_filename':
+                additionalData[field] = ev.target.value;
+                return setColorItem({...colorItem, additionalData, changed: true});
         }
     }
 
     const toggleChangeHandler = (field: keyof ProductColorItem) => () => {
         switch (field) {
-        case 'status':
-            return setColorItem({...colorItem, [field]: !colorItem[field], changed: true});
+            case 'status':
+                return setColorItem({...colorItem, [field]: !colorItem[field], changed: true});
         }
     }
 
@@ -103,6 +121,7 @@ const ProductColorEditor: React.FC = () => {
             <form onSubmit={submitHandler} className="mt-3">
                 <FormColumn label="ID" width={colWidth}>
                     <InputGroup bsSize="sm">
+                        <span className="input-group-text">ID</span>
                         <input type="number" readOnly value={colorItem.id} className="form-control form-control-sm"/>
                     </InputGroup>
                 </FormColumn>
@@ -137,11 +156,26 @@ const ProductColorEditor: React.FC = () => {
                     {!!colorItem.id && colorItem.productType === null &&
                         <Alert color="danger">Item <strong>{colorItem.itemCode}</strong> does not exist.</Alert>}
                 </FormColumn>
-                <FormColumn label="Order Type" width={colWidth}>
+                <FormColumn label="Message" width={8}>
+                    <TextareaAutosize value={colorItem.additionalData?.message ?? ''} onChange={additionalDataChangeHandler('message')}
+                                      className="form-control form-control-sm">
+
+                    </TextareaAutosize>
+                </FormColumn>
+                <FormColumn label="" width={12} className="mb-1">
                     <InputGroup bsSize="sm">
                         <span className="input-group-text">Season</span>
-                        <SeasonSelect value={colorItem.additionalData?.season?.code || ''} onlyActive={true}
+                        <SeasonSelect value={colorItem.additionalData?.season?.code || ''}
                                       onChange={seasonChangeHandler}/>
+                        <div className="input-group-text">
+                            <label className="form-check-label me-3"
+                                   htmlFor={seasonAvailableId}>Available</label>
+                            <input type="checkbox" id={seasonAvailableId} className="form-check-input"
+                                   checked={colorItem.additionalData?.seasonAvailable ?? false}
+                                   disabled={!colorItem.additionalData?.season_id}
+                                   onChange={additionalDataChangeHandler('seasonAvailable')}/>
+                        </div>
+
                     </InputGroup>
                     {colorItem.additionalData?.season?.code &&
                         <SeasonAlert code={colorItem.additionalData?.season?.code}/>}
@@ -149,9 +183,10 @@ const ProductColorEditor: React.FC = () => {
 
                 <FormColumn label="" width={12}>
                     <div className="d-flex justify-content-end">
-                        <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1"
+                        <SpinnerButton type="submit" className={classNames("btn btn-sm me-1", {'btn-primary': !colorItem.changed, 'btn-warning': colorItem.changed})}
                                        spinning={status === 'saving'}
                                        disabled={!productId || status !== 'idle'}>
+                            {colorItem.changed && <span className="bi-exclamation-triangle-fill me-1" />}
                             Save
                         </SpinnerButton>
                         <button type="button" className="btn btn-sm btn-outline-secondary me-1"
@@ -164,9 +199,6 @@ const ProductColorEditor: React.FC = () => {
                             Delete
                         </SpinnerButton>
                     </div>
-                </FormColumn>
-                <FormColumn label="" width={colWidth}>
-                    {colorItem.changed && <Alert color="warning">Don't forget to save your changes.</Alert>}
                 </FormColumn>
             </form>
         </>

@@ -12,6 +12,7 @@ import {
 import {defaultProduct} from "../defaults";
 import {isSellAsColorsProduct, isSellAsMixProduct, isSellAsVariantsProduct} from "../ducks/products/utils";
 import {BOMResult} from "../types/item-search";
+import {VariantSortArgs} from "../types/variant";
 
 const debug = Debug('chums:api:productsAPI');
 
@@ -102,7 +103,9 @@ export async function postVariant(_variant: ProductVariant): Promise<ProductVari
     }
 }
 
-export async function putVariantSort(_variants: ProductVariant[]): Promise<ProductVariant[]> {
+
+
+export async function putVariantSort(_variants: VariantSortArgs[]): Promise<ProductVariant[]> {
     try {
         if (_variants.length === 0) {
             return [];

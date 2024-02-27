@@ -6,6 +6,7 @@ import {isSellAsVariantsProduct} from "../utils";
 import {variantListSorter} from "../sorter";
 import {SortProps} from "chums-components";
 import {defaultVariant} from "../../../utils";
+import {variantSortKey} from "./utils";
 
 export const defaultVariantSort:SortProps<ProductVariant> = {
     field: "priority",
@@ -16,6 +17,7 @@ export interface CurrentVariantState {
     productId: number | null;
     list: ProductVariant[];
     variant: ProductVariant | null;
+    currentSort: string;
     loading: boolean;
     saving: boolean;
 }
@@ -24,6 +26,7 @@ export const initialVariantState: CurrentVariantState = {
     productId: null,
     list: [],
     variant: {...defaultVariant},
+    currentSort: '',
     loading: false,
     saving: false,
 }
@@ -43,6 +46,7 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
             } else {
                 state.list = [];
             }
+            state.currentSort = variantSortKey(state.list);
             state.productId = action.payload?.id ?? null;
         })
         .addCase(setCurrentVariant, (state, action) => {
@@ -59,6 +63,7 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
                     ...state.list.filter(v => v.id !== action.payload?.id),
                     action.payload,
                 ].sort(variantListSorter(defaultVariantSort));
+                state.currentSort = variantSortKey(state.list);
             }
         })
         .addCase(saveCurrentVariant.rejected, (state) => {
@@ -71,6 +76,7 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
             state.variant = null;
             state.saving = false;
             state.list = [...action.payload].sort(variantListSorter(defaultVariantSort))
+            state.currentSort = variantSortKey(state.list);
         })
         .addCase(removeVariant.rejected, (state) => {
             state.saving = false;
@@ -83,6 +89,7 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
             const [variant] = action.payload.filter(v => v.id === action.meta.arg.id);
             state.variant = variant ?? null;
             state.list = [...action.payload].sort(variantListSorter(defaultVariantSort))
+            state.currentSort = variantSortKey(state.list);
         })
         .addCase(setDefaultVariant.rejected, (state) => {
             state.saving = false;
