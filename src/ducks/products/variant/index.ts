@@ -1,6 +1,6 @@
 import {ProductVariant} from "b2b-types";
 import {createReducer} from "@reduxjs/toolkit";
-import {removeVariant, saveCurrentVariant, setCurrentVariant, setDefaultVariant} from "./actions";
+import {removeVariant, saveCurrentVariant, saveVariantsSort, setCurrentVariant, setDefaultVariant} from "./actions";
 import {loadProduct} from "../product/actions";
 import {isSellAsVariantsProduct} from "../utils";
 import {variantListSorter} from "../sorter";
@@ -92,6 +92,17 @@ const currentVariantReducer = createReducer(initialVariantState, (builder) => {
             state.currentSort = variantSortKey(state.list);
         })
         .addCase(setDefaultVariant.rejected, (state) => {
+            state.saving = false;
+        })
+        .addCase(saveVariantsSort.pending, (state) => {
+            state.saving = true;
+        })
+        .addCase(saveVariantsSort.fulfilled, (state, action) => {
+            state.saving = false;
+            state.list = [...action.payload].sort(variantListSorter(defaultVariantSort));
+            state.currentSort = variantSortKey(state.list);
+        })
+        .addCase(saveVariantsSort.rejected, (state) => {
             state.saving = false;
         })
 });
