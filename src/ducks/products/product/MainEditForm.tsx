@@ -12,12 +12,14 @@ import SeasonAlert from "../../seasons/SeasonAlert";
 import RedirectToParent from "./RedirectToParent";
 import {duplicateProduct, loadProduct, saveProduct, updateProduct, updateProductAdditionalData} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
-import {useNavigate} from "react-router";
+import {useNavigate, useParams} from "react-router";
+import {generatePath} from "react-router-dom";
 
 
 const colWidth = 8;
-const MainEditForm: React.FC = () => {
+const MainEditForm = () => {
     const dispatch = useAppDispatch();
+    const location = useParams<{keyword: string}>()
     const product = useSelector(selectCurrentProduct);
     const saving = useSelector(selectCurrentProductSaving);
     const navigate = useNavigate();
@@ -29,6 +31,9 @@ const MainEditForm: React.FC = () => {
             return;
         }
         await dispatch(saveProduct(product));
+        if (product.keyword !== location.keyword) {
+            navigate(generatePath('/products/:keyword', {keyword: product.keyword}));
+        }
     }
 
     const textChangeHandler = (field: keyof Product) => (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
