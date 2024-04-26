@@ -17,6 +17,7 @@ export const ProductItemCodeInput: React.FC = () => {
 
     useEffect(() => {
         setItemCode(product?.itemCode ?? '');
+        setSearch(product?.itemCode ?? '');
     }, [product?.itemCode])
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +36,7 @@ export const ProductItemCodeInput: React.FC = () => {
                 <input type="text" id="product-main--item-code" className="form-control form-control-sm"
                        value={itemCode} onChange={changeHandler}
                        list="product-main--item-code-colors"/>
-                <button type="button" className="btn btn-secondary" onClick={onCopyToName}>
+                <button type="button" className="btn btn-secondary" onClick={onCopyToName} disabled={!items[itemCode]}>
                     <span className="bi-card-text" title={items[itemCode]?.ItemCodeDesc || ''}/>
                 </button>
             </div>

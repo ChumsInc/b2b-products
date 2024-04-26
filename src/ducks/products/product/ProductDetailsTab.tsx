@@ -51,7 +51,12 @@ const ProductDetailsTab: React.FC = () => {
         setShowEditor(true);
     }
     const onCloseEditor = (value: string) => {
-        dispatch(updateProduct({[editorField]: value}));
+        if (!product) {
+            return;
+        }
+        if (value !== product[editorField]) {
+            dispatch(updateProduct({[editorField]: value}));
+        }
         setShowEditor(false);
     }
 

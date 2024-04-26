@@ -24,15 +24,9 @@ module.exports = merge(common, {
             {directory: process.cwd(), watch: false}
         ],
         hot: true,
-        proxy: {
-            '/api': {...localProxy},
-            '/images/': {...localProxy},
-            '/node-b2b/': {...localProxy},
-            '/node-dev/': {...localProxy},
-            '/node-sage/': {...localProxy},
-            '/sage/': {...localProxy},
-            '/version': {...localProxy},
-        },
+        proxy: [
+            {context: ['/api', '/images', '/node-b2b'], ...localProxy}
+        ],
         watchFiles: 'src/**/*',
     },
     devtool: 'eval-source-map',

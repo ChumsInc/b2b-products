@@ -53,13 +53,11 @@ const keywordsReducer = createReducer(initialKeywordsState, (builder) => {
         .addCase(saveProduct.fulfilled, (state, action) => {
             if (action.payload) {
                 const {id, keyword, name, parentProductKeyword, redirectToParent, status} = action.payload;
-                if (!state.list.filter(kw => kw.keyword === keyword).length) {
-                    const newKeyword:Keyword = {id, keyword, pagetype: 'product', title: name, parent: parentProductKeyword ?? '', redirect_to_parent: redirectToParent ? 1 : 0, status};
-                    state.list = [
-                        ...state.list,
-                        newKeyword
-                    ].sort((a, b) => a.keyword > b.keyword ? 1 : -1)
-                }
+                const newKeyword:Keyword = {id, keyword, pagetype: 'product', title: name, parent: parentProductKeyword ?? '', redirect_to_parent: redirectToParent ? 1 : 0, status};
+                state.list = [
+                    ...state.list.filter(kw => kw.pagetype !== 'product' || (kw.pagetype === 'product' && kw.id !== id)),
+                    newKeyword
+                ].sort((a, b) => a.keyword > b.keyword ? 1 : -1);
             }
         })
 });

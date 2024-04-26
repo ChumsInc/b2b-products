@@ -2,7 +2,7 @@ import React, {useRef} from "react";
 import {ProductVariant} from "b2b-types";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils";
 import {useSelector} from "react-redux";
-import {selectCurrentVariant} from "./selectors";
+import {selectCurrentVariant, selectCurrentVariantId} from "./selectors";
 import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
 import classNames from "classnames";
 import ProductImage from "./ProductImage";
@@ -29,7 +29,7 @@ const style = {
 
 const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index, moveItem}) => {
     const dispatch = useAppDispatch();
-    const selectedVariant = useSelector(selectCurrentVariant);
+    const selectedVariantId = useSelector(selectCurrentVariantId);
     const ref = useRef<HTMLDivElement>(null);
 
     const [collectedProps, drop] = useDrop<DragItem, void, {handlerId: Identifier|null}>({
@@ -87,18 +87,18 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
 
     const itemClassName = {
         dragging: isDragging,
-        'sell-as-self': variant.product?.sellAs === SELL_AS_SELF,
-        'sell-as-variants': variant.product?.sellAs === SELL_AS_VARIANTS,
-        'sell-as-mix': variant.product?.sellAs === SELL_AS_MIX,
-        'sell-as-colors': variant.product?.sellAs === SELL_AS_COLORS,
-        'text-danger': !variant.status || !variant.product?.status
+        'bg-primary-subtle': variant.product?.sellAs === SELL_AS_SELF,
+        'bg-secondary-subtle': variant.product?.sellAs === SELL_AS_VARIANTS,
+        'bg-success-subtle': variant.product?.sellAs === SELL_AS_MIX,
+        'bg-danger-subtle': variant.product?.sellAs === SELL_AS_COLORS,
+        'bg-danger': !variant.status || !variant.product?.status
     }
 
     const btnClassName = {
-        'btn-primary': selectedVariant?.id !== variant.id && variant.isDefaultVariant,
-        'btn-outline-primary': selectedVariant?.id === variant.id && variant.isDefaultVariant,
-        'btn-light': selectedVariant?.id === variant.id && !variant.isDefaultVariant,
-        'btn-dark': selectedVariant?.id !== variant.id && !variant.isDefaultVariant,
+        'btn-primary': variant.isDefaultVariant && selectedVariantId === variant.id,
+        'btn-outline-primary': variant.isDefaultVariant && selectedVariantId !== variant.id,
+        'btn-secondary': !variant.isDefaultVariant && selectedVariantId === variant.id,
+        'btn-outline-secondary': !variant.isDefaultVariant && selectedVariantId !== variant.id,
     }
 
     return (
@@ -108,8 +108,12 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
                 Edit
             </button>
             <div className="sortable-item-padding">
-
-                <div className={classNames({'text-primary': variant.isDefaultVariant})}>{variant.title}</div>
+                <div className={classNames({'text-primary': variant.isDefaultVariant})}>
+                    {variant.title}
+                    {(!variant.status || !variant.product?.status) && (
+                        <span className="ms-1 bi-exclamation-triangle-fill text-warning" />
+                    )}
+                </div>
                 <div><small>{variant.product?.itemCode}</small></div>
             </div>
         </div>
