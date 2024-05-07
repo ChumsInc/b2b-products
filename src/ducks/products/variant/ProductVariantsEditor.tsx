@@ -30,11 +30,13 @@ const ProductVariantsEditor: React.FC = () => {
             const variant: ProductVariant = {...defaultVariant, parentProductID: productId};
             console.log('useEffect()', productId, variant);
             setVariant(variant);
+            setAlert(null);
         }
     }, [productId]);
 
     useEffect(() => {
         setVariant(current ? {...current} : {...defaultVariant, parentProductID: productId});
+        setAlert(null);
     }, [current]);
 
     const submitHandler = async (ev: FormEvent) => {
@@ -67,6 +69,7 @@ const ProductVariantsEditor: React.FC = () => {
         }
         if (!variant.changed || window.confirm('Are you sure you want to discard your changes?')) {
             setVariant({...defaultVariant, parentProductID: productId});
+            setAlert(null)
         }
     }
 
