@@ -12,6 +12,7 @@ import {selectCurrentProductId} from "../product/selectors";
 import {useAppDispatch} from "../../../app/hooks";
 import {JSONView} from "@chumsinc/json-view";
 import ProductImage from "./ProductImage";
+import {Collapse} from "@mui/material";
 
 
 const colWidth = 9;
@@ -21,6 +22,7 @@ const ProductVariantsEditor: React.FC = () => {
     const current = useSelector(selectCurrentVariant);
     const saving = useSelector(selectCurrentVariantSaving);
     const [variant, setVariant] = useState<ProductVariant & Editable>(current ?? {...defaultVariant});
+    const [alert, setAlert] = useState<string|null>(null);
 
     useEffect(() => {
         if (!variant?.id || variant?.parentProductID !== productId) {
@@ -31,14 +33,12 @@ const ProductVariantsEditor: React.FC = () => {
     }, [productId]);
 
     useEffect(() => {
-
         setVariant(current ? {...current} : {...defaultVariant, parentProductID: productId});
-    }, [current?.id, current?.timestamp]);
+    }, [current]);
 
     const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
         await dispatch(saveCurrentVariant(variant));
-        setVariant({...defaultVariant, parentProductID: productId});
     }
 
     const changeHandler = (field: keyof ProductVariant) => (ev: ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => {
@@ -51,7 +51,8 @@ const ProductVariantsEditor: React.FC = () => {
     }
 
     const keywordChangeHandler = (kw: Keyword | null) => {
-        setVariant({...variant, variantProductID: kw?.id ?? 0});
+        setAlert(kw?.id === productId ? 'A variant cannot be its own parent' : null);
+        setVariant({...variant, status: Boolean(kw?.status ?? false), variantProductID: kw?.id ?? 0});
     }
 
     const newVariantHandler = () => {
@@ -106,6 +107,9 @@ const ProductVariantsEditor: React.FC = () => {
                                 <span className="bi-pencil-fill"/>
                             </button>
                         </KeywordSelectInputGroup>
+                        <Collapse in={!!alert}>
+                            <Alert color="danger">{alert}</Alert>
+                        </Collapse>
                     </FormColumn>
                     <FormColumn label="Name" width={colWidth}>
                         <input type="text" className="form-control form-control-sm"
@@ -119,6 +123,7 @@ const ProductVariantsEditor: React.FC = () => {
 
                     <FormColumn label="" width={colWidth}>
                         <SpinnerButton type="submit" className="btn btn-sm btn-primary me-2 mb-1"
+                                       disabled={!!alert || !productId}
                                        spinning={saving}>Save</SpinnerButton>
                         <button type="button" className="btn btn-sm btn-outline-secondary me-2 mb-1"
                                 onClick={newVariantHandler}
