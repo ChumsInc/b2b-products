@@ -2,13 +2,12 @@ import React, {useRef} from "react";
 import {ProductVariant} from "b2b-types";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils";
 import {useSelector} from "react-redux";
-import {selectCurrentVariant, selectCurrentVariantId} from "./selectors";
+import {selectCurrentVariantId} from "./selectors";
 import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
 import classNames from "classnames";
-import ProductImage from "./ProductImage";
 import {setCurrentVariant} from "./actions";
 import {useAppDispatch} from "../../../app/hooks";
-import type {Identifier, XYCoord} from 'dnd-core'
+import type {Identifier} from 'dnd-core'
 
 interface SortableVariantItemProps {
     variant: ProductVariant,
@@ -32,7 +31,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
     const selectedVariantId = useSelector(selectCurrentVariantId);
     const ref = useRef<HTMLDivElement>(null);
 
-    const [collectedProps, drop] = useDrop<DragItem, void, {handlerId: Identifier|null}>({
+    const [_collectedProps, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
         accept: 'item',
         collect(monitor) {
             return {
@@ -111,7 +110,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
                 <div className={classNames({'text-primary': variant.isDefaultVariant})}>
                     {variant.title}
                     {(!variant.status || !variant.product?.status) && (
-                        <span className="ms-1 bi-exclamation-triangle-fill text-warning" />
+                        <span className="ms-1 bi-exclamation-triangle-fill text-warning"/>
                     )}
                 </div>
                 <div><small>{variant.product?.keyword}</small></div>
