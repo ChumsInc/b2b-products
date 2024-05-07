@@ -1,7 +1,7 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-components";
-import {selectCurrentVariant, selectCurrentVariantSaving} from "./selectors";
+import {selectCurrentProductVariants, selectCurrentVariant, selectCurrentVariantSaving} from "./selectors";
 import {ProductVariant} from "b2b-types/src/products";
 import {Editable, Keyword} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
@@ -21,6 +21,7 @@ const ProductVariantsEditor: React.FC = () => {
     const productId = useSelector(selectCurrentProductId);
     const current = useSelector(selectCurrentVariant);
     const saving = useSelector(selectCurrentVariantSaving);
+    const currentVariants = useSelector(selectCurrentProductVariants);
     const [variant, setVariant] = useState<ProductVariant & Editable>(current ?? {...defaultVariant});
     const [alert, setAlert] = useState<string|null>(null);
 
@@ -51,7 +52,12 @@ const ProductVariantsEditor: React.FC = () => {
     }
 
     const keywordChangeHandler = (kw: Keyword | null) => {
-        setAlert(kw?.id === productId ? 'A variant cannot be its own parent' : null);
+        let alert = kw?.id === productId ? 'A variant cannot be its own parent' : null;
+        const [exists] = currentVariants.filter(v => v.id !== variant.id && v.variantProductID === kw?.id);
+        if (exists && !alert) {
+            alert = `This variant product already exists in the current product`;
+        }
+        setAlert(alert);
         setVariant({...variant, status: Boolean(kw?.status ?? false), variantProductID: kw?.id ?? 0});
     }
 
