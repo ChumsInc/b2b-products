@@ -114,6 +114,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
                         <span className="ms-1 bi-exclamation-triangle-fill text-warning" />
                     )}
                 </div>
+                <div><small>{variant.product?.keyword}</small></div>
                 <div><small>{variant.product?.itemCode}</small></div>
             </div>
         </div>
