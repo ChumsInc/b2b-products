@@ -15,6 +15,7 @@ const ProductTablePagination = () => {
     return (
         <TablePagination page={page} onChangePage={(page) => dispatch(setPage(page))}
                          rowsPerPage={rowsPerPage} onChangeRowsPerPage={(rpp) => dispatch(setRowsPerPage(rpp))}
+                         showFirst showLast
                          count={length}/>
     )
 }
