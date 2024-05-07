@@ -107,14 +107,16 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
                 Edit
             </button>
             <div className="sortable-item-padding">
-                <div className={classNames({'text-primary': variant.isDefaultVariant})}>
+                <div className={classNames('text-start', {'text-primary': variant.isDefaultVariant, })} style={{flex: '1 1 50%'}}>
                     {variant.title}
                     {(!variant.status || !variant.product?.status) && (
                         <span className="ms-1 bi-exclamation-triangle-fill text-warning"/>
                     )}
                 </div>
-                <div><small>{variant.product?.keyword}</small></div>
-                <div><small>{variant.product?.itemCode}</small></div>
+                <div style={{display: 'flex', justifyContent: 'space-between', flex: '1 1 50%'}}>
+                    <div>{variant.product?.keyword}</div>
+                    <div>{variant.product?.itemCode}</div>
+                </div>
             </div>
         </div>
     )
