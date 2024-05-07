@@ -15,7 +15,8 @@ const SeasonIcon: React.FC<SeasonIcon> = ({code, seasonAvailable}) => {
         return null;
     }
     const colorCode = seasons[code]?.properties?.color || undefined;
-    const badgeText = seasonAvailable === false ? `${code} !!` : code;
+    const badgeText = seasonAvailable === false ? (<span>{code} <span className="bi-exclamation-triangle-fill" /></span>) : code;
+
     return (
         <MiniChip variant="filled" bgColor={colorCode ?? '#FFF'} label={badgeText}/>
     )
