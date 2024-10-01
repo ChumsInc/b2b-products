@@ -14,8 +14,10 @@ export const localStorageKeys = {
     },
     products: {
         rowsPerPage: `${localStoragePrefix}/products/rowsPerPage`,
+        filterActive: `${localStoragePrefix}/products/filterActive`,
     }
 }
+
 function getStorage(key:string):Storage {
     return reLocal.test(key) ? window.localStorage : window.sessionStorage;
 }

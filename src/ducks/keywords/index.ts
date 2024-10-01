@@ -1,7 +1,6 @@
 import {Keyword} from "b2b-types";
-import {fetchKeywords} from "../../api/keywordsAPI";
-import {RootState} from "../../app/configureStore";
-import {createAsyncThunk, createReducer} from "@reduxjs/toolkit";
+import {createReducer} from "@reduxjs/toolkit";
+import {loadKeywords} from "./actions";
 import {saveProduct} from "../products/product/actions";
 
 export interface KeywordsState {
@@ -20,22 +19,7 @@ export const keywordTitleSorter = (a: Keyword, b: Keyword) => a.title.toLowerCas
     ? (a.keyword > b.keyword ? 1 : -1)
     : (a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1);
 
-export const selectKeywordsList = (state: RootState) => state.keywords.list;
-export const selectKeywordsLoading = (state: RootState) => state.keywords.loading;
-export const selectKeywordsLoaded = (state: RootState) => state.keywords.loaded;
-
-export const loadKeywords = createAsyncThunk(
-    'keywords/load',
-    async () => {
-        return await fetchKeywords();
-    },
-    {
-        condition: (arg, {getState}) => {
-            const state = getState() as RootState;
-            return !selectKeywordsLoading(state);
-        }
-    }
-);
+export const defaultKWSorter = (a:Keyword, b:Keyword) => a.keyword > b.keyword ? 1 : -1;
 
 const keywordsReducer = createReducer(initialKeywordsState, (builder) => {
     builder
@@ -45,7 +29,7 @@ const keywordsReducer = createReducer(initialKeywordsState, (builder) => {
         .addCase(loadKeywords.fulfilled, (state, action) => {
             state.loading = false;
             state.loaded = true;
-            state.list = action.payload.sort((a, b) => a.keyword > b.keyword ? 1 : -1)
+            state.list = action.payload.sort(defaultKWSorter)
         })
         .addCase(loadKeywords.rejected, (state) => {
             state.loading = false;
@@ -53,11 +37,26 @@ const keywordsReducer = createReducer(initialKeywordsState, (builder) => {
         .addCase(saveProduct.fulfilled, (state, action) => {
             if (action.payload) {
                 const {id, keyword, name, parentProductKeyword, redirectToParent, status} = action.payload;
-                const newKeyword:Keyword = {id, keyword, pagetype: 'product', title: name, parent: parentProductKeyword ?? '', redirect_to_parent: redirectToParent ? 1 : 0, status};
+                const newKeyword: Keyword = {
+                    id,
+                    keyword,
+                    pagetype: 'product',
+                    title: name,
+                    parent: parentProductKeyword ?? '',
+                    redirect_to_parent: redirectToParent ? 1 : 0,
+                    status
+                };
                 state.list = [
                     ...state.list.filter(kw => kw.pagetype !== 'product' || (kw.pagetype === 'product' && kw.id !== id)),
                     newKeyword
-                ].sort((a, b) => a.keyword > b.keyword ? 1 : -1);
+                ].sort(defaultKWSorter);
+            } else {
+                state.list = [
+                    ...state.list.filter(kw => kw.pagetype !== 'product'),
+                    ...state.list.filter(kw => kw.pagetype === 'product' && kw.id !== action.meta.arg.id),
+                    ...state.list.filter(kw => kw.pagetype === 'product' && kw.id === action.meta.arg.id)
+                        .map(kw => ({...kw, keyword: action.meta.arg.keyword}))
+                ].sort(defaultKWSorter)
             }
         })
 });

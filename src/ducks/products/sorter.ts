@@ -5,7 +5,7 @@ import {SortProps} from "chums-components";
 
 export const productListSorter = ({field, ascending}: SortProps<ProductListItem>) =>
     (a: ProductListItem, b: ProductListItem): number => {
-        const ascMod = ascending ? 1 : -1;
+        const sortMod = ascending ? 1 : -1;
         switch (field) {
         case 'name':
         case 'itemCode':
@@ -14,22 +14,22 @@ export const productListSorter = ({field, ascending}: SortProps<ProductListItem>
                 a[field].toLowerCase() === b[field].toLowerCase()
                     ? a.id - b.id
                     : (a[field].toLowerCase() > b[field].toLowerCase() ? 1 : -1)
-            ) * ascMod;
+            ) * sortMod;
         case "defaultParentProductsId":
         case 'salePrice':
             return (
                 (a[field] || 0) === (b[field] || 0)
                     ? a.id - b.id
                     : ((a[field] || 0) > (b[field] || 0) ? 1 : -1)
-            ) * ascMod;
+            ) * sortMod;
         case 'season_code':
             return (
                 (a[field] || '').toLowerCase() === (b[field] || '').toLowerCase()
                     ? a.id - b.id
                     : ((a[field] || '').toLowerCase() > (b[field] || '').toLowerCase() ? 1 : -1)
-            ) * ascMod;
+            ) * sortMod;
         default:
-            return (a.id - b.id) * ascMod;
+            return (a.id - b.id) * sortMod;
         }
     }
 

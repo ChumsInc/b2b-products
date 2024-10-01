@@ -1,6 +1,6 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductColorItem} from "b2b-types";
-import {deleteColorItem, postColorItem} from "../../../api/productsAPI";
+import {deleteColorItem, postColorItem} from "./api";
 import {selectColorByCode} from "../../colors/selectors";
 import {RootState} from "../../../app/configureStore";
 

@@ -1,11 +1,9 @@
 import {ProductAlternateImage} from "b2b-types/src/products";
-import {createAction, createAsyncThunk, createReducer} from "@reduxjs/toolkit";
+import {createReducer} from "@reduxjs/toolkit";
 import {loadProduct} from "../product/actions";
-import {RootState} from "../../../app/configureStore";
-import {deleteAltImage, fetchAltImages, postAltImage} from "../../../api/productsAPI";
 import {ActionStatus} from "b2b-types";
-import {SortProps} from "chums-components";
-
+import {altImageSort, defaultAltImageSort} from "./utils";
+import {loadImages, removeImage, saveImage, setCurrentImage} from "./actions";
 
 
 export interface ImagesState {
@@ -22,55 +20,6 @@ export const initialImagesState: ImagesState = {
     status: 'idle',
 }
 
-export const setCurrentImage = createAction<ProductAlternateImage | null>('products/current/images/setCurrentImage');
-
-export const loadImages = createAsyncThunk<ProductAlternateImage[], number>(
-    'products/current/images/loadImages',
-    async (arg) => {
-        return await fetchAltImages(arg);
-    }
-)
-
-export const saveImage = createAsyncThunk<ProductAlternateImage[], ProductAlternateImage>(
-    'products/current/images/saveImage',
-    async (arg) => {
-        return await postAltImage(arg);
-    }
-)
-
-export const removeImage = createAsyncThunk<ProductAlternateImage[], ProductAlternateImage>(
-    'products/current/images/removeImage',
-    async (arg) => {
-        return await deleteAltImage(arg);
-    }
-)
-
-
-
-export const selectImages = (state: RootState) => state.products.current.images.list;
-
-export const selectCurrentImage = (state:RootState) => state.products.current.images.current;
-
-export const selectImageSaving = (state:RootState) => state.products.current.images.status === 'saving';
-
-export const selectImagesStatus = (state:RootState) => state.products.current.images.status;
-
-export const defaultAltImageSort:SortProps<ProductAlternateImage> = {field: 'altText', ascending: true};
-
-export const altImageSort = (sort:SortProps<ProductAlternateImage>) => (a:ProductAlternateImage, b:ProductAlternateImage) => {
-    const sortMod = sort.ascending ? 1 : -1;
-    switch (sort.field) {
-    case 'altText':
-    case 'image':
-        return (a[sort.field].toLowerCase() === b[sort.field].toLowerCase()
-            ? (a.priority === b.priority ? a.id - b.id : a.priority - b.priority)
-            : (a[sort.field].toLowerCase() > b[sort.field].toLowerCase() ? 1 : -1)) * sortMod;
-    case 'priority':
-        return (a.priority === b.priority ? a.id - b.id : (a.priority - b.priority)) * sortMod;
-    default:
-        return a.id - b.id;
-    }
-}
 
 const imagesReducer = createReducer(initialImagesState, (builder) => {
     builder
@@ -110,7 +59,7 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
                 state.current = current ?? null;
             }
         })
-        .addCase(saveImage.rejected,  (state) => {
+        .addCase(saveImage.rejected, (state) => {
             state.status = 'idle';
         })
         .addCase(removeImage.pending, (state) => {

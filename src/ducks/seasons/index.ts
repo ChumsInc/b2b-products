@@ -1,7 +1,6 @@
 import {ProductSeason} from "b2b-types";
-import {RootState} from "../../app/configureStore";
-import {fetchSeasons} from "../../api/seasonsAPI";
-import {createAsyncThunk, createReducer} from "@reduxjs/toolkit";
+import {createReducer} from "@reduxjs/toolkit";
+import {loadSeasons} from "./actions";
 
 export interface ProductSeasonList {
     [key: string]: ProductSeason,
@@ -17,21 +16,6 @@ export const initialSeasonsState: SeasonsState = {
     loading: false,
 }
 
-export const selectSeasons = (state: RootState) => state.seasons.list;
-export const selectSeasonsLoading = (state: RootState) => state.seasons.loading;
-
-export const loadSeasons = createAsyncThunk<ProductSeason[]>(
-    'seasons/load',
-    async () => {
-        return await fetchSeasons();
-    },
-    {
-        condition: (arg, {getState}) => {
-            const state = getState() as RootState;
-            return !selectSeasonsLoading(state);
-        }
-    }
-)
 
 const seasonsReducer = createReducer(initialSeasonsState, (builder) => {
     builder

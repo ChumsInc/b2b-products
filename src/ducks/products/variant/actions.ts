@@ -1,6 +1,6 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductVariant} from "b2b-types";
-import {deleteVariant, postVariant, putVariantSort, putDefaultVariant} from "../../../api/productsAPI";
+import {deleteVariant, postVariant, putVariantSort, putDefaultVariant} from "./api";
 import {selectCurrentVariantSaving} from "./selectors";
 import {RootState} from "../../../app/configureStore";
 import {selectCurrentProductLoading} from "../product/selectors";

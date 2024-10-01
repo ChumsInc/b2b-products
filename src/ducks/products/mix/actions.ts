@@ -1,12 +1,12 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductMixComponent, ProductMixItem} from "b2b-types";
-import {fetchMixBOM, postMix, postMixComponent} from "../../../api/productsAPI";
+import {fetchMixBOM, postMix, postMixComponent} from "./api";
 import {BOMResult} from "../../../types/item-search";
 import {RootState} from "../../../app/configureStore";
 import {selectCurrentMixBOMStatus, selectCurrentMixStatus} from "./selectors";
 
 
-export const saveMix = createAsyncThunk<ProductMixItem, ProductMixItem>(
+export const saveMix = createAsyncThunk<ProductMixItem|null, ProductMixItem>(
     'product/current/mix/save',
     async (arg) => {
         return await postMix(arg);
@@ -19,7 +19,7 @@ export const saveMix = createAsyncThunk<ProductMixItem, ProductMixItem>(
     }
 );
 
-export const saveMixComponent = createAsyncThunk<ProductMixItem, { productId: number, component: ProductMixComponent }>(
+export const saveMixComponent = createAsyncThunk<ProductMixItem|null, { productId: number, component: ProductMixComponent }>(
     'product/current/mix/saveComponent',
     async (arg,) => {
         return await postMixComponent(arg.productId, arg.component);
@@ -32,7 +32,7 @@ export const saveMixComponent = createAsyncThunk<ProductMixItem, { productId: nu
     }
 );
 
-export const loadMixBOM = createAsyncThunk<BOMResult, string>(
+export const loadMixBOM = createAsyncThunk<BOMResult|null, string>(
     'product/current/mix/bom',
     async (arg) => {
         return await fetchMixBOM(arg);

@@ -1,21 +1,24 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {fetchProduct, postProduct} from "../../../api/productsAPI";
-import {Product, ProductAdditionalData} from "b2b-types";
+import {Product, ProductAdditionalData, ProductSeason} from "b2b-types";
+import {generatePath, redirect} from "react-router-dom";
+import {fetchProduct, postProduct} from "./api";
 import {RootState} from "../../../app/configureStore";
 import {selectCurrentProductLoading, selectCurrentProductSaving} from "./selectors";
+import {selectCurrentKeyword} from "../keyword/selectors";
+import {defaultProduct} from "./utils";
 
-
-export const setNewProduct = createAction('products/current/new');
 
 export const duplicateProduct = createAction('products/current/duplicate');
-
 export const updateProduct = createAction<Partial<Product>>('products/current/update');
-
+export const updateProductSeason = createAction<Partial<ProductSeason>|null>('products/current/update-season');
 export const updateProductAdditionalData = createAction<Partial<ProductAdditionalData>>('products/current/updateAdditionalData');
 
 export const loadProduct = createAsyncThunk<Product | null, string>(
     'product/current/load',
     async (arg) => {
+        if (arg === 'new') {
+            return {...defaultProduct};
+        }
         return fetchProduct(arg);
     },
     {
@@ -28,9 +31,16 @@ export const loadProduct = createAsyncThunk<Product | null, string>(
     }
 )
 
-export const saveProduct = createAsyncThunk<Product, Product>(
+export const saveProduct = createAsyncThunk<Product|null, Product>(
     'product/current/save',
-    async (arg) => {
+    async (arg, {getState}) => {
+        const state = getState() as RootState;
+        const keyword = selectCurrentKeyword(state);
+        const product = await postProduct(arg);
+        if (product && product?.keyword !== keyword) {
+            redirect(generatePath('/products/:keyword', {keyword: product.keyword}))
+            return null;
+        }
         return postProduct(arg);
     },
     {

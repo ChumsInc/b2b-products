@@ -12,6 +12,7 @@ import {
     setSort,
     toggleFilterInactiveColors
 } from "./actions";
+import {ProductColorList} from "../../types/product-colors";
 
 const defaultColorSort: SortProps<ProductColor> = {
     field: 'id',
@@ -23,9 +24,6 @@ const defaultColorProductUsageSort: SortProps<ColorProductUsage> = {
     ascending: true,
 }
 
-export interface ProductColorList {
-    [key: string]: ProductColor,
-}
 
 export interface ColorsState {
     list: {

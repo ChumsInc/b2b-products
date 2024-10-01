@@ -23,8 +23,8 @@ export const selectSortedList = createSelector(
         let reFilter: RegExp = /^/;
         try {
             reFilter = new RegExp(filter, 'i');
-        } catch (err: unknown) {
-        }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (err: unknown) { /* empty */ }
         return Object.values(list)
             .filter(color => !filterInactive || color.active)
             .filter(color => !filter || reFilter.test(color.code) || reFilter.test(color.name || ''))

@@ -1,8 +1,6 @@
-import {RootState} from "../../app/configureStore";
-import {loadItemSearchAPI} from "../../api/item-searchAPI";
-import {ItemSearchFilter, ItemSearchList} from "../../types/item-search";
-import {createAsyncThunk, createReducer} from "@reduxjs/toolkit";
-import {ItemSearchRecord} from "chums-components";
+import {ItemSearchList} from "../../types/item-search";
+import {createReducer} from "@reduxjs/toolkit";
+import {loadItemSearch} from "./actions";
 
 export interface ItemSearchState {
     list: ItemSearchList;
@@ -13,20 +11,6 @@ export const initialItemSearchState: ItemSearchState = {
     list: {},
     loading: false,
 }
-
-
-export const selectItemSearchList = (state: RootState): ItemSearchList => state.itemSearch.list;
-export const selectItemSearchLoading = (state: RootState): boolean => state.itemSearch.loading;
-
-export const loadItemSearch = createAsyncThunk<ItemSearchRecord[], { search: string, filter?: ItemSearchFilter, signal?: AbortSignal }>(
-    'item-search/load',
-    async (arg) => {
-        return await loadItemSearchAPI(arg.search, arg.filter, arg.signal);
-    },
-    {
-        condition: (arg) => !!arg.search
-    }
-)
 
 
 const itemSearchReducer = createReducer(initialItemSearchState, (builder) => {

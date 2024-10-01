@@ -1,5 +1,5 @@
 import {ColorProductUsage, ProductColor} from "b2b-types";
-import {fetchColors, fetchWhereUsed, postColor} from "../../api/colorsAPI";
+import {fetchColors, fetchWhereUsed, postColor} from "./api";
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {SortProps} from "chums-components";
 import {RootState} from "../../app/configureStore";
@@ -19,7 +19,7 @@ export const loadColors = createAsyncThunk<ProductColor[]>(
 );
 
 
-export const saveColor = createAsyncThunk<{ list: ProductColor[], color: ProductColor }, ProductColor>(
+export const saveColor = createAsyncThunk<{ list: ProductColor[], color: ProductColor|null }, ProductColor>(
     'colors/current/save',
     async (arg) => {
         return await postColor({...arg, code: arg.code.trim()});

@@ -1,7 +1,7 @@
 import {isSellAsMixProduct} from "../utils";
 import {createReducer} from "@reduxjs/toolkit";
-import {loadProduct, saveProduct, setNewProduct} from "../product/actions";
-import {ActionStatus, ProductMixItem, } from "b2b-types";
+import {loadProduct, saveProduct} from "../product/actions";
+import {ActionStatus, ProductMixItem,} from "b2b-types";
 import {loadMixBOM, saveMix, saveMixComponent} from "./actions";
 import {BOMComponent, BOMHeader} from "../../../types/item-search";
 import Decimal from "decimal.js";
@@ -10,7 +10,7 @@ export interface CurrentMixState {
     mix: ProductMixItem | null;
     status: ActionStatus;
     bom: {
-        header: BOMHeader|null;
+        header: BOMHeader | null;
         detail: BOMComponent[];
         status: ActionStatus;
     }
@@ -28,11 +28,6 @@ export const initialCurrentMixState: CurrentMixState = {
 
 const currentMixReducer = createReducer(initialCurrentMixState, (builder) => {
     builder
-        .addCase(setNewProduct, (state) => {
-            state.mix = null;
-            state.bom.header = null;
-            state.bom.detail = [];
-        })
         .addCase(loadProduct.fulfilled, (state, action) => {
             if (action.payload && isSellAsMixProduct(action.payload)) {
                 state.mix = action.payload.mix;
@@ -76,10 +71,13 @@ const currentMixReducer = createReducer(initialCurrentMixState, (builder) => {
         })
         .addCase(loadMixBOM.fulfilled, (state, action) => {
             state.bom.status = 'idle';
-            if (action.payload.billHeader.length === 1 ) {
+            if (action.payload?.billHeader.length === 1) {
                 state.bom.header = action.payload.billHeader[0];
                 state.bom.detail = action.payload.billDetail
-                    .map(row => ({...row, QuantityPerBill: new Decimal(row.QuantityPerBill).times(state.bom.header!.SalesUMConvFctr).round().toNumber()}))
+                    .map(row => ({
+                        ...row,
+                        QuantityPerBill: new Decimal(row.QuantityPerBill).times(state.bom.header!.SalesUMConvFctr).round().toNumber()
+                    }))
                     .sort((a, b) => a.LineSeqNo > b.LineSeqNo ? 1 : -1)
             }
         })

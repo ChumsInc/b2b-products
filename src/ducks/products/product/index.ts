@@ -1,12 +1,12 @@
-import {defaultProduct} from "../../../defaults";
+import {defaultProduct, defaultProductSeason} from "./utils";
 import {createReducer} from "@reduxjs/toolkit";
 import {
     duplicateProduct,
     loadProduct,
     saveProduct,
-    setNewProduct,
     updateProduct,
-    updateProductAdditionalData
+    updateProductAdditionalData,
+    updateProductSeason
 } from "./actions";
 import {variantListSorter} from "../sorter";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "../variant/actions";
@@ -14,7 +14,6 @@ import {SortProps} from "chums-components";
 import {Editable, ProductVariant} from "b2b-types";
 import {Product} from "b2b-types/src/products";
 import {isSellAsVariants} from "../../../utils";
-import {saveCurrentColorItem} from "../color/actions";
 
 export type EditableProduct = Product & Editable;
 
@@ -38,13 +37,22 @@ export const initialCurrentProductState: CurrentProductState = {
 
 const currentProductReducer = createReducer(initialCurrentProductState, (builder) => {
     builder
-        .addCase(setNewProduct, (state) => {
-            state.product = defaultProduct;
-        })
         .addCase(updateProduct, (state, action) => {
             if (state.product) {
-                // @ts-ignore
                 state.product = {...state.product, ...action.payload, changed: true};
+            }
+        })
+        .addCase(updateProductSeason, (state, action) => {
+            if (state.product) {
+                if (action.payload) {
+                    if (!state.product.season) {
+                        state.product.season = {...defaultProductSeason}
+                    }
+                    state.product.season = {...state.product.season, ...action.payload}
+                } else {
+                    state.product.season = null;
+                }
+                state.product.season_code = action.payload?.code ?? null;
             }
         })
         .addCase(updateProductAdditionalData, (state, action) => {

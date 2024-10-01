@@ -4,16 +4,14 @@ import {default as currentVariantReducer} from './variant/index'
 import {default as currentColorReducer} from './color/index'
 import {default as currentMixReducer} from './mix/index'
 import {default as listReducer} from './list/index'
-import imagesReducer from "./images";
-import tabsReducer from "./tabs";
-import productKeywordReducer from "./keyword";
+import {default as imagesReducer} from "./images/index";
+import {default as productKeywordReducer} from "./keyword/index";
 
 export default combineReducers({
     list: listReducer,
-    tabs: tabsReducer,
     current: combineReducers({
-        keyword: productKeywordReducer,
         product: currentProductReducer,
+        keyword: productKeywordReducer,
         variant: currentVariantReducer,
         color: currentColorReducer,
         mix: currentMixReducer,
