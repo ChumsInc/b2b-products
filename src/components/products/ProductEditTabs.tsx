@@ -1,30 +1,9 @@
 import React from 'react';
-import {Tab} from "chums-components";
 import {useAppSelector} from "../app/hooks";
 import {generatePath, NavLink, useMatch} from "react-router";
-import {Product} from "b2b-types/src/products";
 import {isSellAsColors, isSellAsMix, isSellAsVariants} from "../../utils";
 import {selectCurrentProduct} from "../../ducks/products/product/selectors";
-import classNames from "classnames";
 import {Nav} from "react-bootstrap";
-
-
-export interface ProductTab extends Omit<Tab, 'title' | 'disabled'> {
-    title: (arg?: Product | null) => string;
-    disabled: (arg?: Product | null) => boolean;
-}
-
-const tabs: ProductTab[] = [
-    // {id: 'details', title: () => 'Details', disabled: (arg) => !arg?.id},
-    // {
-    //     id: 'colors',
-    //     title: (arg) => arg && isSellAsColors(arg) ? `Colors  (${arg.items.length})` : 'Colors',
-    //     disabled: (arg) => !arg?.id || !isSellAsColors(arg)
-    // },
-    // {id: 'mix', title: () => 'Mix', disabled: (arg) => !arg?.id || !isSellAsMix(arg)},
-    // {id: 'images', title: (arg) => `Images (${arg?.images?.length})`, disabled: (arg) => !arg?.id},
-    {id: 'json', title: () => 'Data', disabled: (arg) => !arg?.id},
-]
 
 const ProductEditTabs = () => {
     const product = useAppSelector(selectCurrentProduct);
@@ -86,26 +65,20 @@ const ProductEditTabs = () => {
                 <Nav.Link as={NavLink} to={buildPath('images')} eventKey="images" disabled={!product?.id}>
                     <div>
                         Images
-                        {/*{value?.images?.length > 0 && (*/}
-                        {/*    <span className="ms-1">*/}
-                        {/*        ({value.images?.filter(img => img.status)?.length}*/}
-                        {/*        /{value.images?.length})*/}
-                        {/*    </span>*/}
-                        {/*)}*/}
+                        {!!product?.images?.length && (
+                            <span className="ms-1">
+                                ({product.images?.filter(img => img.status)?.length}
+                                /{product.images?.length})
+                            </span>
+                        )}
                     </div>
                 </Nav.Link>
             </Nav.Item>
-
-            {tabs.map(tab => (
-                <li className="nav-item" key={tab.id} id={tab.id} title={tab.title(product)}>
-                    <NavLink to={buildPath(tab.id)} className={({isActive}) => classNames("nav-link", {
-                        disabled: tab.disabled(product) ?? false,
-                        active: isActive
-                    })}>
-                        {tab.title(product)}
-                    </NavLink>
-                </li>
-            ))}
+            <Nav.Item>
+                <Nav.Link as={NavLink} to={buildPath('json')} eventKey="json" disabled={!product?.id}>
+                    Data
+                </Nav.Link>
+            </Nav.Item>
         </Nav>
     )
 }
