@@ -1,6 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import {selectSeasons} from "../../ducks/seasons/selectors";
+import {Alert} from "react-bootstrap";
 
 export interface SeasonAlertProps {
     code: string,
@@ -13,7 +14,7 @@ const SeasonAlert: React.FC<SeasonAlertProps> = ({code}) => {
         return null;
     }
     return (
-        <small className="mb-1 text-muted">{message}</small>
+        <div className="text-secondary text-center">{message}</div>
     )
 }
 

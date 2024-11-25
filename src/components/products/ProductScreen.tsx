@@ -1,18 +1,23 @@
 import React from "react";
 import ProductTable from "./list/ProductTable";
 import {Outlet} from "react-router";
+import {Col, Row} from "react-bootstrap";
+import ProductTableFilterBar from "./list/ProductTableFilterBar";
+import ProductsLoading from "./list/ProductsLoading";
 
 const ProductScreen = () => {
     return (
-        <div className="row g-3">
-            <div className="col-7">
+        <Row className="g-3">
+            <Col md={6} lg={7}>
                 <h2>Product List</h2>
+                <ProductTableFilterBar/>
+                <ProductsLoading />
                 <ProductTable/>
-            </div>
-            <div className="col-5">
+            </Col>
+            <Col md={6} lg={5}>
                 <Outlet/>
-            </div>
-        </div>
+            </Col>
+        </Row>
     )
 }
 

@@ -20,6 +20,7 @@ import ProductImagesTab from "../products/images/ProductImagesTab";
 import ProductJSON from "../products/product/ProductJSON";
 import ProductEditor from "./ProductEditor";
 import IndexRedirector from "./IndexRedirector";
+import {Alert} from "react-bootstrap";
 
 
 export default function App() {
@@ -54,6 +55,7 @@ export default function App() {
                             <Route path="main" element={<MainEditForm/>}/>
                             <Route path="details" element={<ProductDetailsTab/>}/>
                             <Route path="variant" element={<VariantsTabContent/>}/>
+                            <Route path="variants" element={<VariantsTabContent/>}/>
                             <Route path="colors" element={<ProductColorsTab/>}/>
                             <Route path="mix" element={<ProductMixTab/>}/>
                             <Route path="images" element={<ProductImagesTab/>}/>
@@ -64,6 +66,7 @@ export default function App() {
                         <Route path=":code" element={<ColorScreen/>}/>
                     </Route>
                     <Route path="/where-used" element={<WhereUsedPage/>}/>
+                    <Route path="*" element={<Alert variant="danger">Page not found</Alert>} />
                 </Route>
             </Routes>
         </ThemeProvider>

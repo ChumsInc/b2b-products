@@ -12,7 +12,7 @@ export interface ProductImage {
     className?: string,
 }
 
-const ProductImage:React.FC<ProductImage> = ({filename, itemCode, colorCode, size, className}) => {
+const ProductImage = ({filename, itemCode, colorCode, size, className}:ProductImage) => {
     if (!filename) {
         filename = 'missing.png';
     }
@@ -20,10 +20,10 @@ const ProductImage:React.FC<ProductImage> = ({filename, itemCode, colorCode, siz
     const src = `/images/products/${size}/${image}`;
     return (
         <figure className={classNames('product-image', className, `image-${size}`)}>
-            <img src={src} alt={itemCode || filename} loading="lazy" className="img-thumbnail" />
+            <img src={src} alt={itemCode || filename} loading="lazy" className="img-fluid" />
             <figcaption className="figure-caption">
                 <div><strong>{itemCode}</strong></div>
-                <div className="filename" title={filename}>{image}</div>
+                <div className="text-secondary filename" title={filename}>{image}</div>
             </figcaption>
         </figure>
     )

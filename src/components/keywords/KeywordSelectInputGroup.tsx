@@ -1,30 +1,27 @@
-import React, {ReactNode, SelectHTMLAttributes} from 'react';
-import {Keyword} from "b2b-types";
-import KeywordSelect from "./KeywordSelect";
+import React, {ReactNode, useId} from 'react';
+import KeywordSelect, {KeywordSelectProps} from "./KeywordSelect";
+import {InputGroup} from "react-bootstrap";
 
 
-export interface KeywordSelectInputGroupProps extends SelectHTMLAttributes<HTMLSelectElement> {
-    pageType: 'product' | 'category' | 'page',
-    onSelectKeyword: (kw: Keyword | null) => void,
+export interface KeywordSelectInputGroupProps extends KeywordSelectProps {
     children?: ReactNode
 }
 
-const KeywordSelectInputGroup = ({
-                                     pageType,
-                                     value,
-                                     onSelectKeyword,
-                                     children,
-                                     ...rest
-                                 }: KeywordSelectInputGroupProps) => {
+export default function KeywordSelectInputGroup({
+                                                    pageType,
+                                                    value,
+                                                    onSelectKeyword,
+                                                    children,
+                                                    ...rest
+                                                }: KeywordSelectInputGroupProps) {
+    const id = rest.id ?? useId();
     return (
-        <div className="input-group input-group-sm">
-            <div className="input-group-text">{value}</div>
-            <KeywordSelect pageType={pageType}
+        <InputGroup className="input-group input-group-sm">
+            <InputGroup.Text as="label" htmlFor={id} aria-label="Current ID">{value}</InputGroup.Text>
+            <KeywordSelect pageType={pageType} id={id}
                            value={value} onSelectKeyword={onSelectKeyword}
                            {...rest}/>
             {children}
-        </div>
+        </InputGroup>
     )
 }
-
-export default KeywordSelectInputGroup;

@@ -19,8 +19,7 @@ import {
     updateProductSeason
 } from "../../../ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";
-import {useMatch, useNavigate} from "react-router";
-import {generatePath} from "react-router-dom";
+import {generatePath, useMatch, useNavigate} from "react-router";
 
 
 const colWidth = 8;

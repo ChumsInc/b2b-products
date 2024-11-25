@@ -23,13 +23,13 @@ export const defaultVariantSorterProps: SortProps<ProductVariant> = {
 }
 
 export interface CurrentProductState {
-    product: EditableProduct | null,
+    value: EditableProduct | null,
     loading: boolean;
     saving: boolean;
 }
 
 export const initialCurrentProductState: CurrentProductState = {
-    product: {...defaultProduct},
+    value: {...defaultProduct},
     loading: false,
     saving: false,
 }
@@ -38,30 +38,30 @@ export const initialCurrentProductState: CurrentProductState = {
 const currentProductReducer = createReducer(initialCurrentProductState, (builder) => {
     builder
         .addCase(updateProduct, (state, action) => {
-            if (state.product) {
-                state.product = {...state.product, ...action.payload, changed: true};
+            if (state.value) {
+                state.value = {...state.value, ...action.payload, changed: true};
             }
         })
         .addCase(updateProductSeason, (state, action) => {
-            if (state.product) {
+            if (state.value) {
                 if (action.payload) {
-                    if (!state.product.season) {
-                        state.product.season = {...defaultProductSeason}
+                    if (!state.value.season) {
+                        state.value.season = {...defaultProductSeason}
                     }
-                    state.product.season = {...state.product.season, ...action.payload}
+                    state.value.season = {...state.value.season, ...action.payload}
                 } else {
-                    state.product.season = null;
+                    state.value.season = null;
                 }
-                state.product.season_code = action.payload?.code ?? null;
+                state.value.season_code = action.payload?.code ?? null;
             }
         })
         .addCase(updateProductAdditionalData, (state, action) => {
-            if (state.product) {
-                if (!state.product.additionalData) {
-                    state.product.additionalData = {};
+            if (state.value) {
+                if (!state.value.additionalData) {
+                    state.value.additionalData = {};
                 }
-                state.product.additionalData = {...state.product.additionalData, ...action.payload};
-                state.product.changed = true;
+                state.value.additionalData = {...state.value.additionalData, ...action.payload};
+                state.value.changed = true;
             }
         })
         .addCase(loadProduct.pending, (state) => {
@@ -69,7 +69,7 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
         })
         .addCase(loadProduct.fulfilled, (state, action) => {
             state.loading = false;
-            state.product = action.payload;
+            state.value = action.payload;
         })
         .addCase(loadProduct.rejected, (state) => {
             state.loading = false;
@@ -79,7 +79,7 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
         })
         .addCase(saveProduct.fulfilled, (state, action) => {
             state.saving = false;
-            state.product = action.payload;
+            state.value = action.payload;
         })
         .addCase(saveProduct.rejected, (state) => {
             state.saving = false;
@@ -89,9 +89,9 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
         })
         .addCase(saveCurrentVariant.fulfilled, (state, action) => {
             state.saving = false;
-            if (action.payload && state.product && isSellAsVariants(state.product)) {
-                state.product.variants = [
-                    ...state.product.variants.filter(v => v.id !== action.payload?.id),
+            if (action.payload && state.value && isSellAsVariants(state.value)) {
+                state.value.variants = [
+                    ...state.value.variants.filter(v => v.id !== action.payload?.id),
                     action.payload,
                 ].sort(variantListSorter(defaultVariantSorterProps))
             }
@@ -100,18 +100,18 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
             state.saving = false;
         })
         .addCase(duplicateProduct, (state) => {
-            if (state.product) {
-                state.product.changed = true;
-                state.product.id = 0;
-                state.product.keyword = '';
+            if (state.value) {
+                state.value.changed = true;
+                state.value.id = 0;
+                state.value.keyword = '';
             }
         })
         .addCase(removeVariant.pending, (state) => {
             state.saving = true;
         })
         .addCase(removeVariant.fulfilled, (state, action) => {
-            if (state.product && isSellAsVariants(state.product)) {
-                state.product.variants = action.payload.sort(variantListSorter(defaultVariantSorterProps));
+            if (state.value && isSellAsVariants(state.value)) {
+                state.value.variants = action.payload.sort(variantListSorter(defaultVariantSorterProps));
             }
             state.saving = false;
         })
@@ -122,8 +122,8 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
             state.saving = true;
         })
         .addCase(setDefaultVariant.fulfilled, (state, action) => {
-            if (state.product && isSellAsVariants(state.product)) {
-                state.product.variants = action.payload.sort(variantListSorter(defaultVariantSorterProps));
+            if (state.value && isSellAsVariants(state.value)) {
+                state.value.variants = action.payload.sort(variantListSorter(defaultVariantSorterProps));
             }
             state.saving = false;
         })

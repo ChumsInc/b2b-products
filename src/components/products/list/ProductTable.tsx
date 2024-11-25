@@ -9,7 +9,6 @@ import ProductRedirectIcon from "../product/ProductRedirectIcon";
 import ProductPrice from "./ProductPrice";
 import {setProductsSort} from "../../../ducks/products/list/actions";
 import {useAppDispatch} from "../../app/hooks";
-import ProductTableFilterBar from "./ProductTableFilterBar";
 import {selectFilteredList, selectProductListSort} from "../../../ducks/products/list/selectors";
 import {selectCurrentProductId} from "../../../ducks/products/product/selectors";
 import ProductTableCategoryName from "./ProductTableCategoryName";
@@ -93,7 +92,6 @@ const ProductTable = () => {
 
     return (
         <div>
-            <ProductTableFilterBar/>
             <SortableTable currentSort={sort} onChangeSort={sortChangeHandler}
                            keyField={"id"} fields={fields}
                            data={list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} size="xs"

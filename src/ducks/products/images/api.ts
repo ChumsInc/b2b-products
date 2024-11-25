@@ -4,7 +4,7 @@ import {fetchJSON} from "chums-components";
 export async function deleteAltImage(image: ProductAlternateImage): Promise<ProductAlternateImage[]> {
     try {
         if (!image.productId || !image.image || !image.id) {
-            return Promise.reject(new Error('Invalid Image: missing ID, product ID or filename'));
+            return Promise.reject(new Error('Invalid Image: missing ID, value ID or filename'));
         }
         const url = '/api/b2b/products/v2/image/:productId/:id'
             .replace(':productId', encodeURIComponent(image.productId))
@@ -23,7 +23,7 @@ export async function deleteAltImage(image: ProductAlternateImage): Promise<Prod
 
 export async function fetchAltImages(productId: number): Promise<ProductAlternateImage[]> {
     try {
-        const url = '/api/b2b/products/v2/images/product/:productId'
+        const url = '/api/b2b/products/v2/images/value/:productId'
             .replace(':productId', encodeURIComponent(productId));
         const res = await fetchJSON<{ images: ProductAlternateImage[] }>(url, {cache: 'no-cache'});
         return res?.images ?? [];
@@ -40,7 +40,7 @@ export async function fetchAltImages(productId: number): Promise<ProductAlternat
 export async function postAltImage(image: ProductAlternateImage): Promise<ProductAlternateImage[]> {
     try {
         if (!image.productId || !image.image) {
-            return Promise.reject(new Error('Invalid Image: missing product ID or filename'));
+            return Promise.reject(new Error('Invalid Image: missing value ID or filename'));
         }
         const url = '/api/b2b/products/v2/images/:id'.replace(':id', encodeURIComponent(image.id === 0 ? '' : image.id));
         const method = image.id === 0 ? 'POST' : 'PUT';

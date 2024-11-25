@@ -5,7 +5,7 @@ use chums\user\Groups;
 
 require_once("autoload.inc.php");
 $ui = new WebUI2([
-    'requiredRoles' => Groups::WEB_ADMIN,
+    'requiredRoles' => [Groups::WEB_ADMIN],
     'title' => 'B2B Products Editor',
     'bodyClassName' => 'container-fluid',
     'contentFile' => 'body.inc.php'

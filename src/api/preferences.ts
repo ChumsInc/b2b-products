@@ -15,6 +15,10 @@ export const localStorageKeys = {
     products: {
         rowsPerPage: `${localStoragePrefix}/products/rowsPerPage`,
         filterActive: `${localStoragePrefix}/products/filterActive`,
+    },
+    items: {
+        showImages: `${localStoragePrefix}/items/showImages`,
+        shoInactive: `${localStoragePrefix}/items/showInactive`,
     }
 }
 

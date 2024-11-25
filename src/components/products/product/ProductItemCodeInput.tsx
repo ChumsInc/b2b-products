@@ -1,19 +1,22 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
+import React, {ChangeEvent, useEffect, useId, useState} from 'react'
 import ItemDataList from "../../item-search/ItemDataList";
 import {useSelector} from "react-redux";
 import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
 import {selectItemSearchList} from "../../../ducks/item-search/selectors";
 import {updateProduct} from "../../../ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";
+import {FormControl, InputGroup} from "react-bootstrap";
+import list from "../../../ducks/products/list";
 
 
-export const ProductItemCodeInput: React.FC = () => {
+export const ProductItemCodeInput = () => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
-
     const items = useSelector(selectItemSearchList);
     const [itemCode, setItemCode] = useState(product?.itemCode ?? '');
     const [search, setSearch] = useState('');
+    const id = useId();
+    const listId = useId();
 
     useEffect(() => {
         setItemCode(product?.itemCode ?? '');
@@ -30,17 +33,18 @@ export const ProductItemCodeInput: React.FC = () => {
             dispatch(updateProduct({name: items[itemCode].ItemCodeDesc}));
         }
     }
+
     return (
         <>
-            <div className="input-group input-group-sm">
-                <input type="text" id="product-main--item-code" className="form-control form-control-sm"
+            <InputGroup size="sm" className="input-group input-group-sm">
+                <FormControl size="sm" type="text" id={id}
                        value={itemCode} onChange={changeHandler}
-                       list="product-main--item-code-colors"/>
+                       list={listId}/>
                 <button type="button" className="btn btn-secondary" onClick={onCopyToName} disabled={!items[itemCode]}>
                     <span className="bi-card-text" title={items[itemCode]?.ItemCodeDesc || ''}/>
                 </button>
-            </div>
-            <ItemDataList id="product-main--item-code-list" search={search}/>
+            </InputGroup>
+            <ItemDataList id={listId} search={search}/>
         </>
     )
 }

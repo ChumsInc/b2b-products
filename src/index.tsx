@@ -3,7 +3,7 @@ import {createRoot} from 'react-dom/client';
 import {Provider} from 'react-redux';
 import App from './components/app/App';
 import store from './app/configureStore'
-import {HashRouter as Router} from 'react-router-dom';
+import {HashRouter as Router} from 'react-router';
 
 window.localStorage.setItem('debug', '*');
 const container = document.getElementById('app');

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useEffect, useId, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectColorList} from "../../ducks/colors/selectors";
 import {usePopper} from "react-popper";
@@ -6,15 +6,18 @@ import {ProductColor} from "b2b-types";
 import useClickOutside from "../../hooks/click-outside";
 import classNames from "classnames";
 import {parseColor} from "../../utils";
+import {InputGroup} from "react-bootstrap";
+import ColorSwatch from "./ColorSwatch";
 
 export interface ColorAutoCompleteProps {
     value: string;
+    label?: string;
     swatchFormat?: string|null;
     onChange?: (value: string) => void;
     onChangeColor?: (color: ProductColor) => void;
 }
 
-const ColorAutoComplete = ({value, swatchFormat, onChange, onChangeColor}: ColorAutoCompleteProps) => {
+const ColorAutoComplete = ({value, label, swatchFormat, onChange, onChangeColor}: ColorAutoCompleteProps) => {
     const colorList = useSelector(selectColorList);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +32,7 @@ const ColorAutoComplete = ({value, swatchFormat, onChange, onChangeColor}: Color
     const {styles, attributes} = usePopper(inputElement, popperElement, {
         modifiers: [{name: 'arrow', options: {element: arrowElement}}],
     });
+    const inputId = useId();
 
     useClickOutside(containerRef, () => setOpen(false));
 
@@ -61,6 +65,7 @@ const ColorAutoComplete = ({value, swatchFormat, onChange, onChangeColor}: Color
 
     const inputHandler = (ev: KeyboardEvent<HTMLInputElement>) => {
         const len = Math.min(colors.length, 25);
+        let current:ProductColor|null = null;
         console.log(ev.key);
         switch (ev.key) {
         case 'Escape':
@@ -79,7 +84,7 @@ const ColorAutoComplete = ({value, swatchFormat, onChange, onChangeColor}: Color
             setIndex((index - 1 + len) % len);
             return;
         case 'Enter':
-            const current = colors[index];
+            current = colors[index];
             if (!open) {
                 return;
             }
@@ -94,23 +99,21 @@ const ColorAutoComplete = ({value, swatchFormat, onChange, onChangeColor}: Color
     return (
         <div ref={containerRef}>
             <div className="input-group input-group-sm">
-                <span className="input-group-text">Color Code</span>
+                {label && <InputGroup.Text as="label" htmlFor={inputId}>{label}</InputGroup.Text>}
                 <div className={classNames("input-group-text", {
                     'text-danger': !color?.id,
                     'text-success': !!color?.id
                 })}>
-                    <span className={classNames(!!color?.id ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-down-fill', {
+                    <span className={classNames(color?.id ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-down-fill', {
                         'bi-hand-thumbs-up-fill': !!color?.id,
                         'bi-hand-thumbs-down-fill': !!value && !color?.id,
                         'bi-hand-thumbs-down': !value && !color?.id,
                     })}/>
                 </div>
-                <input type="search" className="form-control form-control-sm" value={value} onChange={changeHandler}
+                <input type="search" className="form-control form-control-sm" id={inputId} value={value} onChange={changeHandler}
                        onKeyDown={inputHandler}
                        ref={setInputElement} onFocus={() => setOpen(true)}/>
-                <div
-                    className={classNames('input-group-text color-swatch', {[parseColor(`color-swatch--${swatchFormat || '?'}`, color?.code)]: !!color?.code})}/>
-
+                <ColorSwatch colorCode={color?.code} className="input-group-text" swatchFormat={swatchFormat} />
             </div>
             {open && (
                 <div ref={setPopperElement} style={{

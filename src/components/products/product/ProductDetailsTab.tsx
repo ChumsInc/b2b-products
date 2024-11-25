@@ -83,7 +83,7 @@ const ProductDetailsTab: React.FC = () => {
                 <FormColumn label="Size" width={colWidth}>
                     <input type="text" className="form-control form-control-sm"
                            value={product.additionalData?.size || ''} onChange={additionalDataChangeHandler('size')}
-                           list="product--additional-data--size"/>
+                           list="value--additional-data--size"/>
                     <datalist id="product--additional-data--size">
                         <option value="XS">XS</option>
                         <option value="SM">SM</option>
@@ -118,7 +118,7 @@ const ProductDetailsTab: React.FC = () => {
                 </FormColumn>
             </form>
             {showEditor &&
-                <ModalEditor title={`edit product.${editorField}`} content={String(product[editorField]) || ''}
+                <ModalEditor title={`edit value.${editorField}`} content={String(product[editorField]) || ''}
                              onClose={onCloseEditor} onCancel={onCancelEditor}/>
             }
         </>

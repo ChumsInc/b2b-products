@@ -7,7 +7,7 @@ import {selectCurrentMixBOMStatus, selectCurrentMixStatus} from "./selectors";
 
 
 export const saveMix = createAsyncThunk<ProductMixItem|null, ProductMixItem>(
-    'product/current/mix/save',
+    'value/current/mix/save',
     async (arg) => {
         return await postMix(arg);
     },
@@ -20,7 +20,7 @@ export const saveMix = createAsyncThunk<ProductMixItem|null, ProductMixItem>(
 );
 
 export const saveMixComponent = createAsyncThunk<ProductMixItem|null, { productId: number, component: ProductMixComponent }>(
-    'product/current/mix/saveComponent',
+    'value/current/mix/saveComponent',
     async (arg,) => {
         return await postMixComponent(arg.productId, arg.component);
     },
@@ -33,7 +33,7 @@ export const saveMixComponent = createAsyncThunk<ProductMixItem|null, { productI
 );
 
 export const loadMixBOM = createAsyncThunk<BOMResult|null, string>(
-    'product/current/mix/bom',
+    'value/current/mix/bom',
     async (arg) => {
         return await fetchMixBOM(arg);
     },

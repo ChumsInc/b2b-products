@@ -1,6 +1,6 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {Product, ProductAdditionalData, ProductSeason} from "b2b-types";
-import {generatePath, redirect} from "react-router-dom";
+import {generatePath, redirect} from "react-router";
 import {fetchProduct, postProduct} from "./api";
 import {RootState} from "../../../app/configureStore";
 import {selectCurrentProductLoading, selectCurrentProductSaving} from "./selectors";
@@ -10,11 +10,11 @@ import {defaultProduct} from "./utils";
 
 export const duplicateProduct = createAction('products/current/duplicate');
 export const updateProduct = createAction<Partial<Product>>('products/current/update');
-export const updateProductSeason = createAction<Partial<ProductSeason>|null>('products/current/update-season');
+export const updateProductSeason = createAction<Partial<ProductSeason> | null>('products/current/update-season');
 export const updateProductAdditionalData = createAction<Partial<ProductAdditionalData>>('products/current/updateAdditionalData');
 
 export const loadProduct = createAsyncThunk<Product | null, string>(
-    'product/current/load',
+    'value/current/load',
     async (arg) => {
         if (arg === 'new') {
             return {...defaultProduct};
@@ -31,8 +31,8 @@ export const loadProduct = createAsyncThunk<Product | null, string>(
     }
 )
 
-export const saveProduct = createAsyncThunk<Product|null, Product>(
-    'product/current/save',
+export const saveProduct = createAsyncThunk<Product | null, Product>(
+    'value/current/save',
     async (arg, {getState}) => {
         const state = getState() as RootState;
         const keyword = selectCurrentKeyword(state);

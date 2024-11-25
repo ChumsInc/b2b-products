@@ -1,5 +1,5 @@
 
-export const storeProductListRowsPerPage = 'b2b-products:product:colors:rowsPerPage';
+export const storeProductListRowsPerPage = 'b2b-products:value:colors:rowsPerPage';
 export const storeColorsListRowsPerPage = 'b2b-products:colors:colors:rowsPerPage';
 export const storeProductItemsRowsPerPage = 'b2b-products:products:items:rowsPerPage';
 export const storeProductImagesRowsPerPage = 'b2b-products:products:images:rowsPerPage';
