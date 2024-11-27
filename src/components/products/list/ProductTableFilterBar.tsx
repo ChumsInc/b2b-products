@@ -26,7 +26,7 @@ export default function ProductTableFilterBar() {
 
     return (
         <Row className="row g-3 mb-1 align-items-baseline">
-            <Col>
+            <Col style={{minWidth: '15rem'}}>
                 <FilterSearchProducts/>
             </Col>
             <Col xs="auto">
