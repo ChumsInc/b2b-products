@@ -11,9 +11,10 @@ import {
     toggleFilterOnSale
 } from "./actions";
 import {localStorageKeys} from "../../../api/preferences";
-import {LocalStore, SortProps} from "chums-components";
+import {LocalStore} from "chums-ui-utils";
 import {saveProduct} from "../product/actions";
 import {listItemFromProduct} from "../utils";
+import {SortProps} from "chums-types";
 
 
 export interface ProductFilter {

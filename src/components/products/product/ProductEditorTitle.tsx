@@ -1,31 +1,40 @@
 import React from 'react';
 import classNames from "classnames";
-import {Spinner} from "chums-components";
+import Spinner from "react-bootstrap/Spinner";
 import {useSelector} from "react-redux";
 import {
     selectCurrentProduct,
     selectCurrentProductChanged,
     selectCurrentProductLoading
-} from "../../../ducks/products/product/selectors";
+} from "@/ducks/products/product/selectors";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
-const ProductEditorTitle: React.FC = () => {
+
+const ProductEditorTitle = () => {
     const product = useSelector(selectCurrentProduct);
     const loading = useSelector(selectCurrentProductLoading);
     const changed = useSelector(selectCurrentProductChanged);
 
     return (
-        <div className="row g-1 align-items-center">
-            <h2 className={classNames('col-auto me-3', {'text-warning': changed})}>
+        <Row className="align-items-baseline">
+            <Col as="h2" xs="auto" className={classNames('me-3', {'text-warning': changed})}>
                 {product?.name || 'Product Editor'}
-            </h2>
+            </Col>
             {product?.additionalData?.subtitle && (
-                <div className=" col-auto me-3 text-muted"><span>{product.additionalData.subtitle ?? null}</span></div>
+                <Col xs="auto" className="me-3 text-secondary">
+                    {product.additionalData.subtitle ?? null}
+                </Col>
             )}
-            <div className="col">
+            <Col className="col">
                 {changed && <span className="text-warning  bi-exclamation-triangle-fill ms-1"/>}
-                {loading && <Spinner className="ms-3" color="primary" type="border" bsSize="sm"/>}
-            </div>
-        </div>
+            </Col>
+            <Col xs="auto">
+                {loading && (
+                    <Spinner className="ms-3" variant="primary" animation="border" size="sm"/>
+                )}
+            </Col>
+        </Row>
     )
 }
 

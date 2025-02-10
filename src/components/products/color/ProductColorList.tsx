@@ -4,13 +4,12 @@ import {selectCurrentColorItem, selectCurrentProductColors} from "../../../ducks
 import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
 import ProductImage from "../../app/ProductImage";
 import {ProductColorItem} from "b2b-types/src/products";
-import {TablePagination} from "chums-components";
+import {TablePagination} from "sortable-tables";
 import classNames from "classnames";
 import {LocalStore, storeProductItemsRowsPerPage} from "../../../localStore";
 import {useAppDispatch} from "../../app/hooks";
 import {setCurrentColorItem} from "../../../ducks/products/color/actions";
 import SeasonIcon from "../../season/SeasonIcon";
-import MiniChip from "../../MiniChip";
 import {Badge, Card, Col, FormCheck, Row} from "react-bootstrap";
 import {localStorageKeys} from "../../../api/preferences";
 import ColorSwatch from "../../colors/ColorSwatch";
@@ -74,9 +73,9 @@ const ProductColorList = () => {
                                onChange={onChangeShowImages} type="checkbox"/>
                 </Col>
                 <Col>
-                    <TablePagination bsSize="sm"
+                    <TablePagination size="sm"
                                      page={page} onChangePage={setPage}
-                                     rowsPerPage={rowsPerPage} onChangeRowsPerPage={onChangeRowsPerPage}
+                                     rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: onChangeRowsPerPage}}
                                      count={filteredList.length}/>
                 </Col>
             </Row>
@@ -92,7 +91,8 @@ const ProductColorList = () => {
                                         <div>
                                             {item.colorCode}
                                         </div>
-                                        <ColorSwatch colorCode={item.colorCode} swatchFormat={item.additionalData?.swatch_code} />
+                                        <ColorSwatch colorCode={item.colorCode}
+                                                     swatchFormat={item.additionalData?.swatch_code}/>
                                     </div>
                                 </Card.Header>
                                 {showImage && (

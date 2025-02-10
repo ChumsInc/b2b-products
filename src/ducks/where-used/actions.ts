@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {fetchWhereUsed} from "./api";
-import {RootState} from "../../app/configureStore";
+import {RootState} from "@/app/configureStore";
 import {WhereUsedResponse} from "./types";
 import {selectWhereUsedLoading} from "./selectors";
 

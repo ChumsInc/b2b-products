@@ -1,5 +1,5 @@
 import {WhereUsedResponse} from "./types";
-import {fetchJSON} from "chums-components";
+import {fetchJSON} from "chums-ui-utils";
 
 export async function fetchWhereUsed(itemCode:string):Promise<WhereUsedResponse> {
     try {

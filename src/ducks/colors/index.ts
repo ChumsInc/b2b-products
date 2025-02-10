@@ -1,6 +1,6 @@
 import {ActionStatus, ColorProductUsage, ProductColor} from "b2b-types";
 import {colorProductUsageSorter} from "./sorter";
-import {SortProps} from "chums-components";
+import {SortProps} from "chums-types";
 import {createReducer} from "@reduxjs/toolkit";
 import {
     loadColors,
@@ -12,7 +12,7 @@ import {
     setSort,
     toggleFilterInactiveColors
 } from "./actions";
-import {ProductColorList} from "../../types/product-colors";
+import {ProductColorList} from "@/types/product-colors";
 
 const defaultColorSort: SortProps<ProductColor> = {
     field: 'id',

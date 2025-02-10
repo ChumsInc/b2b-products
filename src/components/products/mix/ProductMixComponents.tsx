@@ -1,7 +1,10 @@
-import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
-import {Alert, FormColumn, SpinnerButton} from "chums-components";
-import {selectCurrentMix, selectCurrentMixComponents, selectCurrentMixStatus} from "../../../ducks/products/mix/selectors";
+import {
+    selectCurrentMix,
+    selectCurrentMixComponents,
+    selectCurrentMixStatus
+} from "../../../ducks/products/mix/selectors";
 import {ProductMixComponent} from "b2b-types/src/products";
 import ItemDataList from "../../item-search/ItemDataList";
 import {saveMixComponent} from "../../../ducks/products/mix/actions";
@@ -11,6 +14,8 @@ import ColorAutoComplete from "../../colors/ColorAutoComplete";
 import {ProductColor} from "b2b-types";
 import BOMDetail from "./BOMDetail";
 import {defaultMixComponent} from "../../../ducks/products/mix/utils";
+import {Alert, Button, Col, Form, FormControl, Row} from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
 
 
 const colWidth = 8;
@@ -19,7 +24,11 @@ const ProductMixComponents = () => {
     const mix = useSelector(selectCurrentMix);
     const components = useSelector(selectCurrentMixComponents);
     const status = useSelector(selectCurrentMixStatus);
-    const itemCodeRef = useRef<HTMLInputElement | null>(null)
+    const itemCodeRef = useRef<HTMLInputElement | null>(null);
+    const itemId = useId();
+    const itemColorsListId = useId();
+    const colorCodeId = useId();
+    const quantityId = useId();
 
     const [component, setComponent] = useState<ProductMixComponent>({
         ...defaultMixComponent,
@@ -42,11 +51,11 @@ const ProductMixComponents = () => {
 
     const updateNewComponent = (field: keyof ProductMixComponent) => (ev: ChangeEvent<HTMLInputElement>) => {
         switch (field) {
-        case 'itemCode':
-        case 'color_code':
-            return setComponent({...component, [field]: ev.target.value});
-        case 'itemQuantity':
-            return setComponent({...component, itemQuantity: ev.target.valueAsNumber});
+            case 'itemCode':
+            case 'color_code':
+                return setComponent({...component, [field]: ev.target.value});
+            case 'itemQuantity':
+                return setComponent({...component, itemQuantity: ev.target.valueAsNumber});
         }
     }
 
@@ -60,38 +69,50 @@ const ProductMixComponents = () => {
             <div className="row g-3">
                 <div className="col-md-6 col-lg-5">
                     <h4>New Component</h4>
-                    <form onSubmit={submitHandler} className="mt-3">
-                        <FormColumn label="Item Code" width={colWidth}>
-                            <div>
-                                <input type="text" value={component.itemCode} className="form-control form-control-sm"
-                                       required ref={itemCodeRef}
-                                       list="pmc--item-code-colors"
-                                       onChange={updateNewComponent('itemCode')}/>
-                                <ItemDataList id="pmc--item-code-list" search={component.itemCode}/>
-                            </div>
-                            {!!components
-                                .filter(comp => comp.itemCode === component.itemCode || comp.colorsId === component.colorsId)
-                                .length && (
-                                <Alert color="danger">That item already exists in this mix.</Alert>
-                            )}
-                        </FormColumn>
-                        <FormColumn label="Color Code" width={colWidth}>
-                            <ColorAutoComplete value={component.color_code ?? ''} onChangeColor={onChangeColor}/>
-                        </FormColumn>
-                        <FormColumn label="Quantity" width={colWidth}>
-                            <input type="number" className="form-control form-control-sm"
-                                   min={1}
-                                   value={component.itemQuantity || ''} onChange={updateNewComponent('itemQuantity')}
-                                   required/>
-                        </FormColumn>
-                        <FormColumn label="" width={colWidth}>
-                            <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1"
-                                           spinning={status === 'saving'}
-                                           disabled={!mix?.productId || status !== 'idle'}>
+                    <Form onSubmit={submitHandler} className="mt-3">
+                        <Form.Group as={Row}>
+                            <Form.Label column={true} xs={4} htmlFor={itemId}>
+                                Item Code
+                            </Form.Label>
+                            <Col>
+                                <FormControl type="text" value={component.itemCode}
+                                             size="sm"
+                                             required ref={itemCodeRef} id={itemId}
+                                             list={itemColorsListId}
+                                             onChange={updateNewComponent('itemCode')}/>
+                                <ItemDataList id={itemColorsListId} search={component.itemCode}/>
+                                {!!components
+                                    .filter(comp => comp.itemCode === component.itemCode
+                                        || comp.colorsId === component.colorsId)
+                                    .length && (
+                                    <Alert variant="danger">That item already exists in this mix.</Alert>
+                                )}
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row}>
+                            <Form.Label column={true} xs={4} htmlFor={colorCodeId}>Color Code</Form.Label>
+                            <Col>
+                                <ColorAutoComplete id={colorCodeId} value={component.color_code ?? ''} onChangeColor={onChangeColor}/>
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row}>
+                            <Form.Label column={true} xs={4} htmlFor={quantityId}>Quantity</Form.Label>
+                            <Col>
+                                <FormControl type="number" size="sm" min={1}
+                                       value={component.itemQuantity || ''} onChange={updateNewComponent('itemQuantity')}
+                                       required/>
+                            </Col>
+                        </Form.Group>
+                        <Row className="mt-3 justify-content-end">
+                            <Button variant="primary" type="submit" size="sm"
+                                    disabled={!mix?.productId || status !== 'idle'}>
+                                {status === 'saving' && (
+                                    <Spinner as="span" role="status" aria-hidden={true} />
+                                )}
                                 Add New Component
-                            </SpinnerButton>
-                        </FormColumn>
-                    </form>
+                            </Button>
+                        </Row>
+                    </Form>
                 </div>
                 <div className="col-md-6 col-lg-7">
                     <h4>Components</h4>
@@ -121,7 +142,7 @@ const ProductMixComponents = () => {
                 </div>
             </div>
             <hr/>
-            <BOMDetail />
+            <BOMDetail/>
         </>
     )
 }

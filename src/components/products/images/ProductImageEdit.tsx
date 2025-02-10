@@ -1,17 +1,14 @@
-import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from "react";
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
-import {
-    removeImage,
-    saveImage,
-    setCurrentImage
-} from "../../../ducks/products/images/actions";
+import {removeImage, saveImage, setCurrentImage} from "../../../ducks/products/images/actions";
 import {Editable, ProductAlternateImage} from "b2b-types";
 import {selectCurrentProductId} from "../../../ducks/products/product/selectors";
 import classNames from "classnames";
 import ProductImage from "../../app/ProductImage";
-import {Alert, FormCheck, FormColumn, SpinnerButton} from "chums-components";
 import {selectCurrentImage, selectImagesStatus} from "../../../ducks/products/images/selectors";
+import {Alert, Button, Col, Form, FormCheck, Row} from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
 
 const newImage: ProductAlternateImage = {
     id: 0,
@@ -28,6 +25,10 @@ const ProductImageEdit = () => {
     const status = useSelector(selectImagesStatus);
     const [image, setImage] = useState<ProductAlternateImage & Editable>(current ?? {...newImage, productId});
     const filenameRef = useRef<HTMLInputElement | null>(null);
+    const filenameId = useId();
+    const altTextID = useId();
+    const activeId = useId();
+    const priorityId = useId();
 
     useEffect(() => {
         setImage(current || {...newImage, productId});
@@ -71,58 +72,80 @@ const ProductImageEdit = () => {
     }
 
     return (
-        <form onSubmit={submitHandler} className="row g-3">
-            <div className="col-lg-6 col-12">
-                <FormColumn label="ID">
-                    <input type="text" value={image.id ?? 0} readOnly disabled
-                           className="form-control form-control-sm"/>
-                </FormColumn>
-                <FormColumn label="File Name">
-                    <input type="text" value={image.image} onChange={changeHandler('image')}
-                           ref={filenameRef}
-                           className="form-control form-control-sm"/>
-                </FormColumn>
-                <FormColumn label="Alt Text">
-                    <input type="text" value={image.altText} onChange={changeHandler('altText')}
-                           className="form-control form-control-sm"/>
-                    <small className="text-muted">Use #SKU to show for only that SKU</small>
-                </FormColumn>
-                <FormColumn label="Active">
-                    <FormCheck type="checkbox" label="Active" checked={!!image.status}
-                               onChange={changeHandler('status')}/>
-                </FormColumn>
-                <FormColumn label="Priority">
-                    <input type="number" value={image.priority} onChange={changeHandler('priority')}
-                           className="form-control form-control-sm text-end"/>
-                </FormColumn>
+        <Row as="form" onSubmit={submitHandler}>
+            <Col xs={12} lg={6}>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4}>ID</Form.Label>
+                    <Col>
+                        <Form.Control type="text" value={image.id ?? 'new'} readOnly disabled size="sm"/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} htmlFor={filenameId}>File Name</Form.Label>
+                    <Col>
+                        <Form.Control type="text" id={filenameId} size="sm"
+                                      value={image.image} onChange={changeHandler('image')}
+                                      ref={filenameRef}/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} htmlFor={altTextID}>Alt Text</Form.Label>
+                    <Col>
+                        <Form.Control type="text" id={altTextID} size="sm"
+                                      value={image.altText} onChange={changeHandler('altText')}
+                                      ref={filenameRef}/>
+                        <Form.Text className="text-secondary">Use #SKU to show for only that SKU</Form.Text>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} htmlFor={activeId}>Active</Form.Label>
+                    <Col>
+                        <FormCheck type="checkbox" label="Active" id={activeId}
+                                   checked={!!image.status} onChange={changeHandler('status')}/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} htmlFor={priorityId}>Priority</Form.Label>
+                    <Col>
+                        <Form.Control type="number" id={priorityId} size="sm" step={1} min={0} className="text-end"
+                                      value={image.priority} onChange={changeHandler('priority')}/>
+                    </Col>
+                </Form.Group>
                 <hr/>
-                <div className="d-flex justify-content-between">
-                    <SpinnerButton type="submit" color="primary" size="sm" spinning={status === 'saving'}
-                                   disabled={!productId || !image.image || status !== 'idle'}>
-                        Save
-                    </SpinnerButton>
-                    <button type="button" className="btn btn-sm btn-outline-secondary" onClick={newImageHandler}>
-                        New Image
-                    </button>
-                    <SpinnerButton type="button" size="sm" color="danger" spinning={status === 'deleting'}
-                                   onClick={deleteImageHandler}
-                                   disabled={!productId || !image.id || status !== 'idle'}>
-                        Delete
-                    </SpinnerButton>
-                </div>
+                <Row>
+                    <Col>
+                        <Button type="submit" variant="primary" size="sm"
+                                disabled={!productId || !image.image || status !== 'idle'}>
+                            {status === 'saving' && (<Spinner size="sm" role="status" aria-hidden="true"/>)}
+                            Save
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button type="button" variant="outline-secondary" size="sm" onClick={newImageHandler}>
+                            New Image
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button type="button" variant="outline-danger" size="sm" onClick={deleteImageHandler}
+                                disabled={!productId || !image.id || status !== 'idle'}>
+                            {status === 'deleting' && (<Spinner size="sm" role="status" aria-hidden="true"/>)}
+                            Delete
+                        </Button>
+
+                    </Col>
+                </Row>
                 {image.changed && (
-                    <Alert color="warning">Don't forget to save your changes.</Alert>
+                    <Alert variant="warning">Don&apos;t forget to save your changes.</Alert>
                 )}
-            </div>
-            <div className="col-lg-6 d-none d-lg-block">
+            </Col>
+            <Col lg={6} className="d-none d-lg-block">
                 {current?.image && (
                     <ProductImage filename={current.image}
                                   className={classNames({'text-danger': !current.status})}
                                   itemCode={current.altText} size={250}/>
                 )}
-            </div>
-
-        </form>
+            </Col>
+        </Row>
     )
 }
 

@@ -5,11 +5,11 @@ import {default as itemSearchReducer} from '../ducks/item-search';
 import {default as keywordsReducer} from '../ducks/keywords';
 import {default as productsReducer} from '../ducks/products';
 import {default as seasonsReducer} from '../ducks/seasons';
-import alertsReducer from "../ducks/alerts";
+import alertsSlice from "../ducks/alerts";
 import whereUsedReducer from "../ducks/where-used";
 
 const rootReducer = combineReducers({
-    alerts: alertsReducer,
+    [alertsSlice.reducerPath]: alertsSlice.reducer,
     colors: colorsReducer,
     itemSearch: itemSearchReducer,
     keywords: keywordsReducer,

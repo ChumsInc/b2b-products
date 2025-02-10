@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {LocalStore, SortableTable, SortableTableField, SortProps, TablePagination} from "chums-components";
+import {SortableTable, SortableTableField, SortProps, TablePagination} from "sortable-tables";
 import {ProductListItem} from "b2b-types";
 import SeasonIcon from "../../season/SeasonIcon";
 import ProductSellAsIcon from "./ProductSellAsIcon";
@@ -14,6 +14,7 @@ import {selectCurrentProductId} from "../../../ducks/products/product/selectors"
 import ProductTableCategoryName from "./ProductTableCategoryName";
 import {useNavigate} from "react-router";
 import {localStorageKeys} from "../../../api/preferences";
+import {LocalStore} from "chums-ui-utils";
 
 
 const fields: SortableTableField<ProductListItem>[] = [
@@ -97,8 +98,8 @@ const ProductTable = () => {
                            data={list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} size="xs"
                            selected={(row) => row.id === currentId}
                            rowClassName={rowClassName} onSelectRow={onSelectRow}/>
-            <TablePagination page={page} onChangePage={setPage}
-                             rowsPerPage={rowsPerPage} onChangeRowsPerPage={rowsPerPageChangeHandler}
+            <TablePagination size="sm" page={page} onChangePage={setPage}
+                             rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: rowsPerPageChangeHandler}}
                              showFirst showLast
                              count={list.length}/>
         </div>

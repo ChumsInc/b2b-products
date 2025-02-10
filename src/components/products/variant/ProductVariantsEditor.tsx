@@ -1,18 +1,22 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
 import {useSelector} from "react-redux";
-import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-components";
-import {selectCurrentProductVariants, selectCurrentVariant, selectCurrentVariantSaving} from "../../../ducks/products/variant/selectors";
+import SpinnerButton from "@/components/common/SpinnerButton";
+import {
+    selectCurrentProductVariants,
+    selectCurrentVariant,
+    selectCurrentVariantSaving
+} from "@/ducks/products/variant/selectors";
 import {ProductVariant} from "b2b-types/src/products";
 import {Editable, Keyword} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
-import {defaultVariant} from "../../../defaults";
-import {loadProduct} from "../../../ducks/products/product/actions";
-import {removeVariant, saveCurrentVariant, setDefaultVariant} from "../../../ducks/products/variant/actions";
-import {selectCurrentProductId} from "../../../ducks/products/product/selectors";
+import {defaultVariant} from "@/src/defaults";
+import {loadProduct} from "@/ducks/products/product/actions";
+import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/products/variant/actions";
+import {selectCurrentProductId} from "@/ducks/products/product/selectors";
 import {useAppDispatch} from "../../app/hooks";
-import {JSONView} from "@chumsinc/json-view";
 import ProductImage from "./ProductImage";
 import {Collapse} from "@mui/material";
+import {Alert, Button, Col, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 
 
 const colWidth = 9;
@@ -23,7 +27,11 @@ const ProductVariantsEditor = () => {
     const saving = useSelector(selectCurrentVariantSaving);
     const currentVariants = useSelector(selectCurrentProductVariants);
     const [variant, setVariant] = useState<ProductVariant & Editable>(current ?? {...defaultVariant});
-    const [alert, setAlert] = useState<string|null>(null);
+    const [alert, setAlert] = useState<string | null>(null);
+    const variantIdId = useId();
+    const productSelectId = useId();
+    const enabledId = useId();
+
 
     useEffect(() => {
         if (!variant?.id || variant?.parentProductID !== productId) {
@@ -98,71 +106,90 @@ const ProductVariantsEditor = () => {
     }
 
     return (
-        <div className="row g-3">
-            <div className="col-md-8 col-12">
-                <form onSubmit={submitHandler}>
-                    <FormColumn label="ID" width={colWidth}>
-                        <InputGroup bsSize="sm">
-                            <input type="number" readOnly value={variant.id} className="form-control form-control-sm"/>
-                        </InputGroup>
-                    </FormColumn>
-                    <FormColumn label="Child" width={colWidth}>
-                        <KeywordSelectInputGroup pageType="product" value={variant.variantProductID}
-                                                 required
-                                                 onSelectKeyword={keywordChangeHandler}>
+        <Row>
+            <Col md={8} xs={12}>
+                <Form onSubmit={submitHandler}>
+                    <Form.Group as={Row} label="ID" width={colWidth}>
+                        <Form.Label column={true} xs={4} htmlFor={variantIdId}>ID</Form.Label>
+                        <Col>
+                            <FormControl type="number" readOnly id={variantIdId} size="sm"
+                                         value={variant.id}/>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                        <Form.Label column={true} xs={4} htmlFor={productSelectId}>Child</Form.Label>
+                        <Col>
+                            <KeywordSelectInputGroup pageType="product" id={productSelectId}
+                                                     value={variant.variantProductID}
+                                                     required
+                                                     onSelectKeyword={keywordChangeHandler}>
+                                <Button type="button" variant="secondary" size="sm" onClick={onEditVariantProduct}
+                                        disabled={variant.id === 0 || !variant.product}>
+                                    <span className="bi-pencil-fill"/>
+                                </Button>
+                            </KeywordSelectInputGroup>
+                            <Collapse in={!!alert}>
+                                <Alert color="danger">{alert}</Alert>
+                            </Collapse>
+                        </Col>
+                    </Form.Group>
 
-                            <button type="button" className="btn btn-sm btn-secondary" onClick={onEditVariantProduct}
-                                    disabled={variant.id === 0 || !variant.product}>
-                                <span className="bi-pencil-fill"/>
-                            </button>
-                        </KeywordSelectInputGroup>
-                        <Collapse in={!!alert}>
-                            <Alert color="danger">{alert}</Alert>
-                        </Collapse>
-                    </FormColumn>
-                    <FormColumn label="Name" width={colWidth}>
-                        <input type="text" className="form-control form-control-sm"
-                               value={variant.title} onChange={changeHandler('title')} required/>
-                    </FormColumn>
-                    <FormColumn label="Status" width={colWidth} align="baseline">
-                        <FormCheck label='Enabled' checked={variant.status} onChange={changeHandler('status')}
-                                   disabled={!variant.product?.status}
-                                   type="checkbox" inline/>
-                    </FormColumn>
+                    <Form.Group as={Row}>
+                        <Form.Label column={true} xs={4} htmlFor={productSelectId}>Name</Form.Label>
+                        <Col>
+                            <FormControl type="text" size="sm"
+                                         value={variant.title} onChange={changeHandler('title')} required/>
+                        </Col>
+                    </Form.Group>
 
-                    <FormColumn label="" width={colWidth}>
-                        <SpinnerButton type="submit" className="btn btn-sm btn-primary me-2 mb-1"
-                                       disabled={!!alert || !productId}
-                                       spinning={saving}>Save</SpinnerButton>
-                        <button type="button" className="btn btn-sm btn-outline-secondary me-2 mb-1"
-                                onClick={newVariantHandler}
-                                disabled={!productId}>
-                            New
-                        </button>
-                        <button type="button" className="btn btn-sm btn-outline-danger me-2 mb-1"
-                                onClick={deleteVariantHandler}
-                                disabled={!productId}>
-                            Delete
-                        </button>
-                        <button type="button" className="btn btn-sm btn-outline-info me-2 mb-1"
-                                onClick={defaultVariantHandler}
-                                disabled={variant.isDefaultVariant || !variant.id}>
-                            {variant.isDefaultVariant && <>Default Variant</>}
-                            {!variant.isDefaultVariant && <>Set Default Variant</>}
-                        </button>
-                    </FormColumn>
-                    <FormColumn label="" width={colWidth} className="mt-1">
+                    <Form.Group as={Row}>
+                        <Form.Label column={true} xs={4} htmlFor={enabledId}>Status</Form.Label>
+                        <Col>
+                            <FormCheck label='Enabled' id={enabledId}
+                                       checked={variant.status} onChange={changeHandler('status')}
+                                       disabled={!variant.product?.status}
+                                       type="checkbox" inline/>
+                        </Col>
+                    </Form.Group>
 
-                    </FormColumn>
-                    <FormColumn label="" width={colWidth}>
-                        {variant.changed && <Alert color="warning">Don&#39;t forget to save your changes.</Alert>}
-                    </FormColumn>
-                </form>
-            </div>
-            <div className="col-md-4 col-12">
-                <ProductImage imageUrl={variant.product?.image} defaultColor={variant.product?.defaultColor} size="400"/>
-            </div>
-        </div>
+                    <Row className="justify-content-end">
+                        <Col xs="auto">
+                            <SpinnerButton type="submit" variant="primary" size="sm"
+                                           disabled={!!alert || !productId}
+                                           spinning={saving}>Save</SpinnerButton>
+                        </Col>
+                        <Col xs="auto">
+                            <Button type="button" size="sm" variant="outline-secondary"
+                                    onClick={newVariantHandler}
+                                    disabled={!productId}>
+                                New
+                            </Button>
+
+                        </Col>
+                        <Col xs="auto">
+                            <Button type="button" size="sm" variant="outline-danger"
+                                    onClick={deleteVariantHandler}
+                                    disabled={!productId}>
+                                Delete
+                            </Button>
+                        </Col>
+                        <Col xs="auto">
+                            <Button type="button" variant="outline-info" size="sm"
+                                    onClick={defaultVariantHandler}
+                                    disabled={variant.isDefaultVariant || !variant.id}>
+                                {variant.isDefaultVariant && <>Default Variant</>}
+                                {!variant.isDefaultVariant && <>Set Default Variant</>}
+                            </Button>
+                        </Col>
+                    </Row>
+                    {variant.changed && <Alert color="warning">Don&#39;t forget to save your changes.</Alert>}
+                </Form>
+            </Col>
+            <Col md={4} xs={12}>
+                <ProductImage imageUrl={variant.product?.image} defaultColor={variant.product?.defaultColor}
+                              size="400"/>
+            </Col>
+        </Row>
     )
 }
 

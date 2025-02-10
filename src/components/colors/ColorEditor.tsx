@@ -1,14 +1,16 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {Alert, SpinnerButton} from "chums-components";
-import {saveColor, setCurrentColor} from "../../ducks/colors/actions";
+import {saveColor} from "../../ducks/colors/actions";
 import {Editable, ProductColor} from "b2b-types";
 import {selectColorsStatus, selectCurrentColor} from "../../ducks/colors/selectors";
 
 import {defaultColor} from "../../defaults";
 import {useAppDispatch} from "../app/hooks";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import Button from 'react-bootstrap/Button'
 import {useNavigate} from "react-router";
+import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
+import {FormControl, InputGroup} from "react-bootstrap";
 
 export type EditableProductColor = ProductColor & Editable;
 
@@ -47,15 +49,15 @@ const ColorEditor: React.FC = () => {
     return (
         <div>
             <form onSubmit={submitHandler}>
-                <div className="input-group input-group-sm mb-1">
-                    <span className="input-group-text bi-key-fill"/>
-                    <input type="text"
+                <InputGroup size="sm" className="mb-1">
+                    <InputGroup.Text className="input-group-text bi-key-fill"/>
+                    <FormControl type="text"
                            value={color.code} onChange={onChangeField('code')}
                            className="form-control form-control-sm"/>
-                    <span className="input-group-text">
+                    <InputGroup.Text className="input-group-text">
                         id: {color.id}
-                    </span>
-                </div>
+                    </InputGroup.Text>
+                </InputGroup>
                 <div className="input-group input-group-sm mb-1">
                     <span className="input-group-text bi-pen"/>
                     <input type="text"
@@ -64,11 +66,16 @@ const ColorEditor: React.FC = () => {
                 </div>
                 <div className="row g-3 align-items-baseline">
                     <div className="col-auto">
-                        <SpinnerButton type="submit" size="sm" color="primary"
-                                       spinning={status === 'saving'}>Save</SpinnerButton>
+                        <Button type="submit" size="sm" color="primary">
+                            {status === 'saving' &&
+                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden/>}
+                            Save
+                        </Button>
                     </div>
                     <div className="col-auto">
-                        <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setColor(current ?? defaultColor)}>Cancel</button>
+                        <button type="button" className="btn btn-sm btn-outline-secondary"
+                                onClick={() => setColor(current ?? defaultColor)}>Cancel
+                        </button>
                     </div>
                     <div className="col-auto">
                         <button type="button" className="btn btn-sm btn-outline-secondary" onClick={newColorHandler}>
@@ -76,7 +83,9 @@ const ColorEditor: React.FC = () => {
                         </button>
                     </div>
                     <div className="col">
-                        {color.changed && <Alert color="warning"><span className="bi-exclamation-triangle-fill me-1" />Color has been changed.</Alert> }
+                        {color.changed &&
+                            <Alert color="warning"><span className="bi-exclamation-triangle-fill me-1"/>Color has been
+                                changed.</Alert>}
                     </div>
                 </div>
             </form>

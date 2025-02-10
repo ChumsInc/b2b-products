@@ -5,17 +5,21 @@ import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
 import {selectItemSearchList} from "../../../ducks/item-search/selectors";
 import {updateProduct} from "../../../ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";
-import {FormControl, InputGroup} from "react-bootstrap";
+import {FormControl, FormControlProps, InputGroup} from "react-bootstrap";
 import list from "../../../ducks/products/list";
 
+export interface ProductItemCodeInputProps {
+    id?: string;
+    inputProps?:FormControlProps;
+}
 
-export const ProductItemCodeInput = () => {
+export const ProductItemCodeInput = ({id, inputProps}:ProductItemCodeInputProps) => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
     const items = useSelector(selectItemSearchList);
     const [itemCode, setItemCode] = useState(product?.itemCode ?? '');
     const [search, setSearch] = useState('');
-    const id = useId();
+    const inputId = id ?? inputProps?.id ?? useId();
     const listId = useId();
 
     useEffect(() => {
@@ -37,7 +41,7 @@ export const ProductItemCodeInput = () => {
     return (
         <>
             <InputGroup size="sm" className="input-group input-group-sm">
-                <FormControl size="sm" type="text" id={id}
+                <FormControl size="sm" type="text" {...inputProps} id={inputId}
                        value={itemCode} onChange={changeHandler}
                        list={listId}/>
                 <button type="button" className="btn btn-secondary" onClick={onCopyToName} disabled={!items[itemCode]}>

@@ -1,16 +1,18 @@
 import React, {ReactNode} from 'react';
+import {Button, ButtonProps} from "react-bootstrap";
+import classNames from "classnames";
 
-export interface CodeEditButtonProps {
+export interface CodeEditButtonProps extends ButtonProps {
+    icon?: string;
     onClick: () => void,
     children?: ReactNode
 }
 
-const CodeEditButton: React.FC<CodeEditButtonProps> = ({onClick, children}) => {
+export default function CodeEditButton({icon, onClick, children, ...rest}:CodeEditButtonProps) {
     return (
-        <span className="bi-code-slash btn btn-sm btn-outline-secondary" onClick={onClick}>
-            <span className="ms-1">{children}</span>
-        </span>
+        <Button type="button" variant="outline-secondary" size="sm" {...rest} onClick={onClick}>
+            {children}
+            <span className={classNames(icon ?? "bi-code", 'ms-1')} />
+        </Button>
     );
 }
-
-export default CodeEditButton

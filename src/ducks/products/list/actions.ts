@@ -1,7 +1,7 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductListItem} from "b2b-types";
 import {fetchProducts} from "./api";
-import {SortProps} from "chums-components";
+import {SortProps} from "chums-types";
 import {RootState} from "../../../app/configureStore";
 import {selectProductListLoading} from "./selectors";
 

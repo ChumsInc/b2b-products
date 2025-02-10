@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {SortableTable, SortableTableField, TablePagination} from 'chums-components';
+import {SortableTable, SortableTableField, TablePagination} from 'sortable-tables';
 import {ProductColor} from "b2b-types";
 import {setCurrentColorByCode, setSort} from "../../ducks/colors/actions";
 import {selectCurrentColor, selectSort, selectSortedList} from "../../ducks/colors/selectors";
@@ -66,8 +66,8 @@ const ColorList: React.FC = () => {
                            rowClassName={rowClassName}
                            onSelectRow={onSelectColor}
                            data={pagedList}/>
-            <TablePagination page={page} onChangePage={setPage} bsSize="sm"
-                             rowsPerPage={rowsPerPage} onChangeRowsPerPage={rowsPerPageChangeHandler}
+            <TablePagination page={page} onChangePage={setPage} size="sm"
+                             rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: rowsPerPageChangeHandler}}
                              showFirst showLast
                              count={list.length}/>
         </div>

@@ -1,8 +1,8 @@
 import {ColorProductUsage, ProductColor} from "b2b-types";
 import {fetchColors, fetchWhereUsed, postColor} from "./api";
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {SortProps} from "chums-components";
-import {RootState} from "../../app/configureStore";
+import {SortProps} from "chums-types";
+import {RootState} from "@/app/configureStore";
 import {selectColorsLoading, selectColorsStatus, selectColorUsageLoading} from "./selectors";
 
 export const loadColors = createAsyncThunk<ProductColor[]>(

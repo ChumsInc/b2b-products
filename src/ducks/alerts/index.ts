@@ -1,59 +1,85 @@
-import {BasicAlert} from 'chums-components';
-import {createAction, createReducer, isRejected,} from "@reduxjs/toolkit";
+import {createEntityAdapter, createSlice, isRejected, PayloadAction, SerializedError,} from "@reduxjs/toolkit";
 import {RootState} from "../../app/configureStore";
-import {AlertList} from "../../types/alerts";
+import {BasicAlert, ErrorAlert} from "chums-ui-utils";
+import {AlertProps} from "react-bootstrap";
 
-
-export interface AlertsState {
-    list: AlertList,
-    counter: number;
+export interface UIAlert extends Omit<ErrorAlert, 'context'>,
+    Partial<Pick<ErrorAlert, 'context'>>,
+    Pick<AlertProps, 'variant'>, Pick<BasicAlert, 'title'> {
+    error?: SerializedError;
 }
 
-export const initialAlertsState: AlertsState = {
-    list: {},
-    counter: 0,
-}
+export type BaseUIAlert = BasicAlert & Pick<AlertProps, 'variant'>;
 
-export const setAlert = createAction<BasicAlert>('alerts/setAlert');
-export const dismissAlert = createAction<number | string>('alerts/dismissAlert');
+const alertsAdapter = createEntityAdapter<UIAlert, number>({
+    selectId: (item) => item.id,
+    sortComparer: (a, b) => a.id - b.id,
+})
 
-export const selectAlerts = (state: RootState) => state.alerts.list;
+const alertsAdapterSelectors = alertsAdapter.getSelectors();
 
-
-const alertsReducer = createReducer(initialAlertsState, (builder) => {
-    builder
-        .addCase(setAlert, (state, action) => {
-            const {context} = action.payload;
-            if (context) {
-                if (!state.list[context]) {
-                    state.list[context] = {...action.payload, count: 1};
-                    state.counter += 1;
+const alertsSlice = createSlice({
+    name: 'alerts',
+    initialState: alertsAdapter.getInitialState({nextId: 0}),
+    reducers: {
+        setAlert(state, action: PayloadAction<BaseUIAlert>) {
+            if (action.payload.context) {
+                const [alert] = alertsAdapterSelectors.selectAll(state)
+                    .filter(alert => alert.context === action.payload.context);
+                if (alert) {
+                    alertsAdapter.updateOne(state, {id: alert.id, changes: {count: alert.count + 1}});
                 } else {
-                    state.list[context].count += 1;
+                    state.nextId = state.nextId + 1;
+                    const alert: UIAlert = {
+                        id: state.nextId,
+                        count: 1,
+                        context: action.payload.context,
+                        title: action.payload.title,
+                        variant: action.payload.variant,
+                        message: action.payload.message ?? 'An unknown error occurred.',
+                    }
+                    alertsAdapter.addOne(state, alert);
                 }
             } else {
-                state.list[state.counter] = {...action.payload, count: 1};
-                state.counter += 1;
+                state.nextId = state.nextId + 1;
+                const alert: UIAlert = {
+                    ...action.payload,
+                    id: state.nextId,
+                    count: 1,
+                    message: action.payload.message ?? 'An unknown error occurred.',
+                }
+                alertsAdapter.addOne(state, alert);
             }
-        })
-        .addCase(dismissAlert, (state, action) => {
-            delete state.list[action.payload];
-        })
-        .addMatcher(isRejected, (state, action) => {
-            const context = action.type.replace('/rejected', '');
-            if (state.list[context]) {
-                state.list[context].count += 1;
-            } else {
-                if (action)
-                    state.list[context] = {
-                        context,
-                        message: action.error?.message,
-                        error: action.error,
+        },
+        dismissAlert(state, action: PayloadAction<number>) {
+            alertsAdapter.removeOne(state, action.payload);
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addMatcher(isRejected, (state, action) => {
+                const context = action.type.replace('/rejected', '');
+                const [alert] = alertsAdapterSelectors.selectAll(state)
+                    .filter(alert => alert.context === context);
+                if (alert) {
+                    alertsAdapter.updateOne(state, {id: alert.id, changes: {count: alert.count + 1}});
+                } else {
+                    state.nextId = state.nextId + 1;
+                    const alert: UIAlert = {
+                        id: state.nextId,
                         count: 1,
-                        color: 'danger'
+                        context: context,
+                        variant: 'danger',
+                        message: action.error?.message ?? 'An unknown error occurred.',
+                        error: action.error,
                     }
-            }
-        })
-});
+                    alertsAdapter.addOne(state, alert)
+                }
+            })
+    }
+})
+export const {setAlert, dismissAlert} = alertsSlice.actions;
 
-export default alertsReducer
+export const selectAlerts = (state: RootState) => alertsAdapterSelectors.selectAll(state.alerts)
+
+export default alertsSlice;

@@ -1,5 +1,5 @@
 import {ProductColorItem, ProductColorVariant} from "b2b-types/src/products";
-import {fetchJSON} from "chums-components";
+import {fetchJSON} from "chums-ui-utils";
 
 export async function postColorItem(item: ProductColorVariant): Promise<ProductColorVariant[]> {
     try {
