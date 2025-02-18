@@ -1,12 +1,19 @@
-import React from 'react';
+import React, {HTMLAttributes} from 'react';
 import classNames from "classnames";
 import {parseColor} from "../../utils";
+import styled from "@emotion/styled";
 
-export default function ColorSwatch({className = '', swatchFormat, colorCode}: {
+const ColorSwatchEl = styled.div`
+    min-width: 1rem;
+`
+
+export interface ColorSwatchProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;
     colorCode?: string;
-    swatchFormat?: string|null;
-}) {
+    swatchFormat?: string | null;
+}
+
+export default function ColorSwatch({className, swatchFormat, colorCode, ...rest}: ColorSwatchProps) {
 
     const swatchClassName = classNames(
         className,
@@ -14,6 +21,6 @@ export default function ColorSwatch({className = '', swatchFormat, colorCode}: {
         {[parseColor(`color-swatch--${swatchFormat || '?'}`, colorCode)]: !!colorCode}
     )
     return (
-        <div className={swatchClassName}/>
+        <ColorSwatchEl className={swatchClassName} {...rest}/>
     )
 }

@@ -7,7 +7,7 @@ import {Keyword} from "b2b-types";
 export const loadKeywords = createAsyncThunk<Keyword[], void, { state: RootState }>(
     'keywords/load',
     async () => {
-        return await fetchKeywords();
+        return await fetchKeywords({includeInactive: true});
     },
     {
         condition: (arg, {getState}) => {

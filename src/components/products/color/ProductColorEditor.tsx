@@ -5,7 +5,7 @@ import {selectCurrentProduct, selectCurrentProductId} from "@/ducks/products/pro
 import {ProductColorItem, ProductColorItemAdditionalData} from "b2b-types/src/products";
 import SeasonSelect from "../../season/SeasonSelect";
 import {Editable, ProductColor, ProductSeason} from "b2b-types";
-import {defaultColorItem} from "../../../defaults";
+import {defaultColorItem} from "@/src/defaults";
 import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "@/ducks/products/color/actions";
 import {useAppDispatch} from "../../app/hooks";
 import ColorAutoComplete from "../../colors/ColorAutoComplete";
@@ -50,8 +50,6 @@ const ProductColorEditor = () => {
                 return setColorItem({...colorItem, [field]: ev.target.value, changed: true});
         }
     }
-
-    const onChangeColorCode = (value: string) => setColorItem({...colorItem, colorCode: value, changed: true});
 
     const onChangeColor = (color: ProductColor | null) => {
         if (color) {
@@ -115,7 +113,8 @@ const ProductColorEditor = () => {
                 <Form.Group as={Row}>
                     <Form.Label column xs={4}>Color Code</Form.Label>
                     <Col>
-                        <ColorAutoComplete value={colorItem.colorCode} onChange={onChangeColorCode}
+                        <ColorAutoComplete value={colorItem.colorCode}
+                                           inputProps={{onChange: textChangeHandler('colorCode')}}
                                            swatchFormat={colorItem.additionalData?.swatch_code ?? currentProduct?.additionalData?.swatch_format}
                                            onChangeColor={onChangeColor}/>
                     </Col>
@@ -157,14 +156,16 @@ const ProductColorEditor = () => {
                         {!!colorItem.productStatus && <Badge bg="warning">{colorItem.productStatus}</Badge>}
                     </Col>
                 </Form.Group>
+
                 <Form.Group as={Row}>
                     <Form.Label column xs={4}>Item Message</Form.Label>
                     <Col>
-                        <FormControl as={TextareaAutosize} size="sm"
+                        <FormControl as={TextareaAutosize} size="sm" className="mb-2"
                                      value={colorItem.additionalData?.message ?? ''}
                                      onChange={additionalDataChangeHandler('message')}/>
                     </Col>
                 </Form.Group>
+
                 <Form.Group as={Row}>
                     <Form.Label column xs={4} htmlFor={seasonId}>Season</Form.Label>
                     <Col>
@@ -179,9 +180,8 @@ const ProductColorEditor = () => {
                         </InputGroup>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row}>
-                    <Form.Label column xs={4}>Actions</Form.Label>
-                    <Col>
+                <Row className="g-1 justify-content-end">
+                    <Col xs="auto">
                         <Button type="submit"
                                 className={classNames("btn btn-sm me-1", {
                                     'btn-primary': !colorItem.changed,
@@ -195,21 +195,21 @@ const ProductColorEditor = () => {
                             Save
                         </Button>
                     </Col>
-                    <Col>
+                    <Col xs="auto">
                         <Button type="button" variant="outline-secondary" size="sm"
                                 disabled={!productId} onClick={newItemHandler}>
                             New Product
                         </Button>
                     </Col>
-                    <Col>
-                        <Button type="button" color="danger" size="sm"
+                    <Col xs="auto">
+                        <Button type="button" variant="outline-danger" size="sm"
                                 onClick={deleteItemHandler}
                                 disabled={!current?.id || !productId || status !== 'idle'}>
                             {status === 'deleting' && <Spinner as="span" role="status" aria-hidden="true"/>}
                             Delete
                         </Button>
                     </Col>
-                </Form.Group>
+                </Row>
             </Form>
         </>
     )

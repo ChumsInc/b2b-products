@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {SortProps} from "sortable-tables";
+import {SortProps} from "@chumsinc/sortable-tables";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {useSelector} from "react-redux";

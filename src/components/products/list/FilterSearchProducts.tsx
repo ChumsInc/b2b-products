@@ -20,7 +20,7 @@ export default function FilterSearchProducts() {
             <InputGroup.Text as="label" htmlFor={id} aria-label="Search Products">
                 <span className="bi-search" aria-hidden="true"/>
             </InputGroup.Text>
-            <FormControl size="sm" type="search"
+            <FormControl size="sm" type="search" id={id}
                          defaultValue={search} onChange={(ev) => debounced(ev.target.value)} />
         </InputGroup>
     )

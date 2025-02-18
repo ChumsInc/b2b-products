@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {setCurrentImage} from "../../../ducks/products/images/actions";
-import {TablePagination} from "sortable-tables";
+import {TablePagination} from "@chumsinc/sortable-tables";
 import ProductImage from "../../app/ProductImage";
 import classNames from "classnames";
 import {useAppDispatch} from "../../app/hooks";

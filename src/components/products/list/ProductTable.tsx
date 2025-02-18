@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {SortableTable, SortableTableField, SortProps, TablePagination} from "sortable-tables";
+import {SortableTable, SortableTableField, SortProps, TablePagination} from "@chumsinc/sortable-tables";
 import {ProductListItem} from "b2b-types";
 import SeasonIcon from "../../season/SeasonIcon";
 import ProductSellAsIcon from "./ProductSellAsIcon";
@@ -35,32 +35,19 @@ const fields: SortableTableField<ProductListItem>[] = [
     },
     {
         field: 'defaultParentProductsId',
-        title: 'Parent ID',
+        title: 'Parent',
         sortable: true,
         render: (row: ProductListItem) => <ProductRedirectIcon product={row}/>
     },
-    {field: 'sellAs', title: 'Sell As', render: (row) => <ProductSellAsIcon product={row}/>},
-    {
-        field: 'minPrice',
-        title: 'Price',
-        render: (row: ProductListItem) => <ProductPrice product={row}/>,
-        className: 'text-end'
-    }
+    {field: 'sellAs', title: 'Sell As', render: (row) => <ProductSellAsIcon product={row} showStatusIcon/>},
 ]
 
 const rowClassName = (row: ProductListItem) => {
     return classNames({
-        'text-danger': !row.status,
-        'text-success': row.redirectToParent && !!row.defaultParentProductsId
+        'table-danger': !row.status,
     })
 }
 
-const findProductPage = (list: ProductListItem[], id: number, rowsPerPage: number): number => {
-    const index = list.map(item => item.id).indexOf(id);
-    return index === -1 || !rowsPerPage
-        ? 0
-        : Math.floor(index / rowsPerPage);
-}
 
 const ProductTable = () => {
     const dispatch = useAppDispatch();
@@ -74,12 +61,12 @@ const ProductTable = () => {
     );
 
     useEffect(() => {
-        setPage(findProductPage(list, currentId, rowsPerPage));
+        setPage(0);
     }, [list, currentId, rowsPerPage]);
 
     const rowsPerPageChangeHandler = (rpp: number) => {
         LocalStore.setItem<number>(localStorageKeys.products.rowsPerPage, rpp)
-        setPage(findProductPage(list, currentId, rpp));
+        setPage(0);
         setRowsPerPage(rpp);
     }
     const onSelectRow = (row: ProductListItem) => {

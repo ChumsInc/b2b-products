@@ -10,13 +10,12 @@ import {ProductVariant} from "b2b-types/src/products";
 import {Editable, Keyword} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import {defaultVariant} from "@/src/defaults";
-import {loadProduct} from "@/ducks/products/product/actions";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/products/variant/actions";
 import {selectCurrentProductId} from "@/ducks/products/product/selectors";
 import {useAppDispatch} from "../../app/hooks";
 import ProductImage from "./ProductImage";
-import {Collapse} from "@mui/material";
-import {Alert, Button, Col, Form, FormCheck, FormControl, Row} from "react-bootstrap";
+import {Alert, Button, Col, Collapse, Form, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
+import {Link} from "react-router";
 
 
 const colWidth = 9;
@@ -99,43 +98,40 @@ const ProductVariantsEditor = () => {
         }
     }
 
-    const onEditVariantProduct = async () => {
-        if (variant.product?.keyword) {
-            await dispatch(loadProduct(variant.product.keyword));
-        }
-    }
-
     return (
         <Row>
             <Col md={8} xs={12}>
                 <Form onSubmit={submitHandler}>
                     <Form.Group as={Row} label="ID" width={colWidth}>
-                        <Form.Label column={true} xs={4} htmlFor={variantIdId}>ID</Form.Label>
+                        <Form.Label column={true} xs={4} lg={3} htmlFor={variantIdId}>ID</Form.Label>
                         <Col>
                             <FormControl type="number" readOnly id={variantIdId} size="sm"
                                          value={variant.id}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                        <Form.Label column={true} xs={4} htmlFor={productSelectId}>Child</Form.Label>
+                        <Form.Label column={true} xs={4} lg={3} htmlFor={productSelectId}>Child</Form.Label>
                         <Col>
                             <KeywordSelectInputGroup pageType="product" id={productSelectId}
                                                      value={variant.variantProductID}
                                                      required
                                                      onSelectKeyword={keywordChangeHandler}>
-                                <Button type="button" variant="secondary" size="sm" onClick={onEditVariantProduct}
-                                        disabled={variant.id === 0 || !variant.product}>
-                                    <span className="bi-pencil-fill"/>
-                                </Button>
+                                {variant.product && (
+                                    <InputGroup.Text as={Link} to={`/products/${variant.product?.keyword}`}>
+                                        <span className="bi-link" aria-label="Edit Variant"/>
+                                    </InputGroup.Text>
+                                )}
                             </KeywordSelectInputGroup>
-                            <Collapse in={!!alert}>
-                                <Alert color="danger">{alert}</Alert>
+                            <Collapse in={typeof alert === 'string' && alert.length > 0}>
+                                <div>
+                                    <Alert variant="danger">{JSON.stringify(alert)}</Alert>
+                                </div>
                             </Collapse>
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row}>
-                        <Form.Label column={true} xs={4} htmlFor={productSelectId}>Name</Form.Label>
+                        <Form.Label column={true} xs={4} lg={3} htmlFor={productSelectId}>Name</Form.Label>
                         <Col>
                             <FormControl type="text" size="sm"
                                          value={variant.title} onChange={changeHandler('title')} required/>
@@ -143,7 +139,7 @@ const ProductVariantsEditor = () => {
                     </Form.Group>
 
                     <Form.Group as={Row}>
-                        <Form.Label column={true} xs={4} htmlFor={enabledId}>Status</Form.Label>
+                        <Form.Label column={true} xs={4} lg={3} htmlFor={enabledId}>Status</Form.Label>
                         <Col>
                             <FormCheck label='Enabled' id={enabledId}
                                        checked={variant.status} onChange={changeHandler('status')}
@@ -152,7 +148,7 @@ const ProductVariantsEditor = () => {
                         </Col>
                     </Form.Group>
 
-                    <Row className="justify-content-end">
+                    <Row className="justify-content-end g-3">
                         <Col xs="auto">
                             <SpinnerButton type="submit" variant="primary" size="sm"
                                            disabled={!!alert || !productId}

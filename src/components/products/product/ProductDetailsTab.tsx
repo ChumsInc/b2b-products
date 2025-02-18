@@ -79,7 +79,7 @@ const ProductDetailsTab: React.FC = () => {
         <>
             <Form onSubmit={submitHandler} className="mt-3">
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={nameId}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={nameId}>
                         Formatted Name <small className="bi-code ms-1"/>
                     </Form.Label>
                     <Col>
@@ -89,7 +89,7 @@ const ProductDetailsTab: React.FC = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} label="Subtitle" width={colWidth}>
-                    <Form.Label column={true} xs={4} htmlFor={subtitleId}>Subtitle</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={subtitleId}>Subtitle</Form.Label>
                     <Col>
                         <FormControl type="text" size="sm"
                                      value={product.additionalData?.subtitle || ''}
@@ -97,7 +97,7 @@ const ProductDetailsTab: React.FC = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} label="Size" width={colWidth}>
-                    <Form.Label column={true} xs={4} htmlFor={sizesId}>Sizes</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={sizesId}>Sizes</Form.Label>
                     <Col>
                         <FormControl type="text" size="sm" id={sizesId}
                                      value={product.additionalData?.size || ''}
@@ -115,7 +115,7 @@ const ProductDetailsTab: React.FC = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={descriptionId}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={descriptionId}>
                         <CodeEditButton onClick={onShowEditor('description')}>Description</CodeEditButton>
                     </Form.Label>
                     <Col>
@@ -125,7 +125,7 @@ const ProductDetailsTab: React.FC = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={detailsId}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={detailsId}>
                         <CodeEditButton onClick={onShowEditor('details')}>Details</CodeEditButton>
                     </Form.Label>
                     <Col>
@@ -136,7 +136,7 @@ const ProductDetailsTab: React.FC = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={priceId}>Anticipated Price</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={priceId}>Anticipated Price</Form.Label>
                     <Col>
                         <FormControl type="text" size="sm" id={priceId} className="text-end"
                                      value={product.anticipatedPrice || 0}

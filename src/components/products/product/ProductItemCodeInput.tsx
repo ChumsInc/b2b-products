@@ -1,55 +1,56 @@
-import React, {ChangeEvent, useEffect, useId, useState} from 'react'
-import ItemDataList from "../../item-search/ItemDataList";
+import React, {ChangeEvent, useEffect, useState} from 'react'
 import {useSelector} from "react-redux";
 import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
-import {selectItemSearchList} from "../../../ducks/item-search/selectors";
 import {updateProduct} from "../../../ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";
-import {FormControl, FormControlProps, InputGroup} from "react-bootstrap";
-import list from "../../../ducks/products/list";
+import {Button, FormControlProps, InputGroup} from "react-bootstrap";
+import ItemFormControl from "@/components/common/ItemFormControl";
+import {ItemSearchRecord} from "@/types/item-search";
 
 export interface ProductItemCodeInputProps {
     id?: string;
-    inputProps?:FormControlProps;
+    inputProps?: FormControlProps;
 }
 
-export const ProductItemCodeInput = ({id, inputProps}:ProductItemCodeInputProps) => {
+export const ProductItemCodeInput = ({id, inputProps}: ProductItemCodeInputProps) => {
     const dispatch = useAppDispatch();
     const product = useSelector(selectCurrentProduct);
-    const items = useSelector(selectItemSearchList);
     const [itemCode, setItemCode] = useState(product?.itemCode ?? '');
-    const [search, setSearch] = useState('');
-    const inputId = id ?? inputProps?.id ?? useId();
-    const listId = useId();
+    const [item, setItem] = useState<ItemSearchRecord | null>(null);
 
     useEffect(() => {
         setItemCode(product?.itemCode ?? '');
-        setSearch(product?.itemCode ?? '');
     }, [product?.itemCode])
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-        setSearch(ev.target.value);
         return dispatch(updateProduct({itemCode: ev.target.value}));
     }
 
     const onCopyToName = () => {
-        if (items[itemCode]) {
-            dispatch(updateProduct({name: items[itemCode].ItemCodeDesc}));
+        if (item) {
+            dispatch(updateProduct({name: item.ItemCodeDesc}));
         }
     }
 
+    const itemChangeHandler = (item: ItemSearchRecord) => {
+        setItemCode(item.ItemCode);
+        setItem(item);
+    }
+
     return (
-        <>
-            <InputGroup size="sm" className="input-group input-group-sm">
-                <FormControl size="sm" type="text" {...inputProps} id={inputId}
-                       value={itemCode} onChange={changeHandler}
-                       list={listId}/>
-                <button type="button" className="btn btn-secondary" onClick={onCopyToName} disabled={!items[itemCode]}>
-                    <span className="bi-card-text" title={items[itemCode]?.ItemCodeDesc || ''}/>
-                </button>
-            </InputGroup>
-            <ItemDataList id={listId} search={search}/>
-        </>
+        <InputGroup size="sm">
+            <ItemFormControl id={id ?? inputProps?.id} size="sm"
+                             containerProps={{style: {flex: '1 1 auto'}}}
+                             value={itemCode} onChange={changeHandler}
+                             onChangeItem={itemChangeHandler}/>
+            {item?.ItemCodeDesc && (
+                <InputGroup.Text>{item.ItemCodeDesc}</InputGroup.Text>
+            )}
+            <Button type="button" variant="secondary" size="sm"
+                    onClick={onCopyToName} disabled={!item}>
+                <span className="bi-copy me-1" aria-label="Copy to Product Name"/>
+            </Button>
+        </InputGroup>
     )
 }
 

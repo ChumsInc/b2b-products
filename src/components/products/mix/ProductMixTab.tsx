@@ -1,17 +1,23 @@
-import React from 'react';
+import React, {useId} from 'react';
 import ProductMixEditor from "./ProductMixEditor";
 import ProductMixComponents from "./ProductMixComponents";
-import {useSelector} from "react-redux";
-import {selectCurrentMix} from "../../../ducks/products/mix/selectors";
+import {Tab, Tabs} from "react-bootstrap";
+import BOMDetail from "@/components/products/mix/BOMDetail";
 
 const ProductMixTab: React.FC = () => {
-    const mix = useSelector(selectCurrentMix);
+    const id = useId();
+
     return (
         <div>
             <ProductMixEditor/>
-            {mix?.status && (
-                <ProductMixComponents/>
-            )}
+            <Tabs defaultActiveKey="items" id={id} className="mb-1">
+                <Tab eventKey="items" title="Components">
+                    <ProductMixComponents/>
+                </Tab>
+                <Tab eventKey="bom" title="Bill of Materials">
+                    <BOMDetail/>
+                </Tab>
+            </Tabs>
         </div>
     )
 }

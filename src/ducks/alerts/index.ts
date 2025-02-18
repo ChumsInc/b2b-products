@@ -1,5 +1,5 @@
 import {createEntityAdapter, createSlice, isRejected, PayloadAction, SerializedError,} from "@reduxjs/toolkit";
-import {RootState} from "../../app/configureStore";
+import {RootState} from "@/app/configureStore";
 import {BasicAlert, ErrorAlert} from "chums-ui-utils";
 import {AlertProps} from "react-bootstrap";
 
@@ -51,8 +51,8 @@ const alertsSlice = createSlice({
                 alertsAdapter.addOne(state, alert);
             }
         },
-        dismissAlert(state, action: PayloadAction<number>) {
-            alertsAdapter.removeOne(state, action.payload);
+        dismissAlert(state, action: PayloadAction<Pick<UIAlert, 'id'|'context'>>) {
+            alertsAdapter.removeOne(state, action.payload.id);
         },
     },
     extraReducers: (builder) => {

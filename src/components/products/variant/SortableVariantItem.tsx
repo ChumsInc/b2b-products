@@ -8,6 +8,8 @@ import classNames from "classnames";
 import {setCurrentVariant} from "../../../ducks/products/variant/actions";
 import {useAppDispatch} from "../../app/hooks";
 import type {Identifier} from 'dnd-core'
+import styled from "@emotion/styled";
+import ProductSellAsIcon from "@/components/products/list/ProductSellAsIcon";
 
 interface SortableVariantItemProps {
     variant: ProductVariant,
@@ -26,6 +28,28 @@ const style = {
     cursor: 'move',
 }
 
+
+const SortableItem = styled.div`
+    width: 100%;
+    flex: 0 0 auto;
+    border-color: var(--bs-btn-border-color);
+    border-radius: 3px;
+    margin: 0.25rem;
+    text-align: center;
+    font-size: small;
+    flex-direction: row;
+    display: flex;
+    cursor: move;
+`
+
+const SortableItemText = styled.div`
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1 1 auto;
+`
 const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index, moveItem}) => {
     const dispatch = useAppDispatch();
     const selectedVariantId = useSelector(selectCurrentVariantId);
@@ -86,10 +110,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
 
     const itemClassName = {
         dragging: isDragging,
-        'bg-primary-subtle': variant.product?.sellAs === SELL_AS_SELF,
-        'bg-secondary-subtle': variant.product?.sellAs === SELL_AS_VARIANTS,
-        'bg-success-subtle': variant.product?.sellAs === SELL_AS_MIX,
-        'bg-danger-subtle': variant.product?.sellAs === SELL_AS_COLORS,
+        'bg-secondary-subtle': variant.status && variant.product?.status,
         'bg-danger': !variant.status || !variant.product?.status
     }
 
@@ -101,12 +122,13 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
     }
 
     return (
-        <div ref={ref} style={{...style, opacity}} className={classNames('sortable-item', itemClassName)}>
+        <SortableItem ref={ref} style={{opacity}} className={classNames(itemClassName)}>
             <button type="button" onClick={onClick}
                     className={classNames("btn btn-sm mb-1 sortable-item--edit-button", btnClassName)}>
                 Edit
             </button>
             <div className="sortable-item-padding">
+                {variant.product && (<div>{<ProductSellAsIcon product={variant.product}/>}</div>)}
                 <div className={classNames('text-start', {'text-primary': variant.isDefaultVariant, })} style={{flex: '1 1 50%'}}>
                     {variant.title}
                     {(!variant.status || !variant.product?.status) && (
@@ -118,7 +140,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
                     <div>{variant.product?.itemCode}</div>
                 </div>
             </div>
-        </div>
+        </SortableItem>
     )
 }
 

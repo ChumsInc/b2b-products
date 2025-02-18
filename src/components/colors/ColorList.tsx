@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {SortableTable, SortableTableField, TablePagination} from 'sortable-tables';
+import {SortableTable, SortableTableField, TablePagination} from '@chumsinc/sortable-tables';
 import {ProductColor} from "b2b-types";
-import {setCurrentColorByCode, setSort} from "../../ducks/colors/actions";
-import {selectCurrentColor, selectSort, selectSortedList} from "../../ducks/colors/selectors";
+import {setCurrentColorByCode, setSort} from "@/ducks/colors/actions";
+import {selectCurrentColor, selectSort, selectSortedList} from "@/ducks/colors/selectors";
 import {useAppDispatch} from "../app/hooks";
 import ColorFilterBar from "./ColorFilterBar";
 import classNames from "classnames";
 import {useNavigate, useParams} from "react-router";
-import {getPreference, localStorageKeys, setPreference} from "../../api/preferences";
+import {getPreference, localStorageKeys, setPreference} from "@/src/api/preferences";
 
 
 const colorFields: SortableTableField<ProductColor>[] = [

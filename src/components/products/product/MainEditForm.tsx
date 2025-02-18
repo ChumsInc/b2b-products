@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent, useId} from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentProduct, selectCurrentProductSaving} from "../../../ducks/products/product/selectors";
+import {selectCurrentProduct, selectCurrentProductSaving} from "@/ducks/products/product/selectors";
 import {Product, ProductAdditionalData} from "b2b-types/src/products";
 import SeasonSelect from "../../season/SeasonSelect";
 import {Keyword, ProductSeason} from "b2b-types";
@@ -16,12 +16,13 @@ import {
     updateProduct,
     updateProductAdditionalData,
     updateProductSeason
-} from "../../../ducks/products/product/actions";
+} from "@/ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";
 import {generatePath, useMatch, useNavigate} from "react-router";
 import SpinnerButton from "../../common/SpinnerButton";
 import {Alert, Button, Col, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import InputGroup from "react-bootstrap/InputGroup";
+import ProductPreviewLink from "@/components/products/product/ProductPreviewLink";
 
 
 const colWidth = 8;
@@ -172,29 +173,26 @@ const MainEditForm = () => {
         <>
             <Form onSubmit={submitHandler} className="mt-3">
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={idProductId}>ID</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={idProductId}>ID</Form.Label>
                     <Col>
                         <InputGroup size="sm">
                             <FormControl type="number" size="sm" disabled readOnly value={product.id}
                                          id={idProductId}/>
-                            <Button type="button" className="btn btn-sm btn-warning" onClick={duplicateHandler}
+                            <Button type="button" size="sm" variant="outline-secondary" onClick={duplicateHandler}
                                     disabled={!product.id}>
-                                Duplicate
+                                Duplicate Product
                             </Button>
                         </InputGroup>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={keywordId}>Keyword</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={keywordId}>Keyword</Form.Label>
                     <Col>
                         <InputGroup size="sm">
                             <FormControl type="text" id={keywordId} size="sm"
                                          value={product.keyword} onChange={textChangeHandler('keyword')} required/>
                             {!!product.id && (
-                                <a href={`https://b2b.chums.com/products/${product.keyword}`} target="b2b-preview"
-                                   className="input-group-text">
-                                    View Page <span className="ms-1 bi-link-45deg"/>
-                                </a>
+                                <InputGroup.Text as={ProductPreviewLink} product={product} />
                             )}
                         </InputGroup>
                         {product.keyword.toLowerCase() === 'new' && (
@@ -205,7 +203,7 @@ const MainEditForm = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} label="Title" width={colWidth}>
-                    <Form.Label column={true} xs={4} htmlFor={titleId}>Title</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={titleId}>Title</Form.Label>
                     <Col>
                         <FormControl type="text" size="sm" id={titleId}
                                      value={product.name || ''}
@@ -214,7 +212,7 @@ const MainEditForm = () => {
                 </Form.Group>
                 <hr/>
                 <Form.Group as={Row} label="Status" width={colWidth} align="baseline">
-                    <Form.Label column={true} xs={4}>Status</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3}>Status</Form.Label>
                     <Col>
                         <FormCheck label='Enabled' id={enabledId}
                                    checked={product.status} onChange={toggleChangeHandler('status')}
@@ -225,7 +223,7 @@ const MainEditForm = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={seasonId}>Season</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={seasonId}>Season</Form.Label>
                     <Col>
                         <InputGroup size="sm">
                             <InputGroup.Text as="label" htmlFor={seasonId}>Season</InputGroup.Text>
@@ -241,7 +239,7 @@ const MainEditForm = () => {
                     {product.season?.code && <SeasonAlert code={product.season.code}/>}
                 </Form.Group>
                 <Form.Group as={Row} label="Availability" width={colWidth}>
-                    <Form.Label column={true} xs={4} htmlFor={availabilityId}>Availability</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={availabilityId}>Availability</Form.Label>
                     <Col>
                         <FormControl type="text" size="sm" id={availabilityId}
                                      placeholder="Availability Message"
@@ -251,7 +249,7 @@ const MainEditForm = () => {
 
                 <hr/>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={categoryId}>Category</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={categoryId}>Category</Form.Label>
                     <Col>
                         <KeywordSelectInputGroup pageType="category" id={categoryId}
                                                  value={product.defaultCategoriesId} required
@@ -259,7 +257,7 @@ const MainEditForm = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={parentId}>Parent</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={parentId}>Parent</Form.Label>
                     <Col>
                         <KeywordSelectInputGroup pageType="product" id={parentId}
                                                  value={product.defaultParentProductsId}
@@ -271,7 +269,7 @@ const MainEditForm = () => {
                 </Form.Group>
 
                 <Form.Group as={Row} label="Sell As" width={colWidth}>
-                    <Form.Label column={true} xs={4}>Sell As</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3}>Sell As</Form.Label>
                     <Col>
                         <ProductSellAsToggle/>
                     </Col>
@@ -280,13 +278,13 @@ const MainEditForm = () => {
                 <hr/>
 
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={itemCodeId}>Item Code</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={itemCodeId}>Item Code</Form.Label>
                     <Col>
                         <ProductItemCodeInput id={itemCodeId}/>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={productNameId}>Name</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={productNameId}>Name</Form.Label>
                     <Col>
                         <FormControl type="text" size="sm" id={productNameId}
                                      value={product.name} onChange={textChangeHandler('name')}
@@ -294,14 +292,14 @@ const MainEditForm = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4} htmlFor={imageId}>Image</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={imageId}>Image</Form.Label>
                     <Col>
                         <FormControl type="text" size="sm" id={imageId}
                                      value={product.image} onChange={textChangeHandler('image')} required/>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row} label="Default Color" width={colWidth}>
-                    <Form.Label column={true} xs={4} htmlFor={colorId}>Default Color</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={colorId}>Default Color</Form.Label>
                     <Col>
                         <InputGroup size="sm">
                             <FormControl type="text" size="sm" id={colorId}
@@ -314,7 +312,7 @@ const MainEditForm = () => {
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>
-                    <Form.Label column={true} xs={4}>Features</Form.Label>
+                    <Form.Label column={true} xs={4} lg={3}>Features</Form.Label>
                     <Col>
                         <FormCheck label="Best Seller" type="checkbox" inline id={bestSellerId}
                                    checked={product.additionalData?.best_seller || false}

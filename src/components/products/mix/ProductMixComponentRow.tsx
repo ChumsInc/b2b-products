@@ -6,6 +6,7 @@ import {selectCurrentMixBOMDetail} from "../../../ducks/products/mix/selectors";
 import {BOMComponent} from "../../../types/item-search";
 import classNames from "classnames";
 import Decimal from "decimal.js";
+import {FormControl, InputGroup} from "react-bootstrap";
 
 export interface ProductMixComponentRowProps {
     productId: number;
@@ -41,21 +42,39 @@ const ProductMixComponentRow = ({productId, component}: ProductMixComponentRowPr
     }
 
     const buttonClassName = classNames('btn btn-sm', {
-        'btn-primary': new Decimal(bomComp?.QuantityPerBill ?? 0).eq(comp.itemQuantity ?? 0) && comp.changed,
-        'btn-outline-primary': new Decimal(bomComp?.QuantityPerBill ?? 0).eq(comp.itemQuantity ?? 0) && !comp.changed,
-        'btn-outline-danger': !new Decimal(bomComp?.QuantityPerBill ?? 0).eq(comp.itemQuantity ?? 0),
+        'btn-primary': new Decimal(bomComp?.QuantityPerBill ?? 0).eq(comp.itemQuantity ?? 0),
+        'btn-danger': !new Decimal(bomComp?.QuantityPerBill ?? 0).eq(comp.itemQuantity ?? 0),
+    })
+
+    const rowClassName = classNames({
+        'table-danger': !bomComp
     })
     return (
 
-        <tr key={comp.id}>
+        <tr key={comp.id} className={rowClassName}>
             <td>{comp.itemCode}</td>
             <td>{comp.color?.code}</td>
             <td>{comp.color?.name}</td>
             <td>
                 <form onSubmit={submitHandler} id={id}>
-                    <input type="number" className="form-control form-control-sm" min={0}
-                           value={comp.itemQuantity}
-                           onChange={changeHandler}/>
+                    <InputGroup size="sm">
+                        <FormControl type="number" size="sm" className="text-end" min={0}
+                                     value={comp.itemQuantity} onChange={changeHandler}/>
+                        <InputGroup.Text>
+                            {comp.itemQuantity === +(bomComp?.QuantityPerBill ?? 0) && (
+                                <span className="bi-check text-success"/>
+                            )}
+                            {comp.itemQuantity !== +(bomComp?.QuantityPerBill ?? 0) && (
+                                <span className="bi-exclamation-triangle text-danger me-1"/>
+                            )}
+                        </InputGroup.Text>
+                        {comp.itemQuantity !== +(bomComp?.QuantityPerBill ?? 0) && (
+                            <InputGroup.Text className="text-danger">
+                                {bomComp?.QuantityPerBill ?? 0}
+                            </InputGroup.Text>
+                        )}
+
+                    </InputGroup>
                 </form>
             </td>
             <td>

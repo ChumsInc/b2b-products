@@ -12,6 +12,9 @@ const useClickOutside = (
 
     useEffect(() => {
         const handler = (event: Event) => {
+            // event.preventDefault();
+            event.stopPropagation();
+
             if (ref.current && !ref.current.contains(event.target as Node)) {
                 savedCallback.current();
             }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {useAppDispatch} from "../app/hooks";
 import {useSelector} from "react-redux";
-import {dismissAlert, selectAlerts} from "@/ducks/alerts";
+import {dismissAlert, selectAlerts, UIAlert} from "@/ducks/alerts";
 import Alert from "react-bootstrap/Alert";
 import {Badge} from "react-bootstrap";
 
@@ -9,12 +9,12 @@ const AlertList = () => {
     const dispatch = useAppDispatch();
     const alerts = useSelector(selectAlerts);
 
-    const dismissHandler = (key: number) => dispatch(dismissAlert(key));
+    const dismissHandler = (alert: UIAlert) => dispatch(dismissAlert(alert));
 
     return (
         <div>
             {alerts.map(alert => (
-                <Alert key={alert.id} variant={alert.variant ?? 'info'} onClose={() => dismissHandler(alert.id)}>
+                <Alert key={alert.id} variant={alert.variant ?? 'info'} onClose={() => dismissHandler(alert)}>
                     <Alert.Heading>
                         {alert.context && <strong>{alert.context}</strong>}
                         {alert.title}

@@ -4,7 +4,7 @@ import {selectCurrentColorItem, selectCurrentProductColors} from "../../../ducks
 import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
 import ProductImage from "../../app/ProductImage";
 import {ProductColorItem} from "b2b-types/src/products";
-import {TablePagination} from "sortable-tables";
+import {TablePagination} from "@chumsinc/sortable-tables";
 import classNames from "classnames";
 import {LocalStore, storeProductItemsRowsPerPage} from "../../../localStore";
 import {useAppDispatch} from "../../app/hooks";
@@ -75,7 +75,7 @@ const ProductColorList = () => {
                 <Col>
                     <TablePagination size="sm"
                                      page={page} onChangePage={setPage}
-                                     rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: onChangeRowsPerPage}}
+                                     rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: onChangeRowsPerPage, label: 'Images'}}
                                      count={filteredList.length}/>
                 </Col>
             </Row>
