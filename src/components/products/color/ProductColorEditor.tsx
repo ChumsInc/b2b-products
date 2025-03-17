@@ -10,9 +10,9 @@ import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "@/duck
 import {useAppDispatch} from "../../app/hooks";
 import ColorAutoComplete from "../../colors/ColorAutoComplete";
 import classNames from "classnames";
-import {TextareaAutosize} from "@mui/base/TextareaAutosize";
 import {Badge, Button, Col, Form, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
+import TextArea from "@/components/common/TextArea";
 
 const ProductColorEditor = () => {
     const dispatch = useAppDispatch();
@@ -160,7 +160,7 @@ const ProductColorEditor = () => {
                 <Form.Group as={Row}>
                     <Form.Label column xs={4}>Item Message</Form.Label>
                     <Col>
-                        <FormControl as={TextareaAutosize} size="sm" className="mb-2"
+                        <FormControl as={TextArea} size="sm" className="mb-2"
                                      value={colorItem.additionalData?.message ?? ''}
                                      onChange={additionalDataChangeHandler('message')}/>
                     </Col>

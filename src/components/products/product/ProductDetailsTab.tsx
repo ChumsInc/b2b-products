@@ -2,13 +2,13 @@ import React, {ChangeEvent, FormEvent, useId, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentProduct, selectCurrentProductSaving} from "@/ducks/products/product/selectors";
 import {Product, ProductAdditionalData} from "b2b-types/src/products";
-import {TextareaAutosize} from '@mui/base/TextareaAutosize';
 import ModalEditor from "../../app/ModalEditor";
 import {saveProduct, updateProduct, updateProductAdditionalData} from "@/ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";
 import CodeEditButton from "./CodeEditButton";
 import {Alert, Col, Form, FormControl, Row} from "react-bootstrap";
 import SpinnerButton from "../../common/SpinnerButton";
+import TextArea from "@/components/common/TextArea";
 
 const colWidth = 8;
 const ProductDetailsTab: React.FC = () => {
@@ -83,7 +83,7 @@ const ProductDetailsTab: React.FC = () => {
                         Formatted Name <small className="bi-code ms-1"/>
                     </Form.Label>
                     <Col>
-                        <FormControl as={TextareaAutosize} size="sm" className="font-monospace mb-2" minRows={2}
+                        <FormControl as={TextArea} size="sm" className="font-monospace mb-2" minRows={2}
                                      value={product.additionalData?.formatted_name || ''}
                                      onChange={additionalDataChangeHandler('formatted_name')}/>
                     </Col>
@@ -119,7 +119,7 @@ const ProductDetailsTab: React.FC = () => {
                         <CodeEditButton onClick={onShowEditor('description')}>Description</CodeEditButton>
                     </Form.Label>
                     <Col>
-                        <FormControl as={TextareaAutosize} size="sm" className="font-monospace mb-2"
+                        <FormControl as={TextArea} size="sm" className="font-monospace mb-2"
                                      minRows={2} maxRows={10}
                                      value={product.description} onChange={textChangeHandler('description')}/>
                     </Col>
@@ -129,7 +129,7 @@ const ProductDetailsTab: React.FC = () => {
                         <CodeEditButton onClick={onShowEditor('details')}>Details</CodeEditButton>
                     </Form.Label>
                     <Col>
-                        <FormControl as={TextareaAutosize} size="sm" className="font-monospace mb-2"
+                        <FormControl as={TextArea} size="sm" className="font-monospace mb-2"
                                      minRows={2} maxRows={10}
                                      value={product.details} onChange={textChangeHandler('details')}/>
 
@@ -152,7 +152,8 @@ const ProductDetailsTab: React.FC = () => {
                 </Row>
                 {product.changed && <Alert variant="warning">Don&apos;t forget to save your changes.</Alert>}
             </Form>
-            <ModalEditor show={showEditor} title={`edit value.${editorField}`} content={String(product[editorField]) || ''}
+            <ModalEditor show={showEditor} title={`edit value.${editorField}`}
+                         content={String(product[editorField]) || ''}
                          onClose={onCloseEditor} onCancel={onCancelEditor}/>
         </>
     )
