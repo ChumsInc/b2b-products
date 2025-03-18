@@ -1,4 +1,4 @@
-import {RootState} from "../../../app/configureStore";
+import {RootState} from "@/app/configureStore";
 import {ProductSellAs} from "b2b-types";
 
 export const selectCurrentProduct = (state: RootState) => state.products.current.product.value;

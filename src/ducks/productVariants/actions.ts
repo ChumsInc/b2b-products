@@ -1,23 +1,21 @@
-import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductVariant} from "b2b-types";
-import {deleteVariant, postVariant, putVariantSort, putDefaultVariant} from "./api";
-import {selectCurrentVariantSaving} from "./selectors";
-import {RootState} from "../../../app/configureStore";
-import {selectCurrentProductLoading} from "../product/selectors";
-import {VariantSortArgs} from "../../../types/variant";
+import {deleteVariant, postVariant, putDefaultVariant, putVariantSort} from "./api";
+import {selectCurrentVariantStatus} from "./productVariantsSlice";
+import {RootState} from "@/app/configureStore";
+import {selectCurrentProductLoading} from "../products/product/selectors";
+import {VariantSortArgs} from "@/types/variant";
 
-
-export const setCurrentVariant = createAction<ProductVariant|null>('products/current/variant/set');
-
-export const saveCurrentVariant = createAsyncThunk<ProductVariant|null, ProductVariant>(
-    'products/current/variant/save',
+export const saveCurrentVariant = createAsyncThunk<ProductVariant | null, ProductVariant>(
+    'products/current/productVariants/save',
     async (arg) => {
         return await postVariant(arg);
     },
     {
         condition: (arg, {getState}) => {
             const state = getState() as RootState;
-            return !(selectCurrentProductLoading(state) || selectCurrentVariantSaving(state));
+            return selectCurrentVariantStatus(state) === 'idle'
+                && !selectCurrentProductLoading(state);
         }
     }
 )
@@ -30,7 +28,8 @@ export const removeVariant = createAsyncThunk<ProductVariant[], ProductVariant>(
     {
         condition: (arg, {getState}) => {
             const state = getState() as RootState;
-            return !(selectCurrentProductLoading(state) || selectCurrentVariantSaving(state));
+            return selectCurrentVariantStatus(state) === 'idle'
+                && !selectCurrentProductLoading(state);
         }
     }
 )
@@ -43,7 +42,8 @@ export const setDefaultVariant = createAsyncThunk<ProductVariant[], ProductVaria
     {
         condition: (arg, {getState}) => {
             const state = getState() as RootState;
-            return !(selectCurrentProductLoading(state) || selectCurrentVariantSaving(state));
+            return selectCurrentVariantStatus(state) === 'idle'
+                && !selectCurrentProductLoading(state);
         }
     }
 )
@@ -56,7 +56,8 @@ export const saveVariantsSort = createAsyncThunk<ProductVariant[], VariantSortAr
     {
         condition: (arg, {getState}) => {
             const state = getState() as RootState;
-            return !(selectCurrentProductLoading(state) || selectCurrentVariantSaving(state));
+            return selectCurrentVariantStatus(state) === 'idle'
+                && !selectCurrentProductLoading(state);
         }
     }
 )

@@ -1,5 +1,5 @@
 import React from 'react';
-import {loadProductsList} from "../../../ducks/products/list/actions";
+import {loadProductsList} from "@/ducks/productList/actions";
 import {useAppDispatch} from "../../app/hooks";
 import {loadKeywords} from "../../../ducks/keywords/actions";
 import {loadColors} from "../../../ducks/colors/actions";

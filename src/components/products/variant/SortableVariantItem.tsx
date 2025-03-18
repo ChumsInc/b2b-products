@@ -1,11 +1,9 @@
 import React, {useRef} from "react";
 import {ProductVariant} from "b2b-types";
-import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils";
 import {useSelector} from "react-redux";
-import {selectCurrentVariantId} from "../../../ducks/products/variant/selectors";
+import {selectCurrentVariantId, setCurrentVariant} from "@/ducks/productVariants/productVariantsSlice";
 import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
 import classNames from "classnames";
-import {setCurrentVariant} from "../../../ducks/products/variant/actions";
 import {useAppDispatch} from "../../app/hooks";
 import type {Identifier} from 'dnd-core'
 import styled from "@emotion/styled";
@@ -129,7 +127,8 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
             </button>
             <div className="sortable-item-padding">
                 {variant.product && (<div>{<ProductSellAsIcon product={variant.product}/>}</div>)}
-                <div className={classNames('text-start', {'text-primary': variant.isDefaultVariant, })} style={{flex: '1 1 50%'}}>
+                <div className={classNames('text-start', {'text-primary': variant.isDefaultVariant,})}
+                     style={{flex: '1 1 50%'}}>
                     {variant.title}
                     {(!variant.status || !variant.product?.status) && (
                         <span className="ms-1 bi-exclamation-triangle-fill text-warning"/>

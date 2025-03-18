@@ -3,13 +3,14 @@ import {createEntityAdapter, createSelector, createSlice, PayloadAction} from "@
 import {loadSeasons} from "./actions";
 import {SortProps} from "chums-types";
 import {dismissAlert} from "@/ducks/alerts";
-import {RootState} from "@/app/configureStore";
 
 
 const seasonsAdapter = createEntityAdapter<ProductSeason, number>({
     selectId: (season) => season.product_season_id,
     sortComparer: (a, b) => a.product_season_id - b.product_season_id,
 });
+
+const adapterSelectors = seasonsAdapter.getSelectors();
 
 interface SeasonsSliceExtraSate {
     status: 'idle' | 'loading' | 'saving' | 'rejected';
@@ -48,16 +49,19 @@ const seasonsSlice = createSlice({
             })
     },
     selectors: {
+        selectSeasonsList: (state) => adapterSelectors.selectAll(state),
+        selectSeasonById: (state, id: number) => adapterSelectors.selectById(state, id),
         selectSeasonsStatus: (state) => state.status,
         selectSeasonsSort: (state) => state.sort,
     }
 })
+export const {
+    selectSeasonsStatus,
+    selectSeasonsSort,
+    selectSeasonsList,
+    selectSeasonById
+} = seasonsSlice.selectors;
 
-const seasonsSelectors = seasonsAdapter.getSelectors<RootState>(
-    (state) => state.seasons
-)
-export const selectSeasonsList = seasonsSelectors.selectAll;
-export const selectSeasonById = seasonsSelectors.selectById;
 export const selectSeasonByCode = createSelector(
     [selectSeasonsList, (state, code: string) => code],
     (list, code) => {
@@ -66,6 +70,12 @@ export const selectSeasonByCode = createSelector(
     }
 )
 
-export const {selectSeasonsStatus, selectSeasonsSort} = seasonsSlice.selectors;
+export const selectSortedSeasons = createSelector(
+    [selectSeasonsList],
+    (list) => {
+        return list.sort((a, b) => a.code.toLowerCase().localeCompare(b.code.toLowerCase()))
+    }
+)
+
 
 export default seasonsSlice;

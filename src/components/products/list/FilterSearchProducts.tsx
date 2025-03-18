@@ -1,11 +1,9 @@
-import react, {ChangeEvent, useId} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import React, {useId} from 'react';
+import {useSelector} from "react-redux";
 import {useAppDispatch} from "../../app/hooks";
-import {selectProductsSearch} from "../../../ducks/products/list/selectors";
+import {selectProductsSearch, setProductsSearch} from "@/ducks/productList/productListSlice";
 import {useDebounceCallback} from "usehooks-ts";
-import {setProductsSearch} from "../../../ducks/products/list/actions";
 import {FormControl, InputGroup} from "react-bootstrap";
-import React from "react";
 
 export default function FilterSearchProducts() {
     const dispatch = useAppDispatch();
@@ -21,7 +19,7 @@ export default function FilterSearchProducts() {
                 <span className="bi-search" aria-hidden="true"/>
             </InputGroup.Text>
             <FormControl size="sm" type="search" id={id}
-                         defaultValue={search} onChange={(ev) => debounced(ev.target.value)} />
+                         defaultValue={search} onChange={(ev) => debounced(ev.target.value)}/>
         </InputGroup>
     )
 }

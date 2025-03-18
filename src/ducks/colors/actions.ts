@@ -6,7 +6,7 @@ import {RootState} from "@/app/configureStore";
 import {selectColorsLoading, selectColorsStatus, selectColorUsageLoading} from "./selectors";
 
 export const loadColors = createAsyncThunk<ProductColor[]>(
-    'colors/list/load',
+    'colors/productList/load',
     async () => {
         return await fetchColors();
     },
@@ -42,7 +42,7 @@ export const setCurrentColorByCode = createAction<string | undefined>('colors/cu
 
 export const setColorFilter = createAction<string>('colors/setFilter');
 
-export const toggleFilterInactiveColors = createAction<boolean | undefined>('colors/list/toggleFilterInactive');
+export const toggleFilterInactiveColors = createAction<boolean | undefined>('colors/productList/toggleFilterInactive');
 
 export const loadColorUsage = createAsyncThunk<ColorProductUsage[], number>(
     'colors/loadUsage',
@@ -57,4 +57,4 @@ export const loadColorUsage = createAsyncThunk<ColorProductUsage[], number>(
     }
 );
 
-export const setSort = createAction<SortProps<ProductColor>>('colors/list/setSort');
+export const setSort = createAction<SortProps<ProductColor>>('colors/productList/setSort');

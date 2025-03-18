@@ -4,13 +4,13 @@ import SpinnerButton from "@/components/common/SpinnerButton";
 import {
     selectCurrentProductVariants,
     selectCurrentVariant,
-    selectCurrentVariantSaving
-} from "@/ducks/products/variant/selectors";
+    selectCurrentVariantStatus
+} from "@/ducks/productVariants/productVariantsSlice";
 import {ProductVariant} from "b2b-types/src/products";
 import {Editable, Keyword} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import {defaultVariant} from "@/src/defaults";
-import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/products/variant/actions";
+import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/productVariants/actions";
 import {selectCurrentProductId} from "@/ducks/products/product/selectors";
 import {useAppDispatch} from "../../app/hooks";
 import ProductImage from "./ProductImage";
@@ -23,7 +23,7 @@ const ProductVariantsEditor = () => {
     const dispatch = useAppDispatch();
     const productId = useSelector(selectCurrentProductId);
     const current = useSelector(selectCurrentVariant);
-    const saving = useSelector(selectCurrentVariantSaving);
+    const status = useSelector(selectCurrentVariantStatus);
     const currentVariants = useSelector(selectCurrentProductVariants);
     const [variant, setVariant] = useState<ProductVariant & Editable>(current ?? {...defaultVariant});
     const [alert, setAlert] = useState<string | null>(null);
@@ -61,7 +61,7 @@ const ProductVariantsEditor = () => {
     }
 
     const keywordChangeHandler = (kw: Keyword | null) => {
-        let alert = kw?.id === productId ? 'A variant cannot be its own parent' : null;
+        let alert = kw?.id === productId ? 'A productVariants cannot be its own parent' : null;
         const [exists] = currentVariants.filter(v => v.id !== variant.id && v.variantProductID === kw?.id);
         if (exists && !alert) {
             alert = `This variant product already exists in the current product`;
@@ -84,7 +84,7 @@ const ProductVariantsEditor = () => {
         if (!current) {
             return;
         }
-        if (window.confirm('Are you sure you want to delete this variant?')) {
+        if (window.confirm('Are you sure you want to delete this productVariants?')) {
             await dispatch(removeVariant(current));
         }
     }
@@ -93,7 +93,7 @@ const ProductVariantsEditor = () => {
         if (!current) {
             return;
         }
-        if (window.confirm('Are you sure you want to make this the default variant?')) {
+        if (window.confirm('Are you sure you want to make this the default productVariants?')) {
             dispatch(setDefaultVariant(current));
         }
     }
@@ -151,8 +151,8 @@ const ProductVariantsEditor = () => {
                     <Row className="justify-content-end g-3">
                         <Col xs="auto">
                             <SpinnerButton type="submit" variant="primary" size="sm"
-                                           disabled={!!alert || !productId}
-                                           spinning={saving}>Save</SpinnerButton>
+                                           disabled={!!alert || !productId || status !== 'idle'}
+                                           spinning={status === 'saving'}>Save</SpinnerButton>
                         </Col>
                         <Col xs="auto">
                             <Button type="button" size="sm" variant="outline-secondary"

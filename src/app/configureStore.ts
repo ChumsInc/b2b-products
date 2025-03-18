@@ -8,6 +8,8 @@ import {default as seasonsSlice} from '../ducks/seasons';
 import alertsSlice from "../ducks/alerts";
 import whereUsedReducer from "../ducks/where-used";
 import {api} from "@/src/api/base-api";
+import productListSlice from "@/ducks/productList/productListSlice";
+import productVariantsSlice from "@/ducks/productVariants/productVariantsSlice";
 
 const rootReducer = combineReducers({
     [api.reducerPath]: api.reducer,
@@ -16,6 +18,8 @@ const rootReducer = combineReducers({
     itemSearch: itemSearchReducer,
     keywords: keywordsReducer,
     products: productsReducer,
+    [productListSlice.reducerPath]: productListSlice.reducer,
+    [productVariantsSlice.reducerPath]: productVariantsSlice.reducer,
     [seasonsSlice.reducerPath]: seasonsSlice.reducer,
     whereUsed: whereUsedReducer,
 });

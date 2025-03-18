@@ -13,7 +13,7 @@ const ProductRedirectIcon = ({product}:ProductRedirectIconProps) => {
     const url = `/products/${encodeURIComponent(product.parentProductKeyword)}`
 
     return (
-        <Link to={url}>
+        <Link to={url} onClick={(e) => e.stopPropagation()}>
             {product.parentProductKeyword}
         </Link>
     )

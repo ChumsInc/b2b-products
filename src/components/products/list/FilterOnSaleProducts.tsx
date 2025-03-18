@@ -1,8 +1,7 @@
 import React, {ChangeEvent, useId} from 'react';
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectProductsFilterOnSale} from "../../../ducks/products/list/selectors";
-import {toggleFilterOnSale} from "../../../ducks/products/list/actions";
+import {selectProductsFilterOnSale, toggleFilterOnSale} from "@/ducks/productList/productListSlice";
 import {FormCheck} from "react-bootstrap";
 
 export default function FilterOnSaleProducts() {

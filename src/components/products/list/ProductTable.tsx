@@ -6,14 +6,13 @@ import SeasonIcon from "../../season/SeasonIcon";
 import ProductSellAsIcon from "./ProductSellAsIcon";
 import classNames from "classnames";
 import ProductRedirectIcon from "../product/ProductRedirectIcon";
-import ProductPrice from "./ProductPrice";
-import {setProductsSort} from "../../../ducks/products/list/actions";
+import {setProductsSort} from "@/ducks/productList/actions";
 import {useAppDispatch} from "../../app/hooks";
-import {selectFilteredList, selectProductListSort} from "../../../ducks/products/list/selectors";
-import {selectCurrentProductId} from "../../../ducks/products/product/selectors";
+import {selectFilteredList, selectProductListSort} from "@/ducks/productList/productListSlice";
+import {selectCurrentProductId} from "@/ducks/products/product/selectors";
 import ProductTableCategoryName from "./ProductTableCategoryName";
 import {useNavigate} from "react-router";
-import {localStorageKeys} from "../../../api/preferences";
+import {localStorageKeys} from "@/src/api/preferences";
 import {LocalStore} from "chums-ui-utils";
 
 
@@ -62,7 +61,7 @@ const ProductTable = () => {
 
     useEffect(() => {
         setPage(0);
-    }, [list, currentId, rowsPerPage]);
+    }, [list.length, rowsPerPage]);
 
     const rowsPerPageChangeHandler = (rpp: number) => {
         LocalStore.setItem<number>(localStorageKeys.products.rowsPerPage, rpp)

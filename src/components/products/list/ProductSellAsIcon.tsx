@@ -1,6 +1,6 @@
 import React, {HTMLAttributes} from 'react';
 import {Product, ProductListItem} from "b2b-types";
-import {isProductListItem, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils";
+import {isProductListItem, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "@/src/utils";
 import {Badge} from "react-bootstrap";
 import styled from "@emotion/styled";
 
@@ -22,9 +22,9 @@ const ProductSellAsIcon = ({showStatusIcon, product, ...rest}: ProductSellAsIcon
     return (
         <SellAsBadgeList {...rest}>
             {showStatusIcon && (
-                <Badge bg="light">
+                <Badge bg="transparent">
                     {product.availableForSale && (<span className="bi-lightbulb-fill text-warning"/>)}
-                    {!product.availableForSale && (<span className="bi-lightbulb-fill text-dark"/>)}
+                    {!product.availableForSale && (<span className="bi-lightbulb text-secondary"/>)}
                 </Badge>
             )}
             {isProductListItem(product) && product.sellAs === SELL_AS_VARIANTS && (

@@ -2,10 +2,9 @@ import React, {useId} from 'react';
 import {InputGroup} from "react-bootstrap";
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
-import {selectProductsFilterCategoryId} from "../../../ducks/products/list/selectors";
+import {selectProductsFilterCategoryId, setCategoryFilter} from "@/ducks/productList/productListSlice";
 import KeywordSelect from "../../keywords/KeywordSelect";
 import {Keyword} from "b2b-types";
-import {setCategoryFilter} from "../../../ducks/products/list/actions";
 
 export default function FilterCategoryProducts() {
     const dispatch = useAppDispatch();

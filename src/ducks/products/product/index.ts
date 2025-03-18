@@ -9,7 +9,7 @@ import {
     updateProductSeason
 } from "./actions";
 import {variantListSorter} from "../sorter";
-import {removeVariant, saveCurrentVariant, setDefaultVariant} from "../variant/actions";
+import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/productVariants/actions";
 import {SortProps} from "chums-types";
 import {Editable, ProductVariant} from "b2b-types";
 import {Product} from "b2b-types/src/products";
