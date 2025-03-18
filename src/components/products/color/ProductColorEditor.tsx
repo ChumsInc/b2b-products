@@ -1,19 +1,18 @@
 import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
-import {FormColumn, SpinnerButton} from "chums-components";
-import {selectCurrentColorItem, selectCurrentColorStatus} from "../../../ducks/products/color/selectors";
-import {selectCurrentProduct, selectCurrentProductId} from "../../../ducks/products/product/selectors";
+import {selectCurrentColorItem, selectCurrentColorStatus} from "@/ducks/products/color/selectors";
+import {selectCurrentProduct, selectCurrentProductId} from "@/ducks/products/product/selectors";
 import {ProductColorItem, ProductColorItemAdditionalData} from "b2b-types/src/products";
 import SeasonSelect from "../../season/SeasonSelect";
 import {Editable, ProductColor, ProductSeason} from "b2b-types";
-import SeasonAlert from "../../season/SeasonAlert";
-import {defaultColorItem} from "../../../defaults";
-import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "../../../ducks/products/color/actions";
+import {defaultColorItem} from "@/src/defaults";
+import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "@/ducks/products/color/actions";
 import {useAppDispatch} from "../../app/hooks";
 import ColorAutoComplete from "../../colors/ColorAutoComplete";
 import classNames from "classnames";
-import TextareaAutosize from "react-textarea-autosize";
-import {Badge, Col, Form, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
+import {Badge, Button, Col, Form, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import TextArea from "@/components/common/TextArea";
 
 const ProductColorEditor = () => {
     const dispatch = useAppDispatch();
@@ -51,8 +50,6 @@ const ProductColorEditor = () => {
                 return setColorItem({...colorItem, [field]: ev.target.value, changed: true});
         }
     }
-
-    const onChangeColorCode = (value: string) => setColorItem({...colorItem, colorCode: value, changed: true});
 
     const onChangeColor = (color: ProductColor | null) => {
         if (color) {
@@ -116,7 +113,8 @@ const ProductColorEditor = () => {
                 <Form.Group as={Row}>
                     <Form.Label column xs={4}>Color Code</Form.Label>
                     <Col>
-                        <ColorAutoComplete value={colorItem.colorCode} onChange={onChangeColorCode}
+                        <ColorAutoComplete value={colorItem.colorCode}
+                                           inputProps={{onChange: textChangeHandler('colorCode')}}
                                            swatchFormat={colorItem.additionalData?.swatch_code ?? currentProduct?.additionalData?.swatch_format}
                                            onChangeColor={onChangeColor}/>
                     </Col>
@@ -158,14 +156,16 @@ const ProductColorEditor = () => {
                         {!!colorItem.productStatus && <Badge bg="warning">{colorItem.productStatus}</Badge>}
                     </Col>
                 </Form.Group>
+
                 <Form.Group as={Row}>
                     <Form.Label column xs={4}>Item Message</Form.Label>
                     <Col>
-                        <FormControl as={TextareaAutosize} size="sm"
+                        <FormControl as={TextArea} size="sm" className="mb-2"
                                      value={colorItem.additionalData?.message ?? ''}
                                      onChange={additionalDataChangeHandler('message')}/>
                     </Col>
                 </Form.Group>
+
                 <Form.Group as={Row}>
                     <Form.Label column xs={4} htmlFor={seasonId}>Season</Form.Label>
                     <Col>
@@ -180,28 +180,36 @@ const ProductColorEditor = () => {
                         </InputGroup>
                     </Col>
                 </Form.Group>
-                <FormColumn label="" width={12}>
-                    <div className="d-flex justify-content-end">
-                        <SpinnerButton type="submit" className={classNames("btn btn-sm me-1", {
-                            'btn-primary': !colorItem.changed,
-                            'btn-warning': colorItem.changed
-                        })}
-                                       spinning={status === 'saving'}
-                                       disabled={!productId || status !== 'idle'}>
+                <Row className="g-1 justify-content-end">
+                    <Col xs="auto">
+                        <Button type="submit"
+                                className={classNames("btn btn-sm me-1", {
+                                    'btn-primary': !colorItem.changed,
+                                    'btn-warning': colorItem.changed
+                                })}
+                                disabled={!productId || status !== 'idle'}>
+                            {status === 'saving' && (
+                                <Spinner animation="border" variant="primary" size="sm" role="status" aria-hidden/>
+                            )}
                             {colorItem.changed && <span className="bi-exclamation-triangle-fill me-1"/>}
                             Save
-                        </SpinnerButton>
-                        <button type="button" className="btn btn-sm btn-outline-secondary me-1"
+                        </Button>
+                    </Col>
+                    <Col xs="auto">
+                        <Button type="button" variant="outline-secondary" size="sm"
                                 disabled={!productId} onClick={newItemHandler}>
                             New Product
-                        </button>
-                        <SpinnerButton type="button" color="danger" size="sm" spinning={status === 'deleting'}
-                                       onClick={deleteItemHandler}
-                                       disabled={!current?.id || !productId || status !== 'idle'}>
+                        </Button>
+                    </Col>
+                    <Col xs="auto">
+                        <Button type="button" variant="outline-danger" size="sm"
+                                onClick={deleteItemHandler}
+                                disabled={!current?.id || !productId || status !== 'idle'}>
+                            {status === 'deleting' && <Spinner as="span" role="status" aria-hidden="true"/>}
                             Delete
-                        </SpinnerButton>
-                    </div>
-                </FormColumn>
+                        </Button>
+                    </Col>
+                </Row>
             </Form>
         </>
     )

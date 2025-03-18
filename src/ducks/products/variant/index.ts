@@ -4,8 +4,8 @@ import {removeVariant, saveCurrentVariant, saveVariantsSort, setCurrentVariant, 
 import {loadProduct} from "../product/actions";
 import {isSellAsVariantsProduct} from "../utils";
 import {variantListSorter} from "../sorter";
-import {SortProps} from "chums-components";
-import {defaultVariant} from "../../../utils";
+import {SortProps} from "chums-types";
+import {defaultVariant} from "@/src/utils";
 import {variantSortKey} from "./utils";
 
 export const defaultVariantSort:SortProps<ProductVariant> = {

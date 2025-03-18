@@ -1,4 +1,4 @@
-import {SortProps} from "chums-components";
+import {SortProps} from "chums-types";
 import {ProductAlternateImage} from "b2b-types/src/products";
 
 export const altImageSort = (sort:SortProps<ProductAlternateImage>) => (a:ProductAlternateImage, b:ProductAlternateImage) => {

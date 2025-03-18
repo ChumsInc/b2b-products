@@ -1,7 +1,6 @@
-import React, {ChangeEvent, FormEvent} from 'react';
+import React, {ChangeEvent, FormEvent, useId} from 'react';
 import {useSelector} from "react-redux";
-import {Alert, FormCheck, FormColumn, InputGroup, SpinnerButton} from "chums-components";
-import {selectCurrentProduct, selectCurrentProductSaving} from "../../../ducks/products/product/selectors";
+import {selectCurrentProduct, selectCurrentProductSaving} from "@/ducks/products/product/selectors";
 import {Product, ProductAdditionalData} from "b2b-types/src/products";
 import SeasonSelect from "../../season/SeasonSelect";
 import {Keyword, ProductSeason} from "b2b-types";
@@ -17,9 +16,13 @@ import {
     updateProduct,
     updateProductAdditionalData,
     updateProductSeason
-} from "../../../ducks/products/product/actions";
+} from "@/ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";
 import {generatePath, useMatch, useNavigate} from "react-router";
+import SpinnerButton from "../../common/SpinnerButton";
+import {Alert, Button, Col, Form, FormCheck, FormControl, Row} from "react-bootstrap";
+import InputGroup from "react-bootstrap/InputGroup";
+import ProductPreviewLink from "@/components/products/product/ProductPreviewLink";
 
 
 const colWidth = 8;
@@ -29,6 +32,28 @@ const MainEditForm = () => {
     const product = useSelector(selectCurrentProduct);
     const saving = useSelector(selectCurrentProductSaving);
     const navigate = useNavigate();
+    const idProductId = useId();
+    const keywordId = useId();
+    const titleId = useId();
+    const enabledId = useId();
+    const availableId = useId();
+    const seasonId = useId();
+    const seasonAvailableId = useId();
+    const availabilityId = useId();
+    const categoryId = useId();
+    const parentId = useId();
+    const itemCodeId = useId();
+    const productNameId = useId();
+    const imageId = useId();
+    const colorId = useId();
+    const swatchId = useId();
+    const bestSellerId = useId();
+    const upcycledId = useId();
+    const canDomeId = useId();
+    const canScreenPrintId = useId();
+    const heatTransferId = useId();
+    const sublimationId = useId();
+    const rfidBlockingId = useId();
 
 
     const submitHandler = async (ev: FormEvent) => {
@@ -56,16 +81,17 @@ const MainEditForm = () => {
                 return dispatch(updateProduct({[field]: ev.target.value}));
         }
     }
-    const additionalDataChangeHandler = (field: keyof ProductAdditionalData) => (ev: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const additionalDataChangeHandler = (field: keyof ProductAdditionalData) =>
+        (ev: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
 
-        switch (field) {
-            case 'subtitle':
-            case 'size':
-            case 'formatted_name':
-            case 'swatch_format':
-                return dispatch(updateProductAdditionalData({[field]: ev.target.value}));
+            switch (field) {
+                case 'subtitle':
+                case 'size':
+                case 'formatted_name':
+                case 'swatch_format':
+                    return dispatch(updateProductAdditionalData({[field]: ev.target.value}));
+            }
         }
-    }
 
     const keywordChangeHandler = (field: keyof Product) => (kw: Keyword | null) => {
         switch (field) {
@@ -145,139 +171,193 @@ const MainEditForm = () => {
 
     return (
         <>
-            <form onSubmit={submitHandler} className="mt-3">
-                <FormColumn label="ID" width={colWidth}>
-                    <InputGroup bsSize="sm">
-                        <input type="number" disabled readOnly value={product.id}
-                               className="form-control form-control-sm"/>
-                        <button type="button" className="btn btn-sm btn-warning" onClick={duplicateHandler}
-                                disabled={!product.id}>
-                            Duplicate
-                        </button>
-                    </InputGroup>
-                </FormColumn>
-                <FormColumn label="Keyword" width={colWidth}>
-                    <InputGroup bsSize="sm">
-                        <input type="text" className="form-control form-control-sm"
-                               value={product.keyword} onChange={textChangeHandler('keyword')} required/>
-                        {!!product.id && (
-                            <a href={`https://b2b.chums.com/products/${product.keyword}`} target="b2b-preview"
-                               className="input-group-text">
-                                View Page <span className="ms-1 bi-link-45deg"/>
-                            </a>
-
+            <Form onSubmit={submitHandler} className="mt-3">
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={idProductId}>ID</Form.Label>
+                    <Col>
+                        <InputGroup size="sm">
+                            <FormControl type="number" size="sm" disabled readOnly value={product.id}
+                                         id={idProductId}/>
+                            <Button type="button" size="sm" variant="outline-secondary" onClick={duplicateHandler}
+                                    disabled={!product.id}>
+                                Duplicate Product
+                            </Button>
+                        </InputGroup>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={keywordId}>Keyword</Form.Label>
+                    <Col>
+                        <InputGroup size="sm">
+                            <FormControl type="text" id={keywordId} size="sm"
+                                         value={product.keyword} onChange={textChangeHandler('keyword')} required/>
+                            {!!product.id && (
+                                <InputGroup.Text as={ProductPreviewLink} product={product} />
+                            )}
+                        </InputGroup>
+                        {product.keyword.toLowerCase() === 'new' && (
+                            <div className="form-text text-danger">
+                                Keyword &#39;new&#39; is not allowed!
+                            </div>
                         )}
-                    </InputGroup>
-                    {product.keyword.toLowerCase() === 'new' && (
-                        <div className="form-text text-danger">
-                            Keyword &#39;new&#39; is not allowed!
-                        </div>
-                    )}
-                </FormColumn>
-                <FormColumn label="Title" width={colWidth}>
-                    <input type="text" className="form-control form-control-sm"
-                           value={product.name || ''}
-                           onChange={textChangeHandler('name')}/>
-                </FormColumn>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} label="Title" width={colWidth}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={titleId}>Title</Form.Label>
+                    <Col>
+                        <FormControl type="text" size="sm" id={titleId}
+                                     value={product.name || ''}
+                                     onChange={textChangeHandler('name')}/>
+                    </Col>
+                </Form.Group>
                 <hr/>
-                <FormColumn label="Status" width={colWidth} align="baseline">
-                    <FormCheck label='Enabled' checked={product.status} onChange={toggleChangeHandler('status')}
-                               type="checkbox" inline/>
-                    <FormCheck label='Available for Sale' checked={product.availableForSale}
-                               onChange={toggleChangeHandler('availableForSale')} type="checkbox" inline/>
-                </FormColumn>
-                <FormColumn label="Product Season" width={colWidth}>
-                    <InputGroup bsSize="sm">
-                        <span className="input-group-text">Season</span>
-                        <SeasonSelect value={product.season?.code || ''}
-                                      onChange={seasonChangeHandler}/>
-                        <div className="input-group-text">
-                            <label className="form-check-label me-3"
-                                   htmlFor="product-season-available">Available</label>
-                            <input type="checkbox" id="product-season-available" className="form-check-input"
-                                   checked={product.additionalData?.seasonAvailable ?? false}
-                                   onChange={toggleAdditionalDataChangeHandler('seasonAvailable')}/>
-                        </div>
-                    </InputGroup>
+                <Form.Group as={Row} label="Status" width={colWidth} align="baseline">
+                    <Form.Label column={true} xs={4} lg={3}>Status</Form.Label>
+                    <Col>
+                        <FormCheck label='Enabled' id={enabledId}
+                                   checked={product.status} onChange={toggleChangeHandler('status')}
+                                   type="checkbox" inline/>
+                        <FormCheck label='Available for Sale' id={availableId}
+                                   checked={product.availableForSale}
+                                   onChange={toggleChangeHandler('availableForSale')} type="checkbox" inline/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={seasonId}>Season</Form.Label>
+                    <Col>
+                        <InputGroup size="sm">
+                            <InputGroup.Text as="label" htmlFor={seasonId}>Season</InputGroup.Text>
+                            <SeasonSelect value={product.season?.code || ''} id={seasonId}
+                                          onChange={seasonChangeHandler}/>
+                            <InputGroup.Text as="label" htmlFor={seasonAvailableId}>Season Available</InputGroup.Text>
+                            <InputGroup.Checkbox id={seasonAvailableId} type="checkbox"
+                                                 checked={product.additionalData?.seasonAvailable ?? false}
+                                                 onChange={toggleAdditionalDataChangeHandler('seasonAvailable')}
+                            />
+                        </InputGroup>
+                    </Col>
                     {product.season?.code && <SeasonAlert code={product.season.code}/>}
-                </FormColumn>
-                <FormColumn label="Availability" width={colWidth}>
-                    <input type="text" className="form-control form-control-sm" placeholder="Availability Message"
-                           value={product.dateAvailable} onChange={textChangeHandler('dateAvailable')}/>
-                </FormColumn>
+                </Form.Group>
+                <Form.Group as={Row} label="Availability" width={colWidth}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={availabilityId}>Availability</Form.Label>
+                    <Col>
+                        <FormControl type="text" size="sm" id={availabilityId}
+                                     placeholder="Availability Message"
+                                     value={product.dateAvailable} onChange={textChangeHandler('dateAvailable')}/>
+                    </Col>
+                </Form.Group>
 
                 <hr/>
-                <FormColumn label="Category" width={colWidth}>
-                    <KeywordSelectInputGroup pageType="category" value={product.defaultCategoriesId} required
-                                             onSelectKeyword={keywordChangeHandler('defaultCategoriesId')}/>
-                </FormColumn>
-                <FormColumn label="Parent" width={colWidth}>
-                    <KeywordSelectInputGroup pageType="product" value={product.defaultParentProductsId}
-                                             required={product.redirectToParent}
-                                             onSelectKeyword={keywordChangeHandler('defaultParentProductsId')}>
-                        <RedirectToParent/>
-                    </KeywordSelectInputGroup>
-                </FormColumn>
-                <FormColumn label="Sell As" width={colWidth}>
-                    <ProductSellAsToggle/>
-                </FormColumn>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={categoryId}>Category</Form.Label>
+                    <Col>
+                        <KeywordSelectInputGroup pageType="category" id={categoryId}
+                                                 value={product.defaultCategoriesId} required
+                                                 onSelectKeyword={keywordChangeHandler('defaultCategoriesId')}/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={parentId}>Parent</Form.Label>
+                    <Col>
+                        <KeywordSelectInputGroup pageType="product" id={parentId}
+                                                 value={product.defaultParentProductsId}
+                                                 required={product.redirectToParent}
+                                                 onSelectKeyword={keywordChangeHandler('defaultParentProductsId')}>
+                            <RedirectToParent/>
+                        </KeywordSelectInputGroup>
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} label="Sell As" width={colWidth}>
+                    <Form.Label column={true} xs={4} lg={3}>Sell As</Form.Label>
+                    <Col>
+                        <ProductSellAsToggle/>
+                    </Col>
+                </Form.Group>
 
                 <hr/>
 
-                <FormColumn label="Item Code" width={colWidth}>
-                    <ProductItemCodeInput/>
-                </FormColumn>
-                <FormColumn label="Name" width={colWidth}>
-                    <input type="text" className="form-control form-control-sm"
-                           value={product.name} onChange={textChangeHandler('name')} required/>
-                </FormColumn>
-                <FormColumn label="Image" width={colWidth}>
-                    <input type="text" className="form-control form-control-sm"
-                           value={product.image} onChange={textChangeHandler('image')} required/>
-                </FormColumn>
-                <FormColumn label="Default Color" width={colWidth}>
-                    <InputGroup bsSize="sm">
-                        <input type="text" className="form-control form-control-sm"
-                               value={product.defaultColor} onChange={textChangeHandler('defaultColor')}/>
-                        <div className="input-group-text">Swatch</div>
-                        <input type="text" className="form-control form-control-sm"
-                               value={product.additionalData?.swatch_format || ''}
-                               onChange={additionalDataChangeHandler('swatch_format')}/>
-                    </InputGroup>
-                </FormColumn>
-                <FormColumn label="Features" width={colWidth}>
-                    <FormCheck label="Best Seller" inline checked={product.additionalData?.best_seller || false}
-                               onChange={toggleAdditionalDataChangeHandler('best_seller')} type="checkbox"/>
-                    <FormCheck label="Upcycled" inline checked={product.additionalData?.upcycled || false}
-                               onChange={toggleAdditionalDataChangeHandler('upcycled')} type="checkbox"/>
-                    <FormCheck label="Dome" inline checked={product.canDome || false}
-                               onChange={toggleChangeHandler('canDome')} type="checkbox"/>
-                    <FormCheck label="Screen Print" inline checked={product.canScreenPrint || false}
-                               onChange={toggleChangeHandler('canScreenPrint')} type="checkbox"/>
-                    <FormCheck label="Heat Transfer" inline checked={product.additionalData?.heatTransfer || false}
-                               onChange={toggleAdditionalDataChangeHandler('heatTransfer')} type="checkbox"/>
-                    <FormCheck label="Sublimation" inline checked={product.additionalData?.sublimation || false}
-                               onChange={toggleAdditionalDataChangeHandler('sublimation')} type="checkbox"/>
-                    <FormCheck label="RFID-Blocking" inline checked={product.additionalData?.rfidBlocking || false}
-                               onChange={toggleAdditionalDataChangeHandler('rfidBlocking')} type="checkbox"/>
-                </FormColumn>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={itemCodeId}>Item Code</Form.Label>
+                    <Col>
+                        <ProductItemCodeInput id={itemCodeId}/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={productNameId}>Name</Form.Label>
+                    <Col>
+                        <FormControl type="text" size="sm" id={productNameId}
+                                     value={product.name} onChange={textChangeHandler('name')}
+                                     required/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={imageId}>Image</Form.Label>
+                    <Col>
+                        <FormControl type="text" size="sm" id={imageId}
+                                     value={product.image} onChange={textChangeHandler('image')} required/>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row} label="Default Color" width={colWidth}>
+                    <Form.Label column={true} xs={4} lg={3} htmlFor={colorId}>Default Color</Form.Label>
+                    <Col>
+                        <InputGroup size="sm">
+                            <FormControl type="text" size="sm" id={colorId}
+                                         value={product.defaultColor} onChange={textChangeHandler('defaultColor')}/>
+                            <InputGroup.Text as="label" htmlFor={swatchId}>Swatch</InputGroup.Text>
+                            <FormControl type="text" size="sm" id={swatchId}
+                                         value={product.additionalData?.swatch_format ?? ''}
+                                         onChange={additionalDataChangeHandler('swatch_format')}/>
+                        </InputGroup>
+                    </Col>
+                </Form.Group>
+                <Form.Group as={Row}>
+                    <Form.Label column={true} xs={4} lg={3}>Features</Form.Label>
+                    <Col>
+                        <FormCheck label="Best Seller" type="checkbox" inline id={bestSellerId}
+                                   checked={product.additionalData?.best_seller || false}
+                                   onChange={toggleAdditionalDataChangeHandler('best_seller')}/>
+                        <FormCheck label="Upcycled" type="checkbox" inline id={upcycledId}
+                                   checked={product.additionalData?.upcycled || false}
+                                   onChange={toggleAdditionalDataChangeHandler('upcycled')}/>
+                        <FormCheck label="Dome" type="checkbox" inline id={canDomeId}
+                                   checked={product.canDome || false}
+                                   onChange={toggleChangeHandler('canDome')}/>
+                        <FormCheck label="Screen Print" type="checkbox" inline id={canScreenPrintId}
+                                   checked={product.canScreenPrint || false}
+                                   onChange={toggleChangeHandler('canScreenPrint')}/>
+                        <FormCheck label="Heat Transfer" type="checkbox" inline id={heatTransferId}
+                                   checked={product.additionalData?.heatTransfer || false}
+                                   onChange={toggleAdditionalDataChangeHandler('heatTransfer')}/>
+                        <FormCheck label="Sublimation" inline type="checkbox" id={sublimationId}
+                                   checked={product.additionalData?.sublimation || false}
+                                   onChange={toggleAdditionalDataChangeHandler('sublimation')}/>
+                        <FormCheck label="RFID-Blocking" inline type="checkbox" id={rfidBlockingId}
+                                   checked={product.additionalData?.rfidBlocking || false}
+                                   onChange={toggleAdditionalDataChangeHandler('rfidBlocking')}/>
+                    </Col>
+                </Form.Group>
                 <hr/>
-                <FormColumn label="" width={colWidth}>
-                    <SpinnerButton type="submit" className="btn btn-sm btn-primary me-1"
-                                   spinning={saving}>Save</SpinnerButton>
-                    <button type="button" className="btn btn-sm btn-outline-secondary me-1"
-                            onClick={newProductHandler}>
-                        New Product
-                    </button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary me-1"
-                            disabled={!product.keyword || !product.id} onClick={reloadHandler}>
-                        Reload
-                    </button>
-                </FormColumn>
-                <FormColumn label="" width={colWidth}>
-                    {product.changed && <Alert color="warning">Don&#39;t forget to save your changes.</Alert>}
-                </FormColumn>
-            </form>
+                <Row className="justify-content-end">
+                    <Col xs="auto">
+                        <SpinnerButton type="submit" variant="primary" size="sm" spinning={saving}>Save</SpinnerButton>
+                    </Col>
+                    <Col xs="auto">
+                        <Button type="button" variant="outline-secondary" size="sm"
+                                onClick={newProductHandler}>
+                            New Product
+                        </Button>
+
+                    </Col>
+                    <Col xs="auto">
+                        <Button type="button" variant="outline-secondary" size="sm"
+                                disabled={!product.keyword || !product.id} onClick={reloadHandler}>
+                            Reload
+                        </Button>
+                    </Col>
+                </Row>
+                {product.changed && <Alert variant="warning">Don&#39;t forget to save your changes.</Alert>}
+            </Form>
         </>
     )
 }

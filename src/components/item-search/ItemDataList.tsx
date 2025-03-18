@@ -1,9 +1,6 @@
 import React, {HTMLAttributes, useEffect, useState} from 'react';
-import {useSelector} from "react-redux";
 import {ItemSearchFilter} from "../../types/item-search";
-import {useAppDispatch} from "../app/hooks";
-import {selectItemSearchList} from "../../ducks/item-search/selectors";
-import {loadItemSearch} from "../../ducks/item-search/actions";
+import {useLazyGetItemSearchQuery} from "@/src/api/items";
 
 
 export interface ItemDataListProps extends HTMLAttributes<HTMLDataListElement> {
@@ -21,8 +18,10 @@ const ItemDataList: React.FC<ItemDataListProps> = ({
                                                        ...props
                                                    }) => {
     const controller = new AbortController();
-    const dispatch = useAppDispatch();
-    const items = useSelector(selectItemSearchList);
+    // const dispatch = useAppDispatch();
+    const [trigger, result] = useLazyGetItemSearchQuery({});
+    // const items = useSelector(selectItemSearchList);
+
 
     const [timer, setTimer] = useState(0);
 
@@ -36,7 +35,8 @@ const ItemDataList: React.FC<ItemDataListProps> = ({
     useEffect(() => {
         window.clearTimeout(timer);
         const newTimer = window.setTimeout(() => {
-            dispatch(loadItemSearch({search, filter, signal: controller.signal}))
+            trigger({search, ...filter})
+            // dispatch(loadItemSearch({search, filter, signal: controller.signal}))
         }, delay);
         setTimer(() => newTimer);
     }, [search]);
@@ -44,8 +44,7 @@ const ItemDataList: React.FC<ItemDataListProps> = ({
 
     return (
         <datalist id={id} {...props}>
-            {Object.keys(items)
-                .map(key => items[key])
+            {(result.data ?? [])
                 .map(item => (
                     <option key={item.ItemCode} value={item.ItemCode} className={`item-data-list--${item.ProductType}`}>
                         {item.ItemCodeDesc}

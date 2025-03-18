@@ -10,10 +10,11 @@ import {
 } from "./actions";
 import {variantListSorter} from "../sorter";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "../variant/actions";
-import {SortProps} from "chums-components";
+import {SortProps} from "chums-types";
 import {Editable, ProductVariant} from "b2b-types";
 import {Product} from "b2b-types/src/products";
-import {isSellAsVariants} from "../../../utils";
+import {isSellAsVariants} from "@/src/utils";
+
 
 export type EditableProduct = Product & Editable;
 

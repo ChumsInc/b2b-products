@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {LocalStore, SortableTable, SortableTableField, SortProps, TablePagination} from "chums-components";
+import {SortableTable, SortableTableField, SortProps, TablePagination} from "@chumsinc/sortable-tables";
 import {ProductListItem} from "b2b-types";
 import SeasonIcon from "../../season/SeasonIcon";
 import ProductSellAsIcon from "./ProductSellAsIcon";
@@ -14,6 +14,7 @@ import {selectCurrentProductId} from "../../../ducks/products/product/selectors"
 import ProductTableCategoryName from "./ProductTableCategoryName";
 import {useNavigate} from "react-router";
 import {localStorageKeys} from "../../../api/preferences";
+import {LocalStore} from "chums-ui-utils";
 
 
 const fields: SortableTableField<ProductListItem>[] = [
@@ -34,32 +35,19 @@ const fields: SortableTableField<ProductListItem>[] = [
     },
     {
         field: 'defaultParentProductsId',
-        title: 'Parent ID',
+        title: 'Parent',
         sortable: true,
         render: (row: ProductListItem) => <ProductRedirectIcon product={row}/>
     },
-    {field: 'sellAs', title: 'Sell As', render: (row) => <ProductSellAsIcon product={row}/>},
-    {
-        field: 'minPrice',
-        title: 'Price',
-        render: (row: ProductListItem) => <ProductPrice product={row}/>,
-        className: 'text-end'
-    }
+    {field: 'sellAs', title: 'Sell As', render: (row) => <ProductSellAsIcon product={row} showStatusIcon/>},
 ]
 
 const rowClassName = (row: ProductListItem) => {
     return classNames({
-        'text-danger': !row.status,
-        'text-success': row.redirectToParent && !!row.defaultParentProductsId
+        'table-danger': !row.status,
     })
 }
 
-const findProductPage = (list: ProductListItem[], id: number, rowsPerPage: number): number => {
-    const index = list.map(item => item.id).indexOf(id);
-    return index === -1 || !rowsPerPage
-        ? 0
-        : Math.floor(index / rowsPerPage);
-}
 
 const ProductTable = () => {
     const dispatch = useAppDispatch();
@@ -73,12 +61,12 @@ const ProductTable = () => {
     );
 
     useEffect(() => {
-        setPage(findProductPage(list, currentId, rowsPerPage));
+        setPage(0);
     }, [list, currentId, rowsPerPage]);
 
     const rowsPerPageChangeHandler = (rpp: number) => {
         LocalStore.setItem<number>(localStorageKeys.products.rowsPerPage, rpp)
-        setPage(findProductPage(list, currentId, rpp));
+        setPage(0);
         setRowsPerPage(rpp);
     }
     const onSelectRow = (row: ProductListItem) => {
@@ -97,8 +85,8 @@ const ProductTable = () => {
                            data={list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} size="xs"
                            selected={(row) => row.id === currentId}
                            rowClassName={rowClassName} onSelectRow={onSelectRow}/>
-            <TablePagination page={page} onChangePage={setPage}
-                             rowsPerPage={rowsPerPage} onChangeRowsPerPage={rowsPerPageChangeHandler}
+            <TablePagination size="sm" page={page} onChangePage={setPage}
+                             rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: rowsPerPageChangeHandler}}
                              showFirst showLast
                              count={list.length}/>
         </div>

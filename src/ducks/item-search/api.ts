@@ -1,6 +1,6 @@
 
-import {fetchJSON} from "chums-components";
-import {ItemSearchFilter, ItemSearchRecord} from "../../types/item-search";
+import {fetchJSON} from "chums-ui-utils";
+import {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
 
 function parseSearchParams(search: string, filter?: ItemSearchFilter): URLSearchParams {
     const params = new URLSearchParams();

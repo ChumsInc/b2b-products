@@ -1,24 +1,28 @@
 import React from 'react';
-import {useSelector} from "react-redux";
-import {selectSeasons} from "../../ducks/seasons/selectors";
-import MiniChip from "../MiniChip";
+import {useAppSelector} from "@/components/app/hooks";
+import {selectSeasonByCode} from "@/ducks/seasons";
+import {Badge} from "react-bootstrap";
 
 
-export interface SeasonIcon {
+export interface SeasonIconProps {
     code?: string | null;
     seasonAvailable?: boolean;
 }
 
-const SeasonIcon: React.FC<SeasonIcon> = ({code, seasonAvailable}) => {
-    const seasons = useSelector(selectSeasons);
-    if (!code) {
+const SeasonIcon = ({code, seasonAvailable}: SeasonIconProps) => {
+    const season = useAppSelector((state) => selectSeasonByCode(state, code ?? ''));
+    if (!season) {
         return null;
     }
-    const colorCode = seasons[code]?.properties?.color || undefined;
-    const badgeText = seasonAvailable === false ? (<span>{code} <span className="bi-exclamation-triangle-fill" /></span>) : code;
 
     return (
-        <MiniChip variant="filled" bgColor={colorCode ?? '#FFF'} label={badgeText}/>
+        <Badge pill style={{backgroundColor: season?.properties?.color ?? '#FFF'}}>
+            {
+                seasonAvailable ?? season.product_available
+                    ? (<span>{code}</span>)
+                    : (<span>{code} <span className="bi-exclamation-triangle-fill"/></span>)
+            }
+        </Badge>
     )
 }
 

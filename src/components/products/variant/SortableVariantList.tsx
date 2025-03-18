@@ -1,17 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {SortProps, SpinnerButton} from "chums-components";
+import {SortProps} from "@chumsinc/sortable-tables";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {useSelector} from "react-redux";
-import {selectCurrentProductVariants, selectCurrentVariantSort} from "../../../ducks/products/variant/selectors";
-import {variantListSorter} from "../../../ducks/products/sorter";
+import {selectCurrentProductVariants, selectCurrentVariantSort} from "@/ducks/products/variant/selectors";
+import {variantListSorter} from "@/ducks/products/sorter";
 import SortableVariantItem from "./SortableVariantItem";
-import {saveVariantsSort} from "../../../ducks/products/variant/actions";
+import {saveVariantsSort} from "@/ducks/products/variant/actions";
 import {useAppDispatch} from "../../app/hooks";
 import {ProductVariant} from "b2b-types";
 import update from 'immutability-helper';
-import {VariantSortArgs} from "../../../types/variant";
-import {variantSortKey} from "../../../ducks/products/variant/utils";
+import {VariantSortArgs} from "@/types/variant";
+import {variantSortKey} from "@/ducks/products/variant/utils";
+import SpinnerButton from "@/components/common/SpinnerButton";
 
 
 export const variantPrioritySort: SortProps<ProductVariant> = {

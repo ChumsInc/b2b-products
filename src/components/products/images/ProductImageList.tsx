@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {setCurrentImage} from "../../../ducks/products/images/actions";
-import {TablePagination} from "chums-components";
+import {TablePagination} from "@chumsinc/sortable-tables";
 import ProductImage from "../../app/ProductImage";
 import classNames from "classnames";
 import {useAppDispatch} from "../../app/hooks";
@@ -19,8 +19,9 @@ const ProductImageList = () => {
     }
     return (
         <div>
-            <TablePagination bsSize="sm" page={page} onChangePage={setPage} rowsPerPage={rowsPerPage}
-                             onChangeRowsPerPage={setRowsPerPage} count={images.length}/>
+            <TablePagination size="sm" page={page} onChangePage={setPage}
+                             rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: setRowsPerPage}}
+                             count={images.length}/>
             <div className="product-image-list">
                 {images
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

@@ -1,4 +1,4 @@
-import {fetchJSON} from 'chums-components';
+import {fetchJSON} from 'chums-ui-utils';
 import {ColorProductUsage, ProductColor} from "b2b-types";
 import Debug from "debug";
 

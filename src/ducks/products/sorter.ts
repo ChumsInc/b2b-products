@@ -1,6 +1,6 @@
 import {ProductListItem} from "b2b-types";
 import {ProductColorItem, ProductMixComponent, ProductVariant} from "b2b-types/src/products";
-import {SortProps} from "chums-components";
+import {SortProps} from "chums-types";
 
 
 export const productListSorter = ({field, ascending}: SortProps<ProductListItem>) =>

@@ -1,8 +1,8 @@
 :root {
   --sell-as-self-color: var(--bs-primary);
   --bs-font-monospace: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --sell-as-variants-color: #a9a8a8;
-  --sell-as-mix-color: #4e9b5b;
+  --sell-as-variants-color: var(--bs-secondary);
+  --sell-as-mix-color: var(--bs-success);
   --sell-as-colors-color: #ce0e2d;
 }
 
@@ -38,8 +38,8 @@
 
   .form-label {
     font-weight: 300;
-    color: var(--bs-gray-600);
   }
+
   .sell-as-icons {
     .badge + .badge {
       margin-left: 2px;

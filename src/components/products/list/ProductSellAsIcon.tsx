@@ -1,37 +1,58 @@
-import React from 'react';
-import {ProductListItem} from "b2b-types";
-import {Badge} from "chums-components";
-import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils";
-import classNames from "classnames";
-import MiniChip from "../../MiniChip";
+import React, {HTMLAttributes} from 'react';
+import {Product, ProductListItem} from "b2b-types";
+import {isProductListItem, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils";
+import {Badge} from "react-bootstrap";
+import styled from "@emotion/styled";
 
-export const mixColor = '#4e9b5b';
-export const colorsColor = '#ce0e2d';
-export const selfColor = '#00F';
-export const variantsColor = '#a9a8a8';
+const SellAsBadgeList = styled.div`
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.125rem;
+`
 
-
-interface ProductSellAsIconProps {
-    product: ProductListItem,
+interface ProductSellAsIconProps extends HTMLAttributes<HTMLDivElement> {
+    showStatusIcon?: boolean;
+    product: ProductListItem | Product;
 }
 
-const ProductSellAsIcon = ({product}:ProductSellAsIconProps) => {
+const ProductSellAsIcon = ({showStatusIcon, product, ...rest}: ProductSellAsIconProps) => {
+    if (!product) {
+        return null;
+    }
     return (
-        <span className="sell-as-icons">
-            {!product.availableForSale && <span className="bi-lightbulb text-dark me-1" />}
-            {product.availableForSale && <span className="bi-lightbulb-fill text-warning me-1"  />}
-            {product.sellAs === SELL_AS_VARIANTS &&
-                <MiniChip bgColor={variantsColor} label={`V:${product.variantsCount}`} />}
-            {product.sellAs === SELL_AS_VARIANTS && !!product.selfCount &&
-                <MiniChip bgColor={selfColor} label={`S:${product.selfCount}`} />}
-            {product.sellAs === SELL_AS_SELF && <MiniChip bgColor={selfColor} label="Self" />}
-            {product.sellAs === SELL_AS_VARIANTS && !!product.mixesCount &&
-                <MiniChip bgColor={mixColor} label={`M:${product.mixesCount}`} />}
-            {product.sellAs === SELL_AS_MIX && <Badge color="custom" colorCode={mixColor}>Mix</Badge>}
-            {product.sellAs === SELL_AS_VARIANTS && !!product.colorsCount &&
-                <MiniChip bgColor={colorsColor} label={`C:${product.colorsCount}`} />}
-            {product.sellAs === SELL_AS_COLORS && <MiniChip bgColor={colorsColor} label="Colors" />}
-        </span>
+        <SellAsBadgeList {...rest}>
+            {showStatusIcon && (
+                <Badge bg="light">
+                    {product.availableForSale && (<span className="bi-lightbulb-fill text-warning"/>)}
+                    {!product.availableForSale && (<span className="bi-lightbulb-fill text-dark"/>)}
+                </Badge>
+            )}
+            {isProductListItem(product) && product.sellAs === SELL_AS_VARIANTS && (
+                <>
+                    {product.variantsCount > 0 && (
+                        <Badge pill bg="secondary">V: {JSON.stringify(product.variantsCount)}</Badge>
+                    )}
+                    {product.selfCount > 0 && (
+                        <Badge pill bg="secondary">S: {JSON.stringify(product.selfCount)}</Badge>
+                    )}
+                    {product.mixesCount > 0 && (
+                        <Badge pill bg="success">M: {JSON.stringify(product.mixesCount)}</Badge>
+                    )}
+                    {product.colorsCount > 0 && (
+                        <Badge pill bg="danger">C: {JSON.stringify(product.colorsCount)}</Badge>
+                    )}
+                </>
+            )}
+            {product.sellAs === SELL_AS_SELF && (
+                <Badge pill bg="primary">Self</Badge>
+            )}
+            {product.sellAs === SELL_AS_MIX && (
+                <Badge pill bg="success">Mix</Badge>
+            )}
+            {product.sellAs === SELL_AS_COLORS && (
+                <Badge pill bg="danger">Colors</Badge>
+            )}
+        </SellAsBadgeList>
     )
 }
 

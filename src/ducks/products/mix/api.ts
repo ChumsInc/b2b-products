@@ -1,5 +1,5 @@
-import {BOMResult} from "../../../types/item-search";
-import {fetchJSON} from "chums-components";
+import {BOMResult} from "@/types/item-search";
+import {fetchJSON} from "chums-ui-utils";
 import {ProductMixComponent, ProductMixItem} from "b2b-types/src/products";
 
 export async function fetchMixBOM(itemCode: string):Promise<BOMResult|null> {

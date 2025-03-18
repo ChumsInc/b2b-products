@@ -3,7 +3,7 @@ import {
     CategoryChildLink,
     CategoryChildProduct,
     CategoryChildSection, Product,
-    ProductCategoryChild,
+    ProductCategoryChild, ProductListItem,
     ProductSellAsColors,
     ProductSellAsMix,
     ProductSellAsSelf,
@@ -53,6 +53,13 @@ export function isSellAsSelf(product: Product | null): product is SellAsSelfProd
 
 export function isSellAsVariants(product: Product | null): product is SellAsVariantsProduct {
     return !!product && (product as SellAsVariantsProduct).sellAs === SELL_AS_VARIANTS;
+}
+
+export function isProduct(product: Product|ProductListItem|null): product is Product {
+    return !!product && !isProductListItem(product);
+}
+export function isProductListItem(product: Product|ProductListItem|null): product is ProductListItem {
+    return !!product && (product as ProductListItem).variantsCount !== undefined;
 }
 
 export function isSellAsMix(product: Product | null): product is SellAsMixProduct {
@@ -128,4 +135,24 @@ export const reloadSwatchCSSFile = () => {
             link.href = `${file}?${search.toString()}`;
         }
     })
+}
+
+export function isObject(a:unknown): a is object {
+    return typeof a === 'object' && a !== null;
+}
+
+export function deepStrictEqual<T>(a:T|null, b:T|null) {
+    if (typeof a !== typeof b) return false;
+
+    if (isObject(a) && b !== null) {
+        if (Object.keys(a).length !== Object.keys(b!).length) return false;
+        for (const key in a) {
+            if (!deepStrictEqual(a[key], b![key])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    return Object.is(a, b);
 }

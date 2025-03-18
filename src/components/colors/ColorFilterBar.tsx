@@ -1,10 +1,13 @@
 import React, {ChangeEvent} from "react";
 import {useSelector} from "react-redux";
 
-import {FormCheck, SpinnerButton} from "chums-components";
+import FormCheck from "react-bootstrap/FormCheck";
+
 import {loadColors, setColorFilter, toggleFilterInactiveColors} from "../../ducks/colors/actions";
-import {selectColorFilter, selectColorsFilterInactive, selectColorsLoading, selectColorsStatus} from "../../ducks/colors/selectors";
+import {selectColorFilter, selectColorsFilterInactive, selectColorsLoading} from "../../ducks/colors/selectors";
 import {useAppDispatch} from "../app/hooks";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
 
 const ColorFilterBar: React.FC = () => {
@@ -36,10 +39,11 @@ const ColorFilterBar: React.FC = () => {
                 </div>
             </div>
             <div className="col-auto">
-                <SpinnerButton type="button" color="outline-primary" spinning={loading} size="sm"
-                               onClick={() => dispatch(loadColors())}>
+                <Button type="button" color="outline-primary" size="sm"
+                        onClick={() => dispatch(loadColors())}>
+                    {loading && <Spinner size="sm" as="span" role="status" aria-hidden="true"/>}
                     Reload
-                </SpinnerButton>
+                </Button>
             </div>
         </div>
     )
