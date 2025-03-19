@@ -85,19 +85,29 @@ const ProductColorList = () => {
                 {filteredList
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map(item => (
-                        <Col key={item.id} xs={12} sm={showImage ? 6 : 4} md={showImage ? 4 : 3} lg="auto" style={{minWidth: '175px'}}>
+                        <Col key={item.id} xs={12} sm={showImage ? 6 : 4} md={showImage ? 4 : 3} lg="auto"
+                             style={{minWidth: '175px'}}>
                             <Card border={selected?.id === item.id ? 'primary' : 'secondary'}
                                   onClick={() => selectItemHandler(item)}>
                                 <Card.Header className="p-1">
-                                    <div className="d-flex justify-content-between">
+                                    <div className="d-flex justify-content-between align-items-baseline">
                                         <div>
                                             {item.colorCode}
                                         </div>
-                                        <SeasonIcon code={item.additionalData?.season?.code}
-                                                    seasonAvailable={item.additionalData?.seasonAvailable === true}/>
-                                        {!!item.productStatus && (<Badge bg="warning">{item.productStatus}</Badge>)}
+                                        {!item.inactiveItem && (
+                                            <SeasonIcon code={item.additionalData?.season?.code}
+                                                        seasonAvailable={item.additionalData?.seasonAvailable === true}/>
+                                        )}
+                                        {!item.inactiveItem && !item.status && (
+                                            <Badge bg="secondary">Off</Badge>
+                                        )}
+                                        {!item.inactiveItem && !!item.productStatus && (
+                                            <Badge bg="warning">{item.productStatus}</Badge>)}
+                                        {item.inactiveItem && (<Badge bg="danger">Inactive</Badge>)}
                                         <ColorSwatch colorCode={item.colorCode}
-                                                     swatchFormat={item.additionalData?.swatch_code}/>
+                                                     swatchFormat={item.additionalData?.swatch_code}>
+                                            &nbsp;
+                                        </ColorSwatch>
                                     </div>
                                 </Card.Header>
                                 {showImage && (
@@ -108,7 +118,8 @@ const ProductColorList = () => {
                                     </Card.Body>
                                 )}
                                 <Card.Footer className="text-center">
-                                    <small className="text-secondary">Available: {numeral(item.QuantityAvailable).format('0,0')}</small>
+                                    <small
+                                        className="text-secondary">Available: {numeral(item.QuantityAvailable).format('0,0')}</small>
                                 </Card.Footer>
                             </Card>
                         </Col>

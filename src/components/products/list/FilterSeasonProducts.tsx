@@ -20,7 +20,7 @@ export default function FilterSeasonProducts() {
             <InputGroup.Text as="label" htmlFor={id}>
                 Season
             </InputGroup.Text>
-            <SeasonSelect value={season} onChange={changeHandler} includeInactive id={id}/>
+            <SeasonSelect value={season} onChange={changeHandler} id={id}/>
         </InputGroup>
     )
 }

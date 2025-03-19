@@ -14,6 +14,8 @@ import ProductTableCategoryName from "./ProductTableCategoryName";
 import {useNavigate} from "react-router";
 import {localStorageKeys} from "@/src/api/preferences";
 import {LocalStore} from "chums-ui-utils";
+import {ErrorBoundary} from "react-error-boundary";
+import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
 
 
 const fields: SortableTableField<ProductListItem>[] = [
@@ -78,7 +80,7 @@ const ProductTable = () => {
     }
 
     return (
-        <div>
+        <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
             <SortableTable currentSort={sort} onChangeSort={sortChangeHandler}
                            keyField={"id"} fields={fields}
                            data={list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} size="xs"
@@ -88,7 +90,7 @@ const ProductTable = () => {
                              rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: rowsPerPageChangeHandler}}
                              showFirst showLast
                              count={list.length}/>
-        </div>
+        </ErrorBoundary>
     )
 }
 
