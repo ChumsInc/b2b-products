@@ -13,6 +13,7 @@ import SeasonIcon from "../../season/SeasonIcon";
 import {Badge, Card, Col, FormCheck, Row} from "react-bootstrap";
 import {localStorageKeys} from "../../../api/preferences";
 import ColorSwatch from "../../colors/ColorSwatch";
+import numeral from "numeral";
 
 
 const ProductColorList = () => {
@@ -75,7 +76,8 @@ const ProductColorList = () => {
                 <Col>
                     <TablePagination size="sm"
                                      page={page} onChangePage={setPage}
-                                     rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: onChangeRowsPerPage, label: 'Images'}}
+                                     rowsPerPage={rowsPerPage}
+                                     rowsPerPageProps={{onChange: onChangeRowsPerPage, label: 'Images'}}
                                      count={filteredList.length}/>
                 </Col>
             </Row>
@@ -83,7 +85,7 @@ const ProductColorList = () => {
                 {filteredList
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map(item => (
-                        <Col key={item.id} xs={12} sm={showImage ? 6 : 4} md={showImage ? 4 : 3} lg={showImage ? 3 : 2}>
+                        <Col key={item.id} xs={12} sm={showImage ? 6 : 4} md={showImage ? 4 : 3} lg="auto" style={{minWidth: '175px'}}>
                             <Card border={selected?.id === item.id ? 'primary' : 'secondary'}
                                   onClick={() => selectItemHandler(item)}>
                                 <Card.Header className="p-1">
@@ -91,6 +93,9 @@ const ProductColorList = () => {
                                         <div>
                                             {item.colorCode}
                                         </div>
+                                        <SeasonIcon code={item.additionalData?.season?.code}
+                                                    seasonAvailable={item.additionalData?.seasonAvailable === true}/>
+                                        {!!item.productStatus && (<Badge bg="warning">{item.productStatus}</Badge>)}
                                         <ColorSwatch colorCode={item.colorCode}
                                                      swatchFormat={item.additionalData?.swatch_code}/>
                                     </div>
@@ -100,12 +105,11 @@ const ProductColorList = () => {
                                         <ProductImage filename={item.additionalData?.image_filename || product?.image}
                                                       className={classNames('m-auto', {'text-danger': !item.status})}
                                                       colorCode={item.colorCode} itemCode={item.itemCode} size={80}/>
-                                        <SeasonIcon code={item.additionalData?.season?.code}
-                                                    seasonAvailable={item.additionalData?.seasonAvailable === true}/>
-                                        {!!item.productStatus && (
-                                            <Badge bg="warning">{item.productStatus}</Badge>)}
                                     </Card.Body>
                                 )}
+                                <Card.Footer className="text-center">
+                                    <small className="text-secondary">Available: {numeral(item.QuantityAvailable).format('0,0')}</small>
+                                </Card.Footer>
                             </Card>
                         </Col>
                     ))}
