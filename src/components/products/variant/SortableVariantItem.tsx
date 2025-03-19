@@ -99,7 +99,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
         })
     });
 
-    const opacity = isDragging ? 0 : 1;
+    const opacity = isDragging ? 0.25 : 1;
     drag(drop(ref));
 
     const onClick = () => {
@@ -126,10 +126,12 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
                 Edit
             </button>
             <div className="sortable-item-padding">
-                {variant.product && (<div>{<ProductSellAsIcon product={variant.product}/>}</div>)}
                 <div className={classNames('text-start', {'text-primary': variant.isDefaultVariant,})}
                      style={{flex: '1 1 50%'}}>
-                    {variant.title}
+                    <div>
+                        {variant.title}
+                        {variant.product && (<ProductSellAsIcon product={variant.product} style={{display: 'inline-block'}} className="ms-1"/>)}
+                    </div>
                     {(!variant.status || !variant.product?.status) && (
                         <span className="ms-1 bi-exclamation-triangle-fill text-warning"/>
                     )}

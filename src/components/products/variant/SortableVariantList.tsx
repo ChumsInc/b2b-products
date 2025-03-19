@@ -27,10 +27,15 @@ const SortableVariantList = () => {
     const saving = false;
 
     const [items, setItems] = useState([...variants].sort(variantListSorter(variantPrioritySort)));
+    const [sorted, setSorted] = useState(currentSort);
 
     useEffect(() => {
         setItems([...variants].sort(variantListSorter(variantPrioritySort)));
     }, [variants]);
+
+    useEffect(() => {
+        setSorted(variantSortKey(items));
+    }, [items]);
 
 
     const onMoveItem = useCallback((dragIndex: number, hoverIndex: number) => {
@@ -44,22 +49,24 @@ const SortableVariantList = () => {
         )
     }, [variants]);
 
-    const renderVariant = useCallback((variant: ProductVariant, index: number) => {
-        return (
-            <SortableVariantItem key={variant.id} variant={variant} index={index} moveItem={onMoveItem}/>
-        )
-    }, [variants])
+    // const renderVariant = useCallback((variant: ProductVariant, index: number) => {
+    //     return (
+    //         <SortableVariantItem key={variant.id} variant={variant} index={index} moveItem={onMoveItem}/>
+    //     )
+    // }, [variants])
 
     const saveClickHandler = async () => {
         const sorted:VariantSortArgs[] = items.map((item, index) => ({parentProductID: item.parentProductID, id: item.id, priority: index}))
         await dispatch(saveVariantsSort(sorted));
     }
 
+    console.log('sorted', items.map(item => item.id))
     return (
         <div>
             <div className="row g-3 my-1 align-items-baseline">
                 <div className="col-auto">
-                    <SpinnerButton type="button" color={currentSort === variantSortKey(items) ? "outline-secondary" : 'warning'} spinning={saving} size="sm"
+                    <SpinnerButton type="button" variant={currentSort === sorted ? "outline-secondary" : 'warning'}
+                                   spinning={saving} size="sm"
                                    onClick={saveClickHandler}>
                         Save Current Sort
                     </SpinnerButton>
@@ -67,7 +74,9 @@ const SortableVariantList = () => {
             </div>
             <DndProvider backend={HTML5Backend}>
                 <div className="sortable-variant-list">
-                    {[...items].map((v, index) => renderVariant(v, index))}
+                    {items.map((variant, index) => (
+                        <SortableVariantItem key={variant.id} variant={variant} index={index} moveItem={onMoveItem}/>
+                    ))}
                 </div>
             </DndProvider>
         </div>

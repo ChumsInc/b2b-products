@@ -1,10 +1,11 @@
 import {ProductVariant} from "b2b-types";
-import {createEntityAdapter, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {CaseReducer, createEntityAdapter, createSlice, EntityState, PayloadAction} from "@reduxjs/toolkit";
 import {removeVariant, saveCurrentVariant, saveVariantsSort, setDefaultVariant} from "./actions";
 import {loadProduct} from "../products/product/actions";
 import {isSellAsVariantsProduct} from "../products/utils";
 import {defaultVariant} from "@/src/utils";
 import {variantSortKey} from "./utils";
+import {variantListSorter} from "@/ducks/products/sorter";
 
 export interface CurrentVariantState {
     productId: number | null;
@@ -31,6 +32,9 @@ const variantsAdapter = createEntityAdapter<ProductVariant, number>({
 
 const adapterSelectors = variantsAdapter.getSelectors();
 
+const updateCurrentSort:CaseReducer<EntityState<ProductVariant, number> & CurrentVariantState> = (state) => {
+    state.currentSort = variantSortKey(adapterSelectors.selectAll(state).sort(variantListSorter({field:"priority", ascending: true})));
+}
 const variantsSlice = createSlice({
     name: 'productVariants',
     initialState: variantsAdapter.getInitialState(initialVariantState),
@@ -52,7 +56,7 @@ const variantsSlice = createSlice({
                 } else {
                     variantsAdapter.removeAll(state);
                 }
-                state.currentSort = variantSortKey(adapterSelectors.selectAll(state));
+                updateCurrentSort(state, action);
                 state.productId = action.payload?.id ?? null;
             })
             .addCase(saveCurrentVariant.pending, (state) => {
@@ -64,7 +68,7 @@ const variantsSlice = createSlice({
                 if (action.payload) {
                     variantsAdapter.setOne(state, action.payload);
                 }
-                state.currentSort = variantSortKey(adapterSelectors.selectAll(state));
+                updateCurrentSort(state, action);
             })
             .addCase(saveCurrentVariant.rejected, (state) => {
                 state.status = 'rejected';
@@ -76,7 +80,7 @@ const variantsSlice = createSlice({
                 state.variant = null;
                 state.status = 'idle';
                 variantsAdapter.removeOne(state, action.meta.arg.id)
-                state.currentSort = variantSortKey(adapterSelectors.selectAll(state));
+                updateCurrentSort(state, action);
             })
             .addCase(removeVariant.rejected, (state) => {
                 state.status = 'rejected';
@@ -89,7 +93,7 @@ const variantsSlice = createSlice({
                 const [variant] = action.payload.filter(v => v.id === action.meta.arg.id);
                 state.variant = variant ?? null;
                 variantsAdapter.setAll(state, action.payload);
-                state.currentSort = variantSortKey(adapterSelectors.selectAll(state));
+                updateCurrentSort(state, action);
             })
             .addCase(setDefaultVariant.rejected, (state) => {
                 state.status = 'rejected';
@@ -100,7 +104,7 @@ const variantsSlice = createSlice({
             .addCase(saveVariantsSort.fulfilled, (state, action) => {
                 state.status = 'idle';
                 variantsAdapter.setAll(state, action.payload);
-                state.currentSort = variantSortKey(adapterSelectors.selectAll(state));
+                updateCurrentSort(state, action);
             })
             .addCase(saveVariantsSort.rejected, (state) => {
                 state.status = 'rejected';
