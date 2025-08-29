@@ -1,5 +1,5 @@
-import React, {ReactNode, useId} from 'react';
-import KeywordSelect, {KeywordSelectProps} from "./KeywordSelect";
+import {type ReactNode, useId} from 'react';
+import KeywordSelect, {type KeywordSelectProps} from "./KeywordSelect";
 import {InputGroup} from "react-bootstrap";
 
 
@@ -12,13 +12,14 @@ export default function KeywordSelectInputGroup({
                                                     value,
                                                     onSelectKeyword,
                                                     children,
+                                                    id,
                                                     ...rest
                                                 }: KeywordSelectInputGroupProps) {
-    const id = rest.id ?? useId();
+    const _id = useId();
     return (
         <InputGroup className="input-group input-group-sm">
-            <InputGroup.Text as="label" htmlFor={id} aria-label="Current ID">{value}</InputGroup.Text>
-            <KeywordSelect pageType={pageType} id={id}
+            <InputGroup.Text as="label" htmlFor={id ?? _id} aria-label="Current ID">{value}</InputGroup.Text>
+            <KeywordSelect pageType={pageType} id={id ?? _id}
                            value={value} onSelectKeyword={onSelectKeyword}
                            {...rest}/>
             {children}

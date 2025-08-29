@@ -1,8 +1,8 @@
-import React, {HTMLAttributes, KeyboardEvent, useEffect, useRef, useState} from 'react';
-import {FormControl, FormControlProps, ListGroup} from "react-bootstrap";
+import React, {type HTMLAttributes, type KeyboardEvent, useEffect, useRef, useState} from 'react';
+import {FormControl, type FormControlProps, ListGroup} from "react-bootstrap";
 import {useLazyGetItemSearchQuery} from "@/src/api/items";
 import {useFloating} from '@floating-ui/react-dom'
-import {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
+import type {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
 import useClickOutside from "@/src/hooks/click-outside";
 
 export interface ItemFormControlProps extends Omit<FormControlProps, 'ref'> {
@@ -25,9 +25,9 @@ export default function ItemFormControl({
                                             invalidItems,
                                             ...rest
                                         }: ItemFormControlProps) {
-    const inputRef = ref ?? useRef<HTMLInputElement | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [reference, setReference] = useState<HTMLInputElement | null>(inputRef.current);
+    const [reference, setReference] = useState<HTMLInputElement | null>(ref?.current ?? inputRef.current);
     const [trigger, result] = useLazyGetItemSearchQuery({});
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(-1);
@@ -38,7 +38,7 @@ export default function ItemFormControl({
     useClickOutside(containerRef, () => setOpen(false));
 
     useEffect(() => {
-        setReference(inputRef.current)
+        setReference(ref?.current ?? inputRef.current)
     }, [inputRef, ref]);
 
     useEffect(() => {

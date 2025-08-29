@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import ProductScreen from "../products/ProductScreen";
 import ColorScreen from "../colors/ColorScreen";
 import {loadColors} from "@/ducks/colors/actions";

@@ -1,5 +1,5 @@
-import React, {HTMLAttributes, useEffect, useState} from 'react';
-import {ItemSearchFilter} from "../../types/item-search";
+import React, {type HTMLAttributes, useEffect, useRef} from 'react';
+import type {ItemSearchFilter} from "@/types/item-search";
 import {useLazyGetItemSearchQuery} from "@/src/api/items";
 
 
@@ -18,28 +18,23 @@ const ItemDataList: React.FC<ItemDataListProps> = ({
                                                        ...props
                                                    }) => {
     const controller = new AbortController();
-    // const dispatch = useAppDispatch();
     const [trigger, result] = useLazyGetItemSearchQuery({});
-    // const items = useSelector(selectItemSearchList);
-
-
-    const [timer, setTimer] = useState(0);
+    const timerRef = useRef<number>(0);
 
     useEffect(() => {
         return () => {
             controller.abort();
-            window.clearTimeout(timer);
+            window.clearTimeout(timerRef.current);
         }
     }, []);
 
     useEffect(() => {
-        window.clearTimeout(timer);
-        const newTimer = window.setTimeout(() => {
+        window.clearTimeout(timerRef.current);
+        timerRef.current = window.setTimeout(() => {
             trigger({search, ...filter})
             // dispatch(loadItemSearch({search, filter, signal: controller.signal}))
         }, delay);
-        setTimer(() => newTimer);
-    }, [search]);
+    }, [delay, filter, search, trigger]);
 
 
     return (

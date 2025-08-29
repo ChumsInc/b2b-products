@@ -1,10 +1,10 @@
-import React, {ChangeEvent} from "react";
+import React, {type ChangeEvent} from "react";
 import {useSelector} from "react-redux";
 
 import FormCheck from "react-bootstrap/FormCheck";
 
-import {loadColors, setColorFilter, toggleFilterInactiveColors} from "../../ducks/colors/actions";
-import {selectColorFilter, selectColorsFilterInactive, selectColorsLoading} from "../../ducks/colors/selectors";
+import {loadColors, setColorFilter, toggleFilterInactiveColors} from "@/ducks/colors/actions";
+import {selectColorFilter, selectColorsFilterInactive, selectColorsLoading} from "@/ducks/colors/selectors";
 import {useAppDispatch} from "../app/hooks";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";

@@ -1,4 +1,3 @@
-import React from 'react';
 import {parseColor} from "../../utils";
 import classNames from "classnames";
 

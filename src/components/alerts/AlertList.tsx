@@ -1,7 +1,6 @@
-import React from 'react';
 import {useAppDispatch} from "../app/hooks";
 import {useSelector} from "react-redux";
-import {dismissAlert, selectAlerts, UIAlert} from "@/ducks/alerts";
+import {dismissAlert, selectAlerts, type UIAlert} from "@/ducks/alerts";
 import Alert from "react-bootstrap/Alert";
 import {Badge} from "react-bootstrap";
 

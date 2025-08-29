@@ -1,6 +1,6 @@
-import React, {useEffect, useId, useState} from 'react';
+import {useEffect, useId, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
-import Editor, {useMonaco} from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import FormCheck from "react-bootstrap/FormCheck";
 import {LocalStore, storeWordWrap} from "../../localStore";
 import {Button, Col, Row} from "react-bootstrap";
@@ -14,7 +14,7 @@ interface ModalEditorProps {
     onCancel: () => void,
 }
 
-const ModalEditor = ({show, title, content, onClose, onCancel}:ModalEditorProps) => {
+const ModalEditor = ({show, title, content, onClose, onCancel}: ModalEditorProps) => {
     const [html, setHTML] = useState(content || '');
     const [wordWrap, setWordWrap] = useState<boolean>(LocalStore.getItem<boolean>(storeWordWrap, false) ?? false);
     const id = useId();
@@ -32,7 +32,7 @@ const ModalEditor = ({show, title, content, onClose, onCancel}:ModalEditorProps)
             <Modal.Header>{title}</Modal.Header>
             <Modal.Body>
                 <Editor onChange={(value) => setHTML(value ?? '')} value={html} height="50vh"
-                        defaultLanguage="html" options={{wordWrap: wordWrap ? 'on' : 'off'}} />
+                        defaultLanguage="html" options={{wordWrap: wordWrap ? 'on' : 'off'}}/>
             </Modal.Body>
             <Modal.Footer>
                 <Row gap={3}>
@@ -46,7 +46,7 @@ const ModalEditor = ({show, title, content, onClose, onCancel}:ModalEditorProps)
                     </Col>
                     <div className="col-auto">
                         <FormCheck type="checkbox" id={id} checked={wordWrap}
-                                   onChange={(ev) => setWordWrap(ev.target.checked)} label="Word Wrap" />
+                                   onChange={(ev) => setWordWrap(ev.target.checked)} label="Word Wrap"/>
                     </div>
                 </Row>
             </Modal.Footer>

@@ -1,8 +1,8 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import React, {type ChangeEvent, type FormEvent, useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {saveColor} from "../../ducks/colors/actions";
-import {Editable, ProductColor} from "b2b-types";
-import {selectColorsStatus, selectCurrentColor} from "../../ducks/colors/selectors";
+import {saveColor} from "@/ducks/colors/actions";
+import type {Editable, ProductColor} from "b2b-types";
+import {selectColorsStatus, selectCurrentColor} from "@/ducks/colors/selectors";
 
 import {defaultColor} from "../../defaults";
 import {useAppDispatch} from "../app/hooks";

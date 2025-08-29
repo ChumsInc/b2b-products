@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {SortableTable, SortableTableField, TablePagination} from '@chumsinc/sortable-tables';
-import {ProductColor} from "b2b-types";
+import {SortableTable, type SortableTableField, TablePagination} from '@chumsinc/sortable-tables';
+import type {ProductColor} from "b2b-types";
 import {setCurrentColorByCode, setSort} from "@/ducks/colors/actions";
 import {selectCurrentColor, selectSort, selectSortedList} from "@/ducks/colors/selectors";
 import {useAppDispatch} from "../app/hooks";
@@ -33,7 +33,7 @@ const ColorList: React.FC = () => {
     const sort = useSelector(selectSort);
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(getPreference(localStorageKeys.colors.rowsPerPage, 25));
+    const [rowsPerPage, setRowsPerPage] = useState<number>(getPreference(localStorageKeys.colors.rowsPerPage, 25) ?? 25);
     const params = useParams<{ code: string }>();
 
     useEffect(() => {

@@ -1,11 +1,11 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useId, useRef, useState} from 'react';
+import {type ChangeEvent, type KeyboardEvent, useEffect, useId, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectColorList} from "@/ducks/colors/selectors";
 import {useFloating} from '@floating-ui/react-dom'
-import {ProductColor} from "b2b-types";
+import type {ProductColor} from "b2b-types";
 import useClickOutside from "../../hooks/click-outside";
 import classNames from "classnames";
-import {FormControl, FormControlProps, InputGroup, InputGroupProps, ListGroup} from "react-bootstrap";
+import {FormControl, type FormControlProps, InputGroup, type InputGroupProps, ListGroup} from "react-bootstrap";
 import ColorSwatch from "./ColorSwatch";
 
 export interface ColorAutoCompleteProps extends InputGroupProps {
@@ -34,7 +34,7 @@ const ColorAutoComplete = ({
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(-1);
     const {refs, floatingStyles} = useFloating({placement: 'bottom-start'});
-    const inputId = id ?? useId();
+    const inputId = useId();
 
     useClickOutside(containerRef, () => setOpen(false));
 
@@ -43,7 +43,7 @@ const ColorAutoComplete = ({
         setColors(colors.filter(color => color.code.toLowerCase().startsWith(value.toLowerCase()) || color.name.toLowerCase().includes(value.toLowerCase())));
         setColor(colorList[value] ?? null);
         setIndex(-1);
-    }, [value])
+    }, [colorList, value])
 
     const clickHandler = (color: ProductColor) => {
         onChangeColor(color);
@@ -99,7 +99,7 @@ const ColorAutoComplete = ({
     return (
         <div ref={containerRef}>
             <InputGroup className="input-group input-group-sm" {...rest} ref={refs.setReference}>
-                {label && <InputGroup.Text as="label" htmlFor={inputId}>{label}</InputGroup.Text>}
+                {label && <InputGroup.Text as="label" htmlFor={id ?? inputId}>{label}</InputGroup.Text>}
                 <InputGroup.Text className={classNames("input-group-text", {
                     'text-danger': !color?.id,
                     'text-success': !!color?.id
@@ -110,7 +110,7 @@ const ColorAutoComplete = ({
                         'bi-hand-thumbs-down': !value && !color?.id,
                     })}/>
                 </InputGroup.Text>
-                <FormControl type="search" size="sm" id={inputId} value={value} autoComplete="off"
+                <FormControl type="search" size="sm" id={id ?? inputId} value={value} autoComplete="off"
                              {...inputProps}
                              onChange={changeHandler}
                              onKeyDown={inputHandler}

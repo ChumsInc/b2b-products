@@ -1,4 +1,4 @@
-import React, {HTMLAttributes} from 'react';
+import {type HTMLAttributes} from 'react';
 import classNames from "classnames";
 import {parseColor} from "../../utils";
 import styled from "@emotion/styled";

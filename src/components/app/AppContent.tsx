@@ -1,4 +1,3 @@
-import React from 'react';
 import {Outlet} from "react-router";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "./ErrorFallbackComponent";

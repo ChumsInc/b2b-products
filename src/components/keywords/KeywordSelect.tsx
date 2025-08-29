@@ -1,10 +1,10 @@
-import React, {ChangeEvent, useEffect} from "react";
-import {Keyword} from "b2b-types";
+import {type ChangeEvent, useEffect} from "react";
+import type {Keyword} from "b2b-types";
 import {useAppDispatch} from "../app/hooks";
 import {useSelector} from "react-redux";
-import {selectKeywordsList, selectKeywordsLoaded} from "../../ducks/keywords/selectors";
-import {loadKeywords} from "../../ducks/keywords/actions";
-import {FormSelect, FormSelectProps} from "react-bootstrap";
+import {selectKeywordsList, selectKeywordsLoaded} from "@/ducks/keywords/selectors";
+import {loadKeywords} from "@/ducks/keywords/actions";
+import {FormSelect, type FormSelectProps} from "react-bootstrap";
 
 export interface KeywordSelectProps extends FormSelectProps {
     pageType: 'product' | 'category' | 'page',
@@ -21,7 +21,7 @@ const KeywordSelect = ({pageType, value, onSelectKeyword, ...rest}: KeywordSelec
         if (!loaded) {
             dispatch(loadKeywords());
         }
-    }, [])
+    }, [dispatch, loaded])
 
     const changeHandler = (ev: ChangeEvent<HTMLSelectElement>) => {
         const [kw] = keywords.filter(kw => kw.pagetype === pageType && String(kw.id) === ev.target.value);

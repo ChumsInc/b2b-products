@@ -3,10 +3,10 @@ import ColorList from "./ColorList";
 import ColorEditor from "./ColorEditor";
 import ColorUsageList from "./ColorUsageList";
 import {useParams} from "react-router";
-import {setCurrentColorByCode} from "../../ducks/colors/actions";
+import {setCurrentColorByCode} from "@/ducks/colors/actions";
 import {useAppDispatch} from "../app/hooks";
 import {useSelector} from "react-redux";
-import {selectCurrentColorCode} from "../../ducks/colors/selectors";
+import {selectCurrentColorCode} from "@/ducks/colors/selectors";
 
 const ColorScreen: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -17,7 +17,7 @@ const ColorScreen: React.FC = () => {
         if (params.code !== colorCode) {
             dispatch(setCurrentColorByCode(params.code));
         }
-    }, [params.code, colorCode]);
+    }, [params.code, colorCode, dispatch,]);
 
     return (
         <div className="container">

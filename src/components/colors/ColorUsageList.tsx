@@ -1,9 +1,9 @@
 import React, {useEffect, useId, useState} from "react";
 import {useSelector} from "react-redux";
-import {selectCurrentColor, selectWhereUsed} from "../../ducks/colors/selectors";
-import {loadColorUsage} from "../../ducks/colors/actions";
+import {selectCurrentColor, selectWhereUsed} from "@/ducks/colors/selectors";
+import {loadColorUsage} from "@/ducks/colors/actions";
 import ProductImage from "../app/ProductImage";
-import {ColorProductUsage} from "b2b-types";
+import type {ColorProductUsage} from "b2b-types";
 import {TablePagination} from "@chumsinc/sortable-tables";
 import {useAppDispatch} from "../app/hooks";
 import {FormCheck} from "react-bootstrap";
@@ -25,7 +25,7 @@ const ColorUsageList: React.FC = () => {
         if (selected?.id) {
             dispatch(loadColorUsage(selected?.id));
         }
-    }, [selected?.id]);
+    }, [selected?.id, dispatch,]);
 
     useEffect(() => {
         const page = 0;
@@ -33,17 +33,17 @@ const ColorUsageList: React.FC = () => {
         const list = whereUsed.filter(row => !checked || row.status);
         setList(list);
         setPagedList(list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
-    }, [whereUsed, checked]);
+    }, [whereUsed, checked, rowsPerPage,]);
 
     useEffect(() => {
         setPagedList(list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
-    }, [rowsPerPage, page]);
+    }, [rowsPerPage, page, list]);
 
     useEffect(() => {
         const page = 0;
         setPage(0);
         setPagedList(list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
-    }, [rowsPerPage]);
+    }, [rowsPerPage, list,]);
 
     return (
         <div>
