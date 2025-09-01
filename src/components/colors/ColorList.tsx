@@ -33,7 +33,7 @@ const ColorList: React.FC = () => {
     const sort = useSelector(selectSort);
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(getPreference(localStorageKeys.colors.rowsPerPage, 25));
+    const [rowsPerPage, setRowsPerPage] = useState(getPreference(localStorageKeys.colors.rowsPerPage, 25) ?? 25);
     const params = useParams<{ code: string }>();
 
     useEffect(() => {

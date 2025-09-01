@@ -5,7 +5,7 @@ import {loadColors} from "@/ducks/colors/actions";
 import {loadProductsList} from "@/ducks/productList/actions";
 import {useAppDispatch} from "./hooks";
 import {loadSeasons} from "@/ducks/seasons/actions";
-import {Route, Routes} from "react-router";
+import {Navigate, Route, Routes} from "react-router";
 import AppContent from "./AppContent";
 import WhereUsedPage from "../where-used/WhereUsedPage";
 import MainEditForm from "../products/product/MainEditForm";
@@ -33,7 +33,7 @@ export default function App() {
             <Route element={<AppContent/>}>
                 <Route index element={<IndexRedirector to="/products"/>}/>
                 <Route path="/products" element={<ProductScreen/>}>
-                    <Route index element={<ProductEditor><MainEditForm/></ProductEditor>}/>
+                    <Route index element={<Navigate to="/products/new" />}/>
                     <Route path=":keyword" element={<ProductEditor/>}>
                         <Route index element={<MainEditForm/>}/>
                         <Route path="main" element={<MainEditForm/>}/>

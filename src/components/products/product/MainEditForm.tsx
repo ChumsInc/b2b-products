@@ -23,6 +23,8 @@ import SpinnerButton from "../../common/SpinnerButton";
 import {Alert, Button, Col, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import InputGroup from "react-bootstrap/InputGroup";
 import ProductPreviewLink from "@/components/products/product/ProductPreviewLink";
+import {ErrorBoundary} from "react-error-boundary";
+import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
 
 
 const colWidth = 8;
@@ -170,7 +172,7 @@ const MainEditForm = () => {
     }
 
     return (
-        <>
+        <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
             <Form onSubmit={submitHandler} className="mt-3">
                 <Form.Group as={Row}>
                     <Form.Label column={true} xs={4} lg={3} htmlFor={idProductId}>ID</Form.Label>
@@ -358,7 +360,7 @@ const MainEditForm = () => {
                 </Row>
                 {product.changed && <Alert variant="warning">Don&#39;t forget to save your changes.</Alert>}
             </Form>
-        </>
+        </ErrorBoundary>
     )
 }
 

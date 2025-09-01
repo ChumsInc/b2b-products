@@ -23,7 +23,7 @@ const AlertList = () => {
                         )}
                     </Alert.Heading>
                     {!!alert.error && (
-                        <div style={{whiteSpace: 'pre-wrap'}}>{alert.error?.stack}</div>
+                        <div style={{whiteSpace: 'pre-wrap'}}>{JSON.stringify(alert.error?.stack ?? null)}</div>
                     )}
                 </Alert>
             ))}

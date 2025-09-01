@@ -6,6 +6,8 @@ import {useAppDispatch} from "../../app/hooks";
 import {Button, FormControlProps, InputGroup} from "react-bootstrap";
 import ItemFormControl from "@/components/common/ItemFormControl";
 import {ItemSearchRecord} from "@/types/item-search";
+import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
+import {ErrorBoundary} from "react-error-boundary";
 
 export interface ProductItemCodeInputProps {
     id?: string;
@@ -38,19 +40,21 @@ export const ProductItemCodeInput = ({id, inputProps}: ProductItemCodeInputProps
     }
 
     return (
-        <InputGroup size="sm">
-            <ItemFormControl id={id ?? inputProps?.id} size="sm"
-                             containerProps={{style: {flex: '1 1 auto'}}}
-                             value={itemCode} onChange={changeHandler}
-                             onChangeItem={itemChangeHandler}/>
-            {item?.ItemCodeDesc && (
-                <InputGroup.Text>{item.ItemCodeDesc}</InputGroup.Text>
-            )}
-            <Button type="button" variant="secondary" size="sm"
-                    onClick={onCopyToName} disabled={!item}>
-                <span className="bi-copy me-1" aria-label="Copy to Product Name"/>
-            </Button>
-        </InputGroup>
+        <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
+            <InputGroup size="sm">
+                <ItemFormControl id={id ?? inputProps?.id} size="sm"
+                                 containerProps={{style: {flex: '1 1 auto'}}}
+                                 value={itemCode} onChange={changeHandler}
+                                 onChangeItem={itemChangeHandler}/>
+                {item?.ItemCodeDesc && (
+                    <InputGroup.Text>{item.ItemCodeDesc}</InputGroup.Text>
+                )}
+                <Button type="button" variant="secondary" size="sm"
+                        onClick={onCopyToName} disabled={!item}>
+                    <span className="bi-copy me-1" aria-label="Copy to Product Name"/>
+                </Button>
+            </InputGroup>
+        </ErrorBoundary>
     )
 }
 

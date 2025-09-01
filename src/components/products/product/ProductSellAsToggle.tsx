@@ -3,14 +3,16 @@ import {useSelector} from "react-redux";
 import classNames from "classnames";
 import {ProductSellAs} from "b2b-types";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from '../../../utils'
-
 import {updateProduct} from "../../../ducks/products/product/actions";
 import {selectCurrentProductSellAs} from "../../../ducks/products/product/selectors";
 import {useAppDispatch} from "../../app/hooks";
+import {ErrorBoundary} from "react-error-boundary";
+import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
 
-const ProductSellAsToggle: React.FC = () => {
+export default function ProductSellAsToggle() {
     const dispatch = useAppDispatch();
     const sellAs = useSelector(selectCurrentProductSellAs);
+
 
     const cSellAsSelf = classNames('btn btn-sm', {
         'btn-sell-as-self': sellAs === SELL_AS_SELF,
@@ -31,14 +33,16 @@ const ProductSellAsToggle: React.FC = () => {
 
     const clickHandler = (sellAs: ProductSellAs) => dispatch(updateProduct({sellAs: sellAs}));
     return (
-        <div className="btn-group btn-group-smp">
-            <button type="button" className={cSellAsVariants} onClick={() => clickHandler(SELL_AS_VARIANTS)}>Variants
-            </button>
-            <button type="button" className={cSellAsSelf} onClick={() => clickHandler(SELL_AS_SELF)}>Self</button>
-            <button type="button" className={cSellAsMix} onClick={() => clickHandler(SELL_AS_MIX)}>Mix</button>
-            <button type="button" className={cSellAsColors} onClick={() => clickHandler(SELL_AS_COLORS)}>Colors</button>
-        </div>
+        <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
+            <div className="btn-group btn-group-smp">
+                <button type="button" className={cSellAsVariants}
+                        onClick={() => clickHandler(SELL_AS_VARIANTS)}>Variants
+                </button>
+                <button type="button" className={cSellAsSelf} onClick={() => clickHandler(SELL_AS_SELF)}>Self</button>
+                <button type="button" className={cSellAsMix} onClick={() => clickHandler(SELL_AS_MIX)}>Mix</button>
+                <button type="button" className={cSellAsColors} onClick={() => clickHandler(SELL_AS_COLORS)}>Colors
+                </button>
+            </div>
+        </ErrorBoundary>
     )
 }
-
-export default ProductSellAsToggle;

@@ -9,7 +9,7 @@ import {selectCurrentKeyword} from "../../ducks/products/keyword/selectors";
 import {useAppDispatch} from "./hooks";
 import {loadProduct} from "../../ducks/products/product/actions";
 
-export default function ProductEditor({children}: { children?: React.ReactNode }) {
+export default function ProductEditor() {
     const dispatch = useAppDispatch();
     const keyword = useSelector(selectCurrentKeyword);
     const params = useParams<'keyword'>();
@@ -22,12 +22,18 @@ export default function ProductEditor({children}: { children?: React.ReactNode }
             dispatch(loadProduct(params.keyword ?? 'new'))
         }
     }, [keyword, params]);
+
     return (
         <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
-            <ProductEditorTitle/>
-            <ProductEditTabs/>
-            {children}
-            <Outlet/>
+            <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
+                <ProductEditorTitle/>
+            </ErrorBoundary>
+            <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
+                <ProductEditTabs/>
+            </ErrorBoundary>
+            <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
+                <Outlet/>
+            </ErrorBoundary>
         </ErrorBoundary>
     )
 }

@@ -53,7 +53,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
     const selectedVariantId = useSelector(selectCurrentVariantId);
     const ref = useRef<HTMLDivElement>(null);
 
-    const [_collectedProps, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
+    const [, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
         accept: 'item',
         collect(monitor) {
             return {
@@ -94,7 +94,7 @@ const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index
         item: () => {
             return {variant, index};
         },
-        collect: (monitor: any) => ({
+        collect: (monitor) => ({
             isDragging: monitor.isDragging()
         })
     });

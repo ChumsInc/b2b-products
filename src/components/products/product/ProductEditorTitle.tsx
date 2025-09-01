@@ -9,6 +9,8 @@ import {
 } from "@/ducks/products/product/selectors";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import {ErrorBoundary} from "react-error-boundary";
+import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
 
 
 const ProductEditorTitle = () => {
@@ -17,24 +19,26 @@ const ProductEditorTitle = () => {
     const changed = useSelector(selectCurrentProductChanged);
 
     return (
-        <Row className="align-items-baseline">
-            <Col as="h2" xs="auto" className={classNames('me-3', {'text-warning': changed})}>
-                {product?.name || 'Product Editor'}
-            </Col>
-            {product?.additionalData?.subtitle && (
-                <Col xs="auto" className="me-3 text-secondary">
-                    {product.additionalData.subtitle ?? null}
+        <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
+            <Row className="align-items-baseline">
+                <Col as="h2" xs="auto" className={classNames('me-3', {'text-warning': changed})}>
+                    {product?.name || 'Product Editor'}
                 </Col>
-            )}
-            <Col className="col">
-                {changed && <span className="text-warning  bi-exclamation-triangle-fill ms-1"/>}
-            </Col>
-            <Col xs="auto">
-                {loading && (
-                    <Spinner className="ms-3" variant="primary" animation="border" size="sm"/>
+                {product?.additionalData?.subtitle && (
+                    <Col xs="auto" className="me-3 text-secondary">
+                        {product.additionalData.subtitle ?? null}
+                    </Col>
                 )}
-            </Col>
-        </Row>
+                <Col className="col">
+                    {changed && <span className="text-warning  bi-exclamation-triangle-fill ms-1"/>}
+                </Col>
+                <Col xs="auto">
+                    {loading && (
+                        <Spinner className="ms-3" variant="primary" animation="border" size="sm"/>
+                    )}
+                </Col>
+            </Row>
+        </ErrorBoundary>
     )
 }
 

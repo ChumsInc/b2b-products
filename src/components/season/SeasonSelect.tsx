@@ -3,6 +3,8 @@ import {ProductSeason} from "b2b-types";
 import {FormSelect, FormSelectProps} from "react-bootstrap";
 import {selectSortedSeasons} from "@/ducks/seasons";
 import {useAppSelector} from "@/components/app/hooks";
+import {ErrorBoundary} from "react-error-boundary";
+import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
 
 interface SeasonSelectProps extends Omit<FormSelectProps, 'onChange'> {
     value: string;
@@ -27,14 +29,16 @@ export default function SeasonSelect({
     }
 
     return (
-        <FormSelect size="sm" value={value} onChange={changeHandler} ref={ref} {...rest}>
-            <option value="">All</option>
-            {seasons
-                .map(season => (
-                    <option key={season.product_season_id} value={season.code}>
-                        {showTeaser ? season.product_teaser : season.code}
-                    </option>
-                ))}
-        </FormSelect>
+        <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
+            <FormSelect size="sm" value={value} onChange={changeHandler} ref={ref} {...rest}>
+                <option value="">All</option>
+                {seasons
+                    .map(season => (
+                        <option key={season.product_season_id} value={season.code}>
+                            {showTeaser ? season.product_teaser : season.code}
+                        </option>
+                    ))}
+            </FormSelect>
+        </ErrorBoundary>
     )
 }

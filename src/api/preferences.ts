@@ -27,14 +27,16 @@ function getStorage(key:string):Storage {
     return reLocal.test(key) ? window.localStorage : window.sessionStorage;
 }
 
-export const setPreference = (key:string, value:any) => {
+export const setPreference = <T = unknown>(key:string, value:T) => {
     try {
         if (!global.window) {
             return;
         }
         getStorage(key).setItem(key, JSON.stringify(value));
-    } catch(err:any) {
-        console.log("setPreference()", err.message);
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            console.log("setPreference()", err.message);
+        }
     }
 };
 
@@ -45,7 +47,7 @@ export const clearPreference = (key:string) => {
     getStorage(key).removeItem(key);
 }
 
-export const getPreference = (key:string, defaultValue: any) => {
+export const getPreference = <T = unknown>(key:string, defaultValue: T):T|null => {
     try {
         if (!global.window) {
             return defaultValue;
@@ -55,8 +57,10 @@ export const getPreference = (key:string, defaultValue: any) => {
             return defaultValue;
         }
         return JSON.parse(value);
-    } catch(err:any) {
-        console.log("getPreference()", err.message);
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            console.log("getPreference()", err.message);
+        }
         return defaultValue;
     }
 };
