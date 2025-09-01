@@ -2,9 +2,9 @@ import React from 'react';
 import {useSelector} from "react-redux";
 import classNames from "classnames";
 import {ProductSellAs} from "b2b-types";
-import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from '../../../utils'
-import {updateProduct} from "../../../ducks/products/product/actions";
-import {selectCurrentProductSellAs} from "../../../ducks/products/product/selectors";
+import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from '@/src/utils'
+import {updateProduct} from "@/ducks/products/product/actions";
+import {selectCurrentProductSellAs} from "@/ducks/products/product/selectors";
 import {useAppDispatch} from "../../app/hooks";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";

@@ -5,9 +5,9 @@ import ProductEditTabs from "../products/ProductEditTabs";
 import {Outlet, useParams} from "react-router";
 import {ErrorBoundary} from "react-error-boundary";
 import {useSelector} from "react-redux";
-import {selectCurrentKeyword} from "../../ducks/products/keyword/selectors";
+import {selectCurrentKeyword} from "@/ducks/products/keyword/selectors";
 import {useAppDispatch} from "./hooks";
-import {loadProduct} from "../../ducks/products/product/actions";
+import {loadProduct} from "@/ducks/products/product/actions";
 
 export default function ProductEditor() {
     const dispatch = useAppDispatch();

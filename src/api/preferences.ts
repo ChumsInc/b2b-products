@@ -1,7 +1,7 @@
 const reLocal = /^local/;
 
 
-const sessionStoragePrefix:string = 'session/b2b-products';
+
 const localStoragePrefix:string = 'local/b2b-products';
 
 

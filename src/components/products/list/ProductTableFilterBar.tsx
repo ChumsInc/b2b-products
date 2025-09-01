@@ -1,10 +1,10 @@
 import React from 'react';
 import {loadProductsList} from "@/ducks/productList/actions";
 import {useAppDispatch} from "../../app/hooks";
-import {loadKeywords} from "../../../ducks/keywords/actions";
-import {loadColors} from "../../../ducks/colors/actions";
-import {loadSeasons} from "../../../ducks/seasons/actions";
-import {reloadSwatchCSSFile} from "../../../utils";
+import {loadKeywords} from "@/ducks/keywords/actions";
+import {loadColors} from "@/ducks/colors/actions";
+import {loadSeasons} from "@/ducks/seasons/actions";
+import {reloadSwatchCSSFile} from "@/src/utils";
 import {Button, Col, Row} from "react-bootstrap";
 import FilterActiveProducts from "./FilterActiveProducts";
 import FilterOnSaleProducts from "./FilterOnSaleProducts";

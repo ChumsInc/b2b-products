@@ -2,7 +2,7 @@ import React from 'react';
 import {useAppSelector} from "../app/hooks";
 import {generatePath, NavLink, useMatch} from "react-router";
 import {isSellAsColors, isSellAsMix, isSellAsVariants} from "../../utils";
-import {selectCurrentProduct} from "../../ducks/products/product/selectors";
+import {selectCurrentProduct} from "@/ducks/products/product/selectors";
 import {Nav} from "react-bootstrap";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";

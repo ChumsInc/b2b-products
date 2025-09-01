@@ -22,10 +22,6 @@ interface DragItem {
     type: string,
 }
 
-const style = {
-    cursor: 'move',
-}
-
 
 const SortableItem = styled.div`
     width: 100%;
@@ -40,14 +36,6 @@ const SortableItem = styled.div`
     cursor: move;
 `
 
-const SortableItemText = styled.div`
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex: 1 1 auto;
-`
 const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index, moveItem}) => {
     const dispatch = useAppDispatch();
     const selectedVariantId = useSelector(selectCurrentVariantId);
