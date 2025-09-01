@@ -1,4 +1,3 @@
-import React from 'react';
 import {ProgressBar} from "react-bootstrap";
 import {useSelector} from "react-redux";
 import {selectProductListLoading} from "@/ducks/productList/productListSlice";

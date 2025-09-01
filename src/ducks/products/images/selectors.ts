@@ -1,4 +1,4 @@
-import {RootState} from "../../../app/configureStore";
+import {type RootState} from "../../../app/configureStore";
 
 export const selectImages = (state: RootState) => state.products.current.images.list;
 export const selectCurrentImage = (state:RootState) => state.products.current.images.current;

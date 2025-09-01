@@ -1,6 +1,5 @@
-import React from 'react';
 import {useSelector} from "react-redux";
-import {selectKeywordsList} from "../../../ducks/keywords/selectors";
+import {selectKeywordsList} from "@/ducks/keywords/selectors.ts";
 
 const ProductTableCategoryName = ({categoryId}: {
     categoryId?: number|string|null;

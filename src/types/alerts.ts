@@ -1,5 +1,5 @@
-import {SerializedError} from "@reduxjs/toolkit";
-import {BasicAlert} from "chums-ui-utils";
+import type {SerializedError} from "@reduxjs/toolkit";
+import type {BasicAlert} from "chums-ui-utils";
 
 export interface ExtendedAlert extends BasicAlert {
     count: number;

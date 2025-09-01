@@ -1,14 +1,14 @@
 import {useAppDispatch} from "../app/hooks";
 import {useSelector} from "react-redux";
-import {dismissAlert, selectAlerts, type UIAlert} from "@/ducks/alerts";
 import Alert from "react-bootstrap/Alert";
 import {Badge} from "react-bootstrap";
+import {dismissAlert, selectAllAlerts, type StyledErrorAlert} from "@chumsinc/alert-list";
 
 const AlertList = () => {
     const dispatch = useAppDispatch();
-    const alerts = useSelector(selectAlerts);
+    const alerts = useSelector(selectAllAlerts);
 
-    const dismissHandler = (alert: UIAlert) => dispatch(dismissAlert(alert));
+    const dismissHandler = (alert: StyledErrorAlert) => dispatch(dismissAlert(alert));
 
     return (
         <div>
@@ -16,13 +16,12 @@ const AlertList = () => {
                 <Alert key={alert.id} variant={alert.variant ?? 'info'} onClose={() => dismissHandler(alert)}>
                     <Alert.Heading>
                         {alert.context && <strong>{alert.context}</strong>}
-                        {alert.title}
                         {alert.count > 1 && (
                             <Badge bg={alert.variant}>{alert.count}</Badge>
                         )}
                     </Alert.Heading>
-                    {!!alert.error && (
-                        <div style={{whiteSpace: 'pre-wrap'}}>{alert.error?.stack}</div>
+                    {!!alert.message && (
+                        <div style={{whiteSpace: 'pre-wrap'}}>{alert.message}</div>
                     )}
                 </Alert>
             ))}

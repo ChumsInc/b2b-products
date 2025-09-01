@@ -1,7 +1,7 @@
-import {ProductAlternateImage} from "b2b-types/src/products";
+import type {ProductAlternateImage} from "b2b-types";
 import {createReducer} from "@reduxjs/toolkit";
 import {loadProduct} from "../product/actions";
-import {ActionStatus} from "b2b-types";
+import type {ActionStatus} from "b2b-types";
 import {altImageSort, defaultAltImageSort} from "./utils";
 import {loadImages, removeImage, saveImage, setCurrentImage} from "./actions";
 

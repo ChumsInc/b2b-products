@@ -1,9 +1,9 @@
-import React, {useId, useState} from 'react';
+import {useId, useState} from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentColorItem} from "../../../ducks/products/color/selectors";
+import {selectCurrentColorItem} from "@/ducks/products/color/selectors";
 import classNames from "classnames";
-import ProductImage from "../../app/ProductImage";
-import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
+import ProductImage from "@/components/common/ProductImage.tsx";
+import {selectCurrentProduct} from "@/ducks/products/product/selectors";
 import SeasonAlert from "../../season/SeasonAlert";
 import {Alert, FormCheck} from "react-bootstrap";
 

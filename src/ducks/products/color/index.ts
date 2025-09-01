@@ -1,4 +1,4 @@
-import {ActionStatus, ProductColorItem} from "b2b-types";
+import type {ActionStatus, ProductColorItem} from "b2b-types";
 import {createReducer} from "@reduxjs/toolkit";
 import {loadProduct} from "../product/actions";
 import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "./actions";

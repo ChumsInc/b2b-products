@@ -1,4 +1,4 @@
-import {ProductMixComponent, ProductMixItem} from "b2b-types";
+import type {ProductMixComponent, ProductMixItem} from "b2b-types";
 import {defaultProductBase} from "../product/utils";
 
 export const defaultMixItem: ProductMixItem = {

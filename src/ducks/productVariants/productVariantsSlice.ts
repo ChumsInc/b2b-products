@@ -1,5 +1,5 @@
-import {ProductVariant} from "b2b-types";
-import {CaseReducer, createEntityAdapter, createSlice, EntityState, PayloadAction} from "@reduxjs/toolkit";
+import type {ProductVariant} from "b2b-types";
+import {type CaseReducer, createEntityAdapter, createSlice, type EntityState, type PayloadAction} from "@reduxjs/toolkit";
 import {removeVariant, saveCurrentVariant, saveVariantsSort, setDefaultVariant} from "./actions";
 import {loadProduct} from "../products/product/actions";
 import {isSellAsVariantsProduct} from "../products/utils";

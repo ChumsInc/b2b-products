@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from "classnames";
 import Spinner from "react-bootstrap/Spinner";
 import {useSelector} from "react-redux";

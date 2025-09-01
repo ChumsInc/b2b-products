@@ -1,4 +1,4 @@
-import {ProductAlternateImage} from "b2b-types";
+import type {ProductAlternateImage} from "b2b-types";
 import {fetchJSON} from "chums-ui-utils";
 
 export async function deleteAltImage(image: ProductAlternateImage): Promise<ProductAlternateImage[]> {

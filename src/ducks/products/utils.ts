@@ -1,6 +1,6 @@
-import {Product, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types/src/products";
+import type {Product, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types";
 
-import {ProductListItem} from "b2b-types";
+import type {ProductListItem} from "b2b-types";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "../../utils";
 import Decimal from "decimal.js";
 

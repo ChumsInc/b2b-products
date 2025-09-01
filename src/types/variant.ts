@@ -1,3 +1,3 @@
-import {ProductVariant} from "b2b-types/src/products";
+import type {ProductVariant} from "b2b-types";
 
 export type VariantSortArgs = Pick<ProductVariant, 'parentProductID'|'id'|'priority'>

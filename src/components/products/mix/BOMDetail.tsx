@@ -1,9 +1,7 @@
-import React from 'react';
 import {useAppSelector} from "../../app/hooks";
-import {selectCurrentMixBOMHeader} from "../../../ducks/products/mix/selectors";
+import {selectCurrentMixBOMHeader} from "@/ducks/products/mix/selectors.ts";
 import dayjs from "dayjs";
 import BOMDetailTable from "@/components/products/mix/BOMDetailTable";
-import {Col, Row} from "react-bootstrap";
 
 const BOMDetail = () => {
     const header = useAppSelector(selectCurrentMixBOMHeader);

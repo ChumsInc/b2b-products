@@ -1,6 +1,6 @@
-import {Product} from "b2b-types/src/products";
+import type {Product} from "b2b-types";
 import {fetchJSON} from "chums-ui-utils";
-import {BasicProduct} from "b2b-types";
+import type {BasicProduct} from "b2b-types";
 import {isSellAsColorsProduct, isSellAsMixProduct, isSellAsVariantsProduct} from "../utils";
 import {defaultProduct} from "./utils";
 

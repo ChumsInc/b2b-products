@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {SortProps} from "@chumsinc/sortable-tables";
+import {useCallback, useEffect, useState} from 'react';
+import {type SortProps} from "@chumsinc/sortable-tables";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {useSelector} from "react-redux";
@@ -8,14 +8,14 @@ import {variantListSorter} from "@/ducks/products/sorter";
 import SortableVariantItem from "./SortableVariantItem";
 import {saveVariantsSort} from "@/ducks/productVariants/actions";
 import {useAppDispatch} from "../../app/hooks";
-import {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "b2b-types";
 import update from 'immutability-helper';
-import {VariantSortArgs} from "@/types/variant";
+import type {VariantSortArgs} from "@/types/variant";
 import {variantSortKey} from "@/ducks/productVariants/utils";
 import SpinnerButton from "@/components/common/SpinnerButton";
 
 
-export const variantPrioritySort: SortProps<ProductVariant> = {
+const variantPrioritySort: SortProps<ProductVariant> = {
     field: 'priority',
     ascending: true,
 }
@@ -47,7 +47,7 @@ const SortableVariantList = () => {
                 ]
             })
         )
-    }, [variants]);
+    }, []);
 
     // const renderVariant = useCallback((variant: ProductVariant, index: number) => {
     //     return (

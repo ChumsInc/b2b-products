@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {useSelector} from "react-redux";
-import {setCurrentImage} from "../../../ducks/products/images/actions";
+import {setCurrentImage} from "@/ducks/products/images/actions.ts";
 import {TablePagination} from "@chumsinc/sortable-tables";
-import ProductImage from "../../app/ProductImage";
+import ProductImage from "../../common/ProductImage.tsx";
 import classNames from "classnames";
 import {useAppDispatch} from "../../app/hooks";
-import {ProductAlternateImage} from "b2b-types";
-import {selectImages} from "../../../ducks/products/images/selectors";
+import type {ProductAlternateImage} from "b2b-types";
+import {selectImages} from "@/ducks/products/images/selectors.ts";
 
 const ProductImageList = () => {
     const dispatch = useAppDispatch();

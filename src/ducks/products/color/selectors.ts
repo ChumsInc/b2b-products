@@ -1,4 +1,4 @@
-import {RootState} from "../../../app/configureStore";
+import {type RootState} from "@/app/configureStore.ts";
 
 export const selectCurrentProductColors = (state: RootState) => state.products.current.color.list;
 

@@ -1,4 +1,4 @@
-import React, {useId} from 'react';
+import {useId} from 'react';
 import {useSelector} from "react-redux";
 import {useAppDispatch} from "../../app/hooks";
 import {selectProductsSearch, setProductsSearch} from "@/ducks/productList/productListSlice";

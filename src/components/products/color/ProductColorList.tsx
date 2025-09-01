@@ -1,14 +1,14 @@
 import React, {useEffect, useId, useState} from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentColorItem, selectCurrentProductColors} from "../../../ducks/products/color/selectors";
-import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
-import ProductImage from "../../app/ProductImage";
-import {ProductColorItem} from "b2b-types/src/products";
+import {selectCurrentColorItem, selectCurrentProductColors} from "@/ducks/products/color/selectors.ts";
+import {selectCurrentProduct} from "@/ducks/products/product/selectors.ts";
+import ProductImage from "../../common/ProductImage.tsx";
+import type {ProductColorItem} from "b2b-types";
 import {TablePagination} from "@chumsinc/sortable-tables";
 import classNames from "classnames";
 import {LocalStore, storeProductItemsRowsPerPage} from "../../../localStore";
 import {useAppDispatch} from "../../app/hooks";
-import {setCurrentColorItem} from "../../../ducks/products/color/actions";
+import {setCurrentColorItem} from "@/ducks/products/color/actions.ts";
 import SeasonIcon from "../../season/SeasonIcon";
 import {Badge, Card, Col, FormCheck, Row} from "react-bootstrap";
 import {localStorageKeys} from "../../../api/preferences";
@@ -38,14 +38,14 @@ const ProductColorList = () => {
         const filteredList = list.filter(row => showInactive || row.selfStatus);
         setFilteredList(filteredList);
         setPage(1);
-    }, [product?.id]);
+    }, [list, product.id, showInactive]);
 
     useEffect(() => {
         const filteredList = list.filter(row => showInactive || row.selfStatus);
         const nextPage = Math.floor(filteredList.length / rowsPerPage) < page ? 0 : page;
         setFilteredList(filteredList);
         setPage(nextPage);
-    }, [list, showInactive, rowsPerPage]);
+    }, [list, showInactive, rowsPerPage, page]);
 
     const onChangeShowImages = (ev: React.ChangeEvent<HTMLInputElement>) => {
         setShowImage(ev.target.checked);

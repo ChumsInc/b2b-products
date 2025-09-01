@@ -1,4 +1,4 @@
-import {
+import type {
     CategoryChildCategory,
     CategoryChildLink,
     CategoryChildProduct,
@@ -10,7 +10,7 @@ import {
     ProductSellAsVariants, ProductVariant,
     SellAsSelfProduct
 } from "b2b-types";
-import {SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types/src/products";
+import type {SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types";
 
 export const parseColor = (str:string, colorCode:string = ''):string => {
     if (!str) {

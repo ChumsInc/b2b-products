@@ -1,14 +1,13 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
-import {SortableTable, SortableTableField, SortProps, TablePagination} from "@chumsinc/sortable-tables";
-import {ProductListItem} from "b2b-types";
+import {SortableTable, type SortableTableField, type SortProps, TablePagination} from "@chumsinc/sortable-tables";
+import type {ProductListItem} from "b2b-types";
 import SeasonIcon from "../../season/SeasonIcon";
 import ProductSellAsIcon from "./ProductSellAsIcon";
 import classNames from "classnames";
 import ProductRedirectIcon from "../product/ProductRedirectIcon";
-import {setProductsSort} from "@/ducks/productList/actions";
+import {selectFilteredList, selectProductListSort, setProductsSort} from "@/ducks/productList/productListSlice";
 import {useAppDispatch} from "../../app/hooks";
-import {selectFilteredList, selectProductListSort} from "@/ducks/productList/productListSlice";
 import {selectCurrentProductId} from "@/ducks/products/product/selectors";
 import ProductTableCategoryName from "./ProductTableCategoryName";
 import {useNavigate} from "react-router";

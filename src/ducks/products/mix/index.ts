@@ -1,9 +1,9 @@
 import {isSellAsMixProduct} from "../utils";
 import {createReducer} from "@reduxjs/toolkit";
 import {loadProduct, saveProduct} from "../product/actions";
-import {ActionStatus, ProductMixItem,} from "b2b-types";
+import type {ActionStatus, ProductMixItem,} from "b2b-types";
 import {loadMixBOM, saveMix, saveMixComponent} from "./actions";
-import {BOMComponent, BOMHeader} from "../../../types/item-search";
+import type {BOMComponent, BOMHeader} from "../../../types/item-search";
 import Decimal from "decimal.js";
 
 export interface CurrentMixState {

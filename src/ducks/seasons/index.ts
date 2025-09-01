@@ -1,8 +1,9 @@
-import {ProductSeason} from "b2b-types";
-import {createEntityAdapter, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {loadSeasons} from "./actions";
-import {SortProps} from "chums-types";
-import {dismissAlert} from "@/ducks/alerts";
+import type {ProductSeason} from "b2b-types";
+import {createAsyncThunk, createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import type {SortProps} from "chums-types";
+import {dismissAlert} from "@chumsinc/alert-list";
+import {fetchSeasons} from "@/ducks/seasons/api.ts";
+import type {RootState} from "@/app/configureStore.ts";
 
 
 const seasonsAdapter = createEntityAdapter<ProductSeason, number>({
@@ -43,7 +44,7 @@ const seasonsSlice = createSlice({
                 state.status = 'rejected';
             })
             .addCase(dismissAlert, (state, action) => {
-                if (action.payload.context === loadSeasons.typePrefix) {
+                if (action.payload.context?.startsWith('seasons/')) {
                     state.status = 'idle';
                 }
             })
@@ -55,6 +56,10 @@ const seasonsSlice = createSlice({
         selectSeasonsSort: (state) => state.sort,
     }
 })
+export default seasonsSlice;
+
+export const {setSeasonsSort} = seasonsSlice.actions;
+
 export const {
     selectSeasonsStatus,
     selectSeasonsSort,
@@ -63,7 +68,7 @@ export const {
 } = seasonsSlice.selectors;
 
 export const selectSeasonByCode = createSelector(
-    [selectSeasonsList, (state, code: string) => code],
+    [selectSeasonsList, (_, code: string) => code],
     (list, code) => {
         const [season] = list.filter(season => season.code === code);
         return season ?? null;
@@ -78,4 +83,16 @@ export const selectSortedSeasons = createSelector(
 )
 
 
-export default seasonsSlice;
+
+export const loadSeasons = createAsyncThunk<ProductSeason[]>(
+    'seasons/load',
+    async () => {
+        return await fetchSeasons();
+    },
+    {
+        condition: (_, {getState}) => {
+            const state = getState() as RootState;
+            return selectSeasonsStatus(state) === 'idle'
+        }
+    }
+)

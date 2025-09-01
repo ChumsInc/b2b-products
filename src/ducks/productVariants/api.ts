@@ -1,6 +1,6 @@
-import {ProductVariant} from "b2b-types/src/products";
+import type {ProductVariant} from "b2b-types";
 import {fetchJSON} from "chums-ui-utils";
-import {VariantSortArgs} from "@/types/variant";
+import type {VariantSortArgs} from "@/types/variant";
 
 export async function deleteVariant(_variant: ProductVariant): Promise<ProductVariant[]> {
     try {

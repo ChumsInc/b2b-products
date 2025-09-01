@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
+import type {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
 import {loadItemSearchAPI} from "./api";
 
 

@@ -1,12 +1,12 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from "react";
+import {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from "react";
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
-import {removeImage, saveImage, setCurrentImage} from "../../../ducks/products/images/actions";
-import {Editable, ProductAlternateImage} from "b2b-types";
-import {selectCurrentProductId} from "../../../ducks/products/product/selectors";
+import {removeImage, saveImage, setCurrentImage} from "@/ducks/products/images/actions.ts";
+import type {Editable, ProductAlternateImage} from "b2b-types";
+import {selectCurrentProductId} from "@/ducks/products/product/selectors.ts";
 import classNames from "classnames";
-import ProductImage from "../../app/ProductImage";
-import {selectCurrentImage, selectImagesStatus} from "../../../ducks/products/images/selectors";
+import ProductImage from "../../common/ProductImage.tsx";
+import {selectCurrentImage, selectImagesStatus} from "@/ducks/products/images/selectors.ts";
 import {Alert, Button, Col, Form, FormCheck, Row} from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 

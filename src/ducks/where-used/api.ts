@@ -1,4 +1,4 @@
-import {WhereUsedResponse} from "./types";
+import type {WhereUsedResponse} from "@/types/where-used.ts";
 import {fetchJSON} from "chums-ui-utils";
 
 export async function fetchWhereUsed(itemCode:string):Promise<WhereUsedResponse> {

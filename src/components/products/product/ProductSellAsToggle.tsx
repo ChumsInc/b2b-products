@@ -1,11 +1,11 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import classNames from "classnames";
-import {ProductSellAs} from "b2b-types";
+import type {ProductSellAs} from "b2b-types";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from '../../../utils'
 
-import {updateProduct} from "../../../ducks/products/product/actions";
-import {selectCurrentProductSellAs} from "../../../ducks/products/product/selectors";
+import {updateProduct} from "@/ducks/products/product/actions.ts";
+import {selectCurrentProductSellAs} from "@/ducks/products/product/selectors.ts";
 import {useAppDispatch} from "../../app/hooks";
 
 const ProductSellAsToggle: React.FC = () => {

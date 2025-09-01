@@ -1,4 +1,4 @@
-import {ProductVariant} from "b2b-types/src/products";
+import type {ProductVariant} from "b2b-types";
 
 export const variantSortKey = (list: ProductVariant[]) => {
     return list

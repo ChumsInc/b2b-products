@@ -15,6 +15,7 @@
   "author": "Steve Montgomery",
   "license": "ISC",
   "dependencies": {
+    "@chumsinc/alert-list": "^2.2.1",
     "@chumsinc/json-view": "^1.2.5",
     "@chumsinc/sortable-tables": "^2.0.6",
     "@emotion/react": "^11.14.0",

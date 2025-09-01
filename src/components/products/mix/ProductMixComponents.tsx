@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentMix, selectCurrentMixComponents} from "../../../ducks/products/mix/selectors";
-import {ProductMixComponent} from "b2b-types/src/products";
+import {selectCurrentMix, selectCurrentMixComponents} from "@/ducks/products/mix/selectors.ts";
+import type {ProductMixComponent} from "b2b-types";
 import ProductMixComponentRow from "./ProductMixComponentRow";
-import BOMDetail from "./BOMDetail";
-import {defaultMixComponent} from "../../../ducks/products/mix/utils";
+import {defaultMixComponent} from "@/ducks/products/mix/utils.ts";
 import {Button, Col, Row} from "react-bootstrap";
 import MixComponentEditor from "@/components/products/mix/MixComponentEditor";
 

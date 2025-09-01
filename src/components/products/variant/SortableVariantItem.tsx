@@ -1,8 +1,8 @@
 import React, {useRef} from "react";
-import {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "b2b-types";
 import {useSelector} from "react-redux";
 import {selectCurrentVariantId, setCurrentVariant} from "@/ducks/productVariants/productVariantsSlice";
-import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
+import {type DropTargetMonitor, useDrag, useDrop} from "react-dnd";
 import classNames from "classnames";
 import {useAppDispatch} from "../../app/hooks";
 import type {Identifier} from 'dnd-core'
@@ -22,9 +22,9 @@ interface DragItem {
     type: string,
 }
 
-const style = {
-    cursor: 'move',
-}
+// const style = {
+//     cursor: 'move',
+// }
 
 
 const SortableItem = styled.div`
@@ -40,20 +40,20 @@ const SortableItem = styled.div`
     cursor: move;
 `
 
-const SortableItemText = styled.div`
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex: 1 1 auto;
-`
+// const SortableItemText = styled.div`
+//     padding: 0.5rem;
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     justify-content: space-between;
+//     flex: 1 1 auto;
+// `
 const SortableVariantItem: React.FC<SortableVariantItemProps> = ({variant, index, moveItem}) => {
     const dispatch = useAppDispatch();
     const selectedVariantId = useSelector(selectCurrentVariantId);
     const ref = useRef<HTMLDivElement>(null);
 
-    const [_collectedProps, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
+    const [, drop] = useDrop<DragItem, void, { handlerId: Identifier | null }>({
         accept: 'item',
         collect(monitor) {
             return {

@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ProductSeason} from "b2b-types";
+import type {ProductSeason} from "b2b-types";
 import {fetchSeasons} from "./api";
-import {RootState} from "@/app/configureStore";
+import {type RootState} from "@/app/configureStore";
 import {selectSeasonsStatus} from "@/ducks/seasons/index";
 
 export const loadSeasons = createAsyncThunk<ProductSeason[]>(
@@ -10,7 +10,7 @@ export const loadSeasons = createAsyncThunk<ProductSeason[]>(
         return await fetchSeasons();
     },
     {
-        condition: (arg, {getState}) => {
+        condition: (_, {getState}) => {
             const state = getState() as RootState;
             return selectSeasonsStatus(state) === 'idle'
         }

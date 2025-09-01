@@ -1,5 +1,5 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {ProductAlternateImage} from "b2b-types/src/products";
+import type {ProductAlternateImage} from "b2b-types";
 import {deleteAltImage, fetchAltImages, postAltImage} from "./api";
 
 export const setCurrentImage = createAction<ProductAlternateImage | null>('products/current/images/setCurrentImage');

@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useId, useState} from 'react';
+import {type FormEvent, useEffect, useId, useState} from 'react';
 import {useAppDispatch} from "../app/hooks";
 import {useSelector} from "react-redux";
 import {selectWhereUsedLoading, selectWhereUsedSearch} from "@/ducks/where-used/selectors";

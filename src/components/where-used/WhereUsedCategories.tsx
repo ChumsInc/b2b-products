@@ -1,6 +1,5 @@
-import React from 'react';
 import {useSelector} from "react-redux";
-import {selectWhereUsedCategories, selectWhereUsedProducts} from "../../ducks/where-used/selectors";
+import {selectWhereUsedCategories} from "@/ducks/where-used/selectors.ts";
 import classNames from "classnames";
 
 const WhereUsedCategories = () => {

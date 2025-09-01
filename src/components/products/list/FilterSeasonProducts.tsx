@@ -1,8 +1,8 @@
-import React, {useId} from 'react';
+import {useId} from 'react';
 import {useAppDispatch} from "../../app/hooks";
 import {useSelector} from "react-redux";
 import {selectProductSeasonFilter, setSeasonFilter} from "@/ducks/productList/productListSlice";
-import {ProductSeason} from "b2b-types";
+import type {ProductSeason} from "b2b-types";
 import {InputGroup} from "react-bootstrap";
 import SeasonSelect from "../../season/SeasonSelect";
 

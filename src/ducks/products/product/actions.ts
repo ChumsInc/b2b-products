@@ -1,8 +1,8 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {Product, ProductAdditionalData, ProductSeason} from "b2b-types";
+import type {Product, ProductAdditionalData, ProductSeason} from "b2b-types";
 import {generatePath, redirect} from "react-router";
 import {fetchProduct, postProduct} from "./api";
-import {RootState} from "../../../app/configureStore";
+import {type RootState} from "../../../app/configureStore";
 import {selectCurrentProductLoading, selectCurrentProductSaving} from "./selectors";
 import {selectCurrentKeyword} from "../keyword/selectors";
 import {defaultProduct} from "./utils";

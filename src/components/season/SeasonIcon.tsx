@@ -1,4 +1,3 @@
-import React from 'react';
 import {useAppSelector} from "@/components/app/hooks";
 import {selectSeasonByCode} from "@/ducks/seasons";
 import {Badge} from "react-bootstrap";

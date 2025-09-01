@@ -1,9 +1,8 @@
-import React, {ChangeEvent, FormEvent, useId} from 'react';
+import {type ChangeEvent, type FormEvent, useId} from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentProduct, selectCurrentProductSaving} from "@/ducks/products/product/selectors";
-import {Product, ProductAdditionalData} from "b2b-types/src/products";
+import type {Keyword, Product, ProductAdditionalData, ProductSeason} from "b2b-types";
 import SeasonSelect from "../../season/SeasonSelect";
-import {Keyword, ProductSeason} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import ProductSellAsToggle from "./ProductSellAsToggle";
 import ProductItemCodeInput from "./ProductItemCodeInput";
@@ -192,7 +191,7 @@ const MainEditForm = () => {
                             <FormControl type="text" id={keywordId} size="sm"
                                          value={product.keyword} onChange={textChangeHandler('keyword')} required/>
                             {!!product.id && (
-                                <InputGroup.Text as={ProductPreviewLink} product={product} />
+                                <InputGroup.Text as={ProductPreviewLink} product={product}/>
                             )}
                         </InputGroup>
                         {product.keyword.toLowerCase() === 'new' && (

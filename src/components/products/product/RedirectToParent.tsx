@@ -1,9 +1,8 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
+import {selectCurrentProduct} from "@/ducks/products/product/selectors.ts";
 import classNames from "classnames";
-
-import {updateProduct} from "../../../ducks/products/product/actions";
+import {updateProduct} from "@/ducks/products/product/actions.ts";
 import {useAppDispatch} from "../../app/hooks";
 
 const RedirectToParent: React.FC = () => {

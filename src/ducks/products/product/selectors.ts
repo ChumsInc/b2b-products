@@ -1,5 +1,5 @@
-import {RootState} from "@/app/configureStore";
-import {ProductSellAs} from "b2b-types";
+import {type RootState} from "@/app/configureStore";
+import type {ProductSellAs} from "b2b-types";
 
 export const selectCurrentProduct = (state: RootState) => state.products.current.product.value;
 export const selectCurrentProductId = (state: RootState): number => state.products.current.product.value?.id ?? 0;

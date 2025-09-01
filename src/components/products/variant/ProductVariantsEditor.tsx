@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
+import {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
 import {useSelector} from "react-redux";
 import SpinnerButton from "@/components/common/SpinnerButton";
 import {
@@ -6,8 +6,7 @@ import {
     selectCurrentVariant,
     selectCurrentVariantStatus
 } from "@/ducks/productVariants/productVariantsSlice";
-import {ProductVariant} from "b2b-types/src/products";
-import {Editable, Keyword} from "b2b-types";
+import type {Editable, Keyword, ProductVariant} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import {defaultVariant} from "@/src/defaults";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/productVariants/actions";
@@ -44,7 +43,7 @@ const ProductVariantsEditor = () => {
     useEffect(() => {
         setVariant(current ? {...current} : {...defaultVariant, parentProductID: productId});
         setAlert(null);
-    }, [current]);
+    }, [current, productId]);
 
     const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();

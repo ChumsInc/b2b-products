@@ -1,8 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ProductMixComponent, ProductMixItem} from "b2b-types";
+import type {ProductMixComponent, ProductMixItem} from "b2b-types";
 import {fetchMixBOM, postMix, postMixComponent} from "./api";
-import {BOMResult} from "../../../types/item-search";
-import {RootState} from "../../../app/configureStore";
+import type {BOMResult} from "@/types/item-search.ts";
+import {type RootState} from "@/app/configureStore.ts";
 import {selectCurrentMixBOMStatus, selectCurrentMixStatus} from "./selectors";
 
 
@@ -12,7 +12,7 @@ export const saveMix = createAsyncThunk<ProductMixItem|null, ProductMixItem>(
         return await postMix(arg);
     },
     {
-        condition: (arg, {getState}) => {
+        condition: (_, {getState}) => {
             const state = getState() as RootState;
             return selectCurrentMixStatus(state) === 'idle';
         }
@@ -25,7 +25,7 @@ export const saveMixComponent = createAsyncThunk<ProductMixItem|null, { productI
         return await postMixComponent(arg.productId, arg.component);
     },
     {
-        condition: (arg, {getState}) => {
+        condition: (_, {getState}) => {
             const state = getState() as RootState;
             return selectCurrentMixStatus(state) === 'idle';
         }
@@ -38,7 +38,7 @@ export const loadMixBOM = createAsyncThunk<BOMResult|null, string>(
         return await fetchMixBOM(arg);
     },
     {
-        condition: (arg, {getState}) => {
+        condition: (_, {getState}) => {
             const state = getState() as RootState;
             return selectCurrentMixBOMStatus(state) === 'idle';
         }

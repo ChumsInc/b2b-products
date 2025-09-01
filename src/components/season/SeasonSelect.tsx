@@ -1,6 +1,6 @@
-import React, {ChangeEvent} from "react";
-import {ProductSeason} from "b2b-types";
-import {FormSelect, FormSelectProps} from "react-bootstrap";
+import React, {type ChangeEvent} from "react";
+import type {ProductSeason} from "b2b-types";
+import {FormSelect, type FormSelectProps} from "react-bootstrap";
 import {selectSortedSeasons} from "@/ducks/seasons";
 import {useAppSelector} from "@/components/app/hooks";
 

@@ -1,11 +1,10 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
+import React, {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentMix, selectCurrentMixStatus} from "@/ducks/products/mix/selectors";
-import {ProductMixItem} from "b2b-types/src/products";
+import type {Editable, ProductMixItem} from "b2b-types";
 import {loadMixBOM, saveMix} from "@/ducks/products/mix/actions";
 import {selectCurrentProduct} from "@/ducks/products/product/selectors";
 import {useAppDispatch} from "../../app/hooks";
-import {Editable} from "b2b-types";
 import {defaultMixItem} from "@/ducks/products/mix/utils";
 import {Alert, Col, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import SpinnerButton from "@/components/common/SpinnerButton";
@@ -30,7 +29,7 @@ const ProductMixEditor: React.FC = () => {
         if (current) {
             dispatch(loadMixBOM(current.itemCode));
         }
-    }, [current?.itemCode]);
+    }, [current, dispatch]);
 
 
     const submitHandler = (ev: FormEvent) => {

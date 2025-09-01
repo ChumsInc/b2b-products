@@ -1,10 +1,9 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from 'react';
+import {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentColorItem, selectCurrentColorStatus} from "@/ducks/products/color/selectors";
 import {selectCurrentProduct, selectCurrentProductId} from "@/ducks/products/product/selectors";
-import {ProductColorItem, ProductColorItemAdditionalData} from "b2b-types/src/products";
+import type {Editable, ProductColor, ProductColorItem, ProductColorItemAdditionalData, ProductSeason} from "b2b-types";
 import SeasonSelect from "../../season/SeasonSelect";
-import {Editable, ProductColor, ProductSeason} from "b2b-types";
 import {defaultColorItem} from "@/src/defaults";
 import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "@/ducks/products/color/actions";
 import {useAppDispatch} from "../../app/hooks";
@@ -31,11 +30,11 @@ const ProductColorEditor = () => {
     useEffect(() => {
         setColorItem({...defaultColorItem, productId});
         dispatch(setCurrentColorItem(null));
-    }, [productId]);
+    }, [productId, dispatch]);
 
     useEffect(() => {
         setColorItem({...(current ?? defaultColorItem), productId});
-    }, [current])
+    }, [current, productId])
 
     const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();

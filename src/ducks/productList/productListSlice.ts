@@ -1,12 +1,13 @@
-import {ProductListItem} from "b2b-types";
-import {createEntityAdapter, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {loadProductsList, setProductsSort} from "./actions";
+import type {ProductListItem} from "b2b-types";
+import {createAsyncThunk, createEntityAdapter, createSelector, type PayloadAction} from "@reduxjs/toolkit";
 import {localStorageKeys} from "@/src/api/preferences";
 import {LocalStore} from "chums-ui-utils";
 import {saveProduct} from "../products/product/actions";
 import {listItemFromProduct} from "../products/utils";
-import {SortProps} from "chums-types";
+import type {SortProps} from "chums-types";
 import {productListSorter} from "@/ducks/products/sorter";
+import {createAppSlice, type RootState} from "@/app/configureStore.ts";
+import {fetchProducts} from "@/ducks/productList/api.ts";
 
 
 export interface ProductFilter {
@@ -54,12 +55,16 @@ export const initialProductsListState = (): ProductsListState => ({
     sort: LocalStore.getItem<SortProps<ProductListItem>>(localStorageKeys.products.sort, {...defaultSort}),
 })
 
-const productListSlice = createSlice({
+const productListSlice = createAppSlice({
     name: "productList",
     initialState: listAdapter.getInitialState(initialProductsListState()),
     reducers: {
         setProductsSearch: (state, action: PayloadAction<string>) => {
             state.search = action.payload;
+        },
+        setProductsSort: (state, action: PayloadAction<SortProps<ProductListItem>>) => {
+            state.sort = action.payload;
+            LocalStore.setItem(localStorageKeys.products.sort, action.payload);
         },
         toggleFilterActive: (state, action: PayloadAction<boolean | undefined>) => {
             state.filter.isActive = action.payload ?? !state.filter.isActive;
@@ -76,7 +81,6 @@ const productListSlice = createSlice({
         setSeasonFilter: (state, action: PayloadAction<string>) => {
             state.filter.season = action.payload;
         },
-
     },
     extraReducers: (builder) => {
         builder
@@ -89,9 +93,6 @@ const productListSlice = createSlice({
             })
             .addCase(loadProductsList.rejected, (state) => {
                 state.loading = false;
-            })
-            .addCase(setProductsSort, (state, action) => {
-                state.sort = action.payload;
             })
             .addCase(saveProduct.fulfilled, (state, action) => {
                 if (action.payload) {
@@ -117,7 +118,8 @@ const productListSlice = createSlice({
         selectProductListSort: (state) => state.sort,
         selectProductSeasonFilter: (state) => state.filter.season,
     }
-})
+});
+
 
 export const {
     setProductsSearch,
@@ -125,7 +127,8 @@ export const {
     toggleFilterActive,
     toggleFilterAvailable,
     toggleFilterOnSale,
-    setCategoryFilter
+    setCategoryFilter,
+    setProductsSort,
 } = productListSlice.actions;
 export const {
     selectProductList,
@@ -167,6 +170,19 @@ export const selectFilteredList = createSelector(
             .sort(productListSorter(sort));
     }
 )
+
+export const loadProductsList = createAsyncThunk<ProductListItem[]>(
+    'products/productList/load',
+    async () => {
+        return await fetchProducts();
+    },
+    {
+        condition: (_, {getState}) => {
+            const state = getState() as RootState
+            return !selectProductListLoading(state)
+        }
+    }
+);
 
 
 export default productListSlice;

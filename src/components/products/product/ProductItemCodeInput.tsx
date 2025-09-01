@@ -1,11 +1,11 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
+import {type ChangeEvent, useEffect, useState} from 'react'
 import {useSelector} from "react-redux";
 import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
 import {updateProduct} from "../../../ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";
-import {Button, FormControlProps, InputGroup} from "react-bootstrap";
+import {Button, type FormControlProps, InputGroup} from "react-bootstrap";
 import ItemFormControl from "@/components/common/ItemFormControl";
-import {ItemSearchRecord} from "@/types/item-search";
+import type {ItemSearchRecord} from "@/types/item-search";
 
 export interface ProductItemCodeInputProps {
     id?: string;

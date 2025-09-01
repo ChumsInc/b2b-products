@@ -1,7 +1,7 @@
-import React, {ChangeEvent, FormEvent, useId, useState} from 'react';
+import React, {type ChangeEvent, type FormEvent, useId, useState} from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentProduct, selectCurrentProductSaving} from "@/ducks/products/product/selectors";
-import {Product, ProductAdditionalData} from "b2b-types/src/products";
+import type {Product, ProductAdditionalData} from "b2b-types";
 import ModalEditor from "../../app/ModalEditor";
 import {saveProduct, updateProduct, updateProductAdditionalData} from "@/ducks/products/product/actions";
 import {useAppDispatch} from "../../app/hooks";

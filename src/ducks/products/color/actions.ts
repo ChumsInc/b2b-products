@@ -1,8 +1,8 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import {ProductColorItem} from "b2b-types";
+import type {ProductColorItem} from "b2b-types";
 import {deleteColorItem, postColorItem} from "./api";
 import {selectColorByCode} from "../../colors/selectors";
-import {RootState} from "../../../app/configureStore";
+import {type RootState} from "@/app/configureStore.ts";
 
 export const setCurrentColorItem = createAction<ProductColorItem | null>('products/current/colors/setItem');
 
