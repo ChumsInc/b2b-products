@@ -64,7 +64,7 @@ export const {
 
 export const selectSeasonByCode = createSelector(
     [selectSeasonsList, (state, code: string) => code],
-    (list, code) => {
+    (list, code):ProductSeason|null => {
         const [season] = list.filter(season => season.code === code);
         return season ?? null;
     }
