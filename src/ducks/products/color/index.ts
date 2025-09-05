@@ -1,8 +1,17 @@
 import {ActionStatus, ProductColorItem} from "b2b-types";
 import {createReducer} from "@reduxjs/toolkit";
 import {loadProduct} from "../product/actions";
-import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "./actions";
+import {
+    removeColorItem,
+    saveCurrentColorItem,
+    setColorsShowInactive,
+    setColorsSort,
+    setCurrentColorItem
+} from "./actions";
 import {isSellAsColorsProduct} from "../utils";
+import {SortProps} from "chums-types";
+import {LocalStore} from "chums-ui-utils";
+import {localStorageKeys} from "@/src/api/preferences";
 
 
 export interface CurrentColorState {
@@ -12,6 +21,8 @@ export interface CurrentColorState {
     loading: boolean;
     saving: boolean;
     status: ActionStatus;
+    sort:SortProps<ProductColorItem>;
+    showInactive: boolean;
 }
 
 export const initialCurrentColorState: CurrentColorState = {
@@ -21,6 +32,8 @@ export const initialCurrentColorState: CurrentColorState = {
     loading: false,
     saving: false,
     status: 'idle',
+    sort: {field: 'colorCode', ascending: true},
+    showInactive: LocalStore.getItem<boolean>(localStorageKeys.productColors.showInactive, false),
 }
 
 const currentColorReducer = createReducer(initialCurrentColorState, (builder) => {
@@ -63,6 +76,12 @@ const currentColorReducer = createReducer(initialCurrentColorState, (builder) =>
         })
         .addCase(removeColorItem.rejected, (state) => {
             state.status = 'idle'
+        })
+        .addCase(setColorsSort, (state, action) => {
+            state.sort = action.payload;
+        })
+        .addCase(setColorsShowInactive, (state, action) => {
+            state.showInactive = action.payload;
         })
 
 })

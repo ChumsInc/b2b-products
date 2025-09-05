@@ -66,6 +66,8 @@ const ProductColorEditor = () => {
                     return setColorItem({...colorItem, additionalData, changed: true});
                 case 'swatch_code':
                 case 'image_filename':
+                    additionalData[field] = ev.target.value === '' ? null : ev.target.value;
+                    return setColorItem({...colorItem, additionalData, changed: true});
                 case 'message':
                     additionalData[field] = ev.target.value;
                     return setColorItem({...colorItem, additionalData, changed: true});

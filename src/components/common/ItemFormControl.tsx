@@ -25,7 +25,7 @@ export default function ItemFormControl({
                                             invalidItems,
                                             ...rest
                                         }: ItemFormControlProps) {
-    const inputRef = ref ?? useRef<HTMLInputElement | null>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [reference, setReference] = useState<HTMLInputElement | null>(inputRef.current);
     const [trigger, result] = useLazyGetItemSearchQuery({});
@@ -38,7 +38,7 @@ export default function ItemFormControl({
     useClickOutside(containerRef, () => setOpen(false));
 
     useEffect(() => {
-        setReference(inputRef.current)
+        setReference(ref?.current ?? inputRef.current)
     }, [inputRef, ref]);
 
     useEffect(() => {

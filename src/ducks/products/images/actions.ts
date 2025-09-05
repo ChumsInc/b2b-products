@@ -1,6 +1,7 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import {ProductAlternateImage} from "b2b-types/src/products";
 import {deleteAltImage, fetchAltImages, postAltImage} from "./api";
+import {SortProps} from "chums-types";
 
 export const setCurrentImage = createAction<ProductAlternateImage | null>('products/current/images/setCurrentImage');
 
@@ -24,3 +25,6 @@ export const removeImage = createAsyncThunk<ProductAlternateImage[], ProductAlte
         return await deleteAltImage(arg);
     }
 )
+
+export const setShowInactiveImages = createAction<boolean>('products/current/images/setShowInactiveImages');
+export const setImagesSort = createAction<SortProps<ProductAlternateImage>>('products/current/images/setImagesSort');

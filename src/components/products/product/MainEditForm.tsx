@@ -1,9 +1,8 @@
 import React, {ChangeEvent, FormEvent, useId} from 'react';
 import {useSelector} from "react-redux";
 import {selectCurrentProduct, selectCurrentProductSaving} from "@/ducks/products/product/selectors";
-import {Product, ProductAdditionalData} from "b2b-types/src/products";
+import {Keyword, Product, ProductAdditionalData, ProductSeason} from "b2b-types";
 import SeasonSelect from "../../season/SeasonSelect";
-import {Keyword, ProductSeason} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import ProductSellAsToggle from "./ProductSellAsToggle";
 import ProductItemCodeInput from "./ProductItemCodeInput";
@@ -56,6 +55,7 @@ const MainEditForm = () => {
     const heatTransferId = useId();
     const sublimationId = useId();
     const rfidBlockingId = useId();
+    const newColorsId = useId();
 
 
     const submitHandler = async (ev: FormEvent) => {
@@ -64,7 +64,6 @@ const MainEditForm = () => {
             return;
         }
         const res = await dispatch(saveProduct(product));
-        console.debug('submitHandler', res.meta.arg.keyword, match?.params.keyword);
         if (match?.params.keyword !== res.meta.arg.keyword) {
             navigate(generatePath('/products/:keyword', {keyword: res.meta.arg.keyword}));
         }
@@ -128,6 +127,7 @@ const MainEditForm = () => {
             case 'heatTransfer':
             case 'sublimation':
             case 'rfidBlocking':
+            case 'newColors':
                 return dispatch(updateProductAdditionalData({[field]: !checked}));
         }
     }
@@ -194,7 +194,7 @@ const MainEditForm = () => {
                             <FormControl type="text" id={keywordId} size="sm"
                                          value={product.keyword} onChange={textChangeHandler('keyword')} required/>
                             {!!product.id && (
-                                <InputGroup.Text as={ProductPreviewLink} product={product} />
+                                <InputGroup.Text as={ProductPreviewLink} product={product}/>
                             )}
                         </InputGroup>
                         {product.keyword.toLowerCase() === 'new' && (
@@ -337,6 +337,9 @@ const MainEditForm = () => {
                         <FormCheck label="RFID-Blocking" inline type="checkbox" id={rfidBlockingId}
                                    checked={product.additionalData?.rfidBlocking || false}
                                    onChange={toggleAdditionalDataChangeHandler('rfidBlocking')}/>
+                        <FormCheck label="New Colors" inline type="checkbox" id={newColorsId}
+                                   checked={product.additionalData?.newColors || false}
+                                   onChange={toggleAdditionalDataChangeHandler('newColors')}/>
                     </Col>
                 </Form.Group>
                 <hr/>

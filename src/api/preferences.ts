@@ -11,6 +11,11 @@ export const sessionStorageKeys = {
 export const localStorageKeys = {
     colors: {
         rowsPerPage:`${localStoragePrefix}/colors/rowsPerPage`,
+        showInactive: `${localStoragePrefix}/colors/showInactive`,
+    },
+    productColors: {
+        rowsPerPage:`${localStoragePrefix}/product-colors/rowsPerPage`,
+        showInactive: `${localStoragePrefix}/product-colors/showInactive`,
     },
     products: {
         rowsPerPage: `${localStoragePrefix}/products/rowsPerPage`,

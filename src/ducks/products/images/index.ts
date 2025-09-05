@@ -3,7 +3,8 @@ import {createReducer} from "@reduxjs/toolkit";
 import {loadProduct} from "../product/actions";
 import {ActionStatus} from "b2b-types";
 import {altImageSort, defaultAltImageSort} from "./utils";
-import {loadImages, removeImage, saveImage, setCurrentImage} from "./actions";
+import {loadImages, removeImage, saveImage, setCurrentImage, setImagesSort, setShowInactiveImages} from "./actions";
+import {SortProps} from "chums-types";
 
 
 export interface ImagesState {
@@ -11,6 +12,8 @@ export interface ImagesState {
     list: ProductAlternateImage[],
     current: ProductAlternateImage | null,
     status: ActionStatus;
+    showInactive: boolean;
+    sort: SortProps<ProductAlternateImage>;
 }
 
 export const initialImagesState: ImagesState = {
@@ -18,6 +21,8 @@ export const initialImagesState: ImagesState = {
     list: [],
     current: null,
     status: 'idle',
+    showInactive: false,
+    sort: {field: 'priority', ascending: true},
 }
 
 
@@ -33,6 +38,12 @@ const imagesReducer = createReducer(initialImagesState, (builder) => {
         })
         .addCase(setCurrentImage, (state, action) => {
             state.current = action.payload;
+        })
+        .addCase(setShowInactiveImages, (state, action) => {
+            state.showInactive = action.payload;
+        })
+        .addCase(setImagesSort, (state, action) => {
+            state.sort = action.payload;
         })
         .addCase(loadImages.pending, (state) => {
             state.status = 'loading';

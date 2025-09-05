@@ -49,10 +49,10 @@ const ProductEditTabs = () => {
                               disabled={!product?.id || !isSellAsColors(product)}>
                         <div>
                             Colors
-                            {!!product && isSellAsColors(product) && product.items.length > 0 && (
+                            {!!product && isSellAsColors(product) && product?.items?.length > 0 && (
                                 <span className="ms-1">
                                 ({product?.items?.filter(item => item.status)?.length ?? 0}
-                                    /{product.items.length})
+                                    /{product?.items?.length ?? 'N/A'})
                             </span>
                             )}
                         </div>

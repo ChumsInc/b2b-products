@@ -50,6 +50,7 @@ const currentProductReducer = createReducer(initialCurrentProductState, (builder
                         state.value.season = {...defaultProductSeason}
                     }
                     state.value.season = {...state.value.season, ...action.payload}
+                    state.value.product_season_id = action.payload.product_season_id ?? null;
                 } else {
                     state.value.season = null;
                 }
