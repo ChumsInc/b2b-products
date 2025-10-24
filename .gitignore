@@ -6,3 +6,4 @@
 /public/css/**/*.css
 /public/css/**/*.map
 /public/js
+/dist
