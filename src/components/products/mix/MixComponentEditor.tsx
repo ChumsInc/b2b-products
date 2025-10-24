@@ -1,23 +1,21 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from 'react';
-import {ProductMixComponent} from "b2b-types/src/products";
+import React, {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from 'react';
+import type {ProductColor, ProductMixComponent, ProductMixItem} from "b2b-types";
 import {deepStrictEqual} from "@/src/utils";
 import ItemFormControl from "@/components/common/ItemFormControl";
-import {BOMComponent, ItemSearchRecord} from "@/types/item-search";
-import {selectCurrentMixComponents, selectCurrentMixStatus} from "@/ducks/products/mix/selectors";
-import {useAppDispatch, useAppSelector} from "@/components/app/hooks";
+import type {BOMComponent, ItemSearchRecord} from "@/types/item-search";
+import {selectCurrentMixComponents, selectCurrentMixStatus} from "@/ducks/products/productMixSlice";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import ColorAutoComplete from "@/components/colors/ColorAutoComplete";
-import {ProductColor, ProductMixItem} from "b2b-types";
 import {Alert, Button, Col, Form, FormControl, ProgressBar, Row} from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import SpinnerButton from "@/components/common/SpinnerButton";
-import {saveMixComponent} from "@/ducks/products/mix/actions";
-import {defaultMixComponent} from "@/ducks/products/mix/utils";
+import {saveMixComponent} from "@/ducks/products/actions/mix-actions.ts";
+import {defaultMixComponent} from "@/ducks/products/utils/mix-utils.ts";
 import {JSONView} from "@chumsinc/json-view";
-import BOMDetail from "@/components/products/mix/BOMDetail";
 import BOMDetailTable from "@/components/products/mix/BOMDetailTable";
 
 export interface MixComponentEditorProps {
-    mix: ProductMixItem|null;
+    mix: ProductMixItem | null;
     value: ProductMixComponent | null;
     show: boolean;
     onClose: () => void;
@@ -52,7 +50,7 @@ export default function MixComponentEditor({mix, value, show, onClose}: MixCompo
         }
     }, [mix, value]);
 
-    const selectBOMComponent = (item:BOMComponent) => {
+    const selectBOMComponent = (item: BOMComponent) => {
         setComponent({
             ...defaultMixComponent,
             mixID: mix?.id ?? 0,
@@ -111,7 +109,7 @@ export default function MixComponentEditor({mix, value, show, onClose}: MixCompo
     }
 
     return (
-        <Modal show={show} onHide={onClose} size="lg" >
+        <Modal show={show} onHide={onClose} size="lg">
             <Modal.Header closeButton closeLabel="Cancel Changes">
                 <Modal.Title>Add Mix Component</Modal.Title>
             </Modal.Header>
@@ -150,7 +148,8 @@ export default function MixComponentEditor({mix, value, show, onClose}: MixCompo
                                 </Form.Label>
                                 <Col>
                                     <FormControl type="number" size="sm" min={1} id={quantityInputId}
-                                                 value={component.itemQuantity || ''} onChange={changeHandler('itemQuantity')}
+                                                 value={component.itemQuantity || ''}
+                                                 onChange={changeHandler('itemQuantity')}
                                                  required/>
                                 </Col>
                             </Form.Group>
@@ -160,17 +159,17 @@ export default function MixComponentEditor({mix, value, show, onClose}: MixCompo
                                 This mix already contains <strong>{component.itemCode.toUpperCase()}</strong>
                             </Alert>
                         )}
-                        <JSONView data={component} defaultOpenLevels={1} />
+                        <JSONView data={component} defaultOpenLevels={1}/>
                     </Col>
                     <Col md={6}>
-                        <BOMDetailTable onClick={selectBOMComponent} />
+                        <BOMDetailTable onClick={selectBOMComponent}/>
                     </Col>
                 </Row>
 
 
             </Modal.Body>
             <Modal.Footer>
-                {status !== 'idle' && <ProgressBar variant="primary" striped animated /> }
+                {status !== 'idle' && <ProgressBar variant="primary" striped animated/>}
                 <Button type="button" variant="outline-secondary" size="sm" onClick={onClose}>Cancel</Button>
                 <SpinnerButton form={formId} variant="primary" type="submit" size="sm"
                                spinning={status === 'saving'}

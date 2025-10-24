@@ -1,14 +1,13 @@
-import React, {useId} from 'react';
-import {useAppDispatch} from "../../app/hooks";
-import {useSelector} from "react-redux";
-import {selectProductSeasonFilter, setSeasonFilter} from "@/ducks/productList/productListSlice";
-import {ProductSeason} from "b2b-types";
+import {useId} from 'react';
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {selectProductSeasonFilter, setSeasonFilter} from "@/ducks/productList/productListSlice.ts";
+import type {ProductSeason} from "b2b-types";
 import {InputGroup} from "react-bootstrap";
 import SeasonSelect from "../../season/SeasonSelect";
 
 export default function FilterSeasonProducts() {
     const dispatch = useAppDispatch();
-    const season = useSelector(selectProductSeasonFilter);
+    const season = useAppSelector(selectProductSeasonFilter);
     const id = useId();
 
     const changeHandler = (season: ProductSeason | null) => {

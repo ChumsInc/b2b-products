@@ -1,9 +1,9 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
-import {Editable, ProductMixComponent} from "b2b-types";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {saveMixComponent} from "../../../ducks/products/mix/actions";
-import {selectCurrentMixBOMDetail} from "../../../ducks/products/mix/selectors";
-import {BOMComponent} from "../../../types/item-search";
+import {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
+import type {Editable, ProductMixComponent} from "b2b-types";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {saveMixComponent} from "@/ducks/products/actions/mix-actions.ts";
+import {selectCurrentMixBOMDetail} from "@/ducks/products/productMixBOMSlice";
+import type {BOMComponent} from "@/types/item-search";
 import classNames from "classnames";
 import Decimal from "decimal.js";
 import {FormControl, InputGroup} from "react-bootstrap";

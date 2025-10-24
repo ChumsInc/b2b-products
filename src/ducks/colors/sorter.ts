@@ -1,5 +1,5 @@
-import {ColorProductUsage, ProductColor} from "b2b-types";
-import {SortProps} from "chums-types";
+import type {ColorProductUsage, ProductColor} from "b2b-types";
+import type {SortProps} from "chums-types";
 
 
 export const colorSorter = ({field, ascending}: SortProps<ProductColor>) =>

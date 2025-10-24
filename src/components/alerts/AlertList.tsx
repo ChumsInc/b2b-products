@@ -1,13 +1,11 @@
-import React from 'react';
-import {useAppDispatch} from "../app/hooks";
-import {useSelector} from "react-redux";
-import {dismissAlert, selectAlerts, UIAlert} from "@/ducks/alerts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {dismissAlert, selectAlerts, type UIAlert} from "@/ducks/alerts";
 import Alert from "react-bootstrap/Alert";
 import {Badge} from "react-bootstrap";
 
 const AlertList = () => {
     const dispatch = useAppDispatch();
-    const alerts = useSelector(selectAlerts);
+    const alerts = useAppSelector(selectAlerts);
 
     const dismissHandler = (alert: UIAlert) => dispatch(dismissAlert(alert));
 

@@ -1,8 +1,8 @@
-import React, {HTMLAttributes, KeyboardEvent, useEffect, useRef, useState} from 'react';
-import {FormControl, FormControlProps, ListGroup} from "react-bootstrap";
+import React, {type HTMLAttributes, type KeyboardEvent, useEffect, useRef, useState} from 'react';
+import {FormControl, type FormControlProps, ListGroup} from "react-bootstrap";
 import {useLazyGetItemSearchQuery} from "@/src/api/items";
 import {useFloating} from '@floating-ui/react-dom'
-import {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
+import type {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
 import useClickOutside from "@/src/hooks/click-outside";
 
 export interface ItemFormControlProps extends Omit<FormControlProps, 'ref'> {

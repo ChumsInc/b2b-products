@@ -1,20 +1,18 @@
-import {ProductListItem} from "b2b-types";
-import {createEntityAdapter, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {loadProductsList, setProductsSort} from "./actions";
-import {localStorageKeys} from "@/src/api/preferences";
+import type {ProductListItem} from "b2b-types";
+import type {SortProps} from "chums-types";
+import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {LocalStore} from "chums-ui-utils";
-import {saveProduct} from "../products/product/actions";
-import {listItemFromProduct} from "../products/utils";
-import {SortProps} from "chums-types";
-import {productListSorter} from "@/ducks/products/sorter";
+import {loadProductsList} from "./actions";
+import {localStorageKeys} from "@/src/api/preferences";
+import {saveProduct} from "../products/actions/product-actions.ts";
+import {listItemFromProduct} from "../products/utils/utils.ts";
+import type {ProductFilter, ProductsListState} from "@/ducks/productList/types.ts";
+import {productListSorter} from "@/ducks/products/utils/sorter.ts";
 
 
-export interface ProductFilter {
-    isActive: boolean,
-    isAvailableForSale: boolean;
-    hasSalePrice: boolean,
-    categoryId: number | null;
-    season: string;
+const defaultSort: SortProps<ProductListItem> = {
+    field: 'id',
+    ascending: true,
 }
 
 export const defaultFilter: ProductFilter = {
@@ -25,27 +23,9 @@ export const defaultFilter: ProductFilter = {
     season: '',
 };
 
-const defaultSort: SortProps<ProductListItem> = {
-    field: 'id',
-    ascending: true,
-}
-
-export interface ProductsListState {
-    loading: boolean;
-    search: string;
-    filter: ProductFilter;
-    sort: SortProps<ProductListItem>;
-}
-
-const listAdapter = createEntityAdapter<ProductListItem, number>({
-    selectId: (arg) => arg.id,
-    sortComparer: (a, b) => a.id - b.id,
-})
-
-const adapterSelectors = listAdapter.getSelectors();
-
-export const initialProductsListState = (): ProductsListState => ({
+export const extraState = (): ProductsListState => ({
     loading: false,
+    status: 'idle',
     search: '',
     filter: {
         ...defaultFilter,
@@ -54,11 +34,17 @@ export const initialProductsListState = (): ProductsListState => ({
     sort: LocalStore.getItem<SortProps<ProductListItem>>(localStorageKeys.products.sort, {...defaultSort}),
 })
 
+const adapter = createEntityAdapter<ProductListItem, number>({
+    selectId: (item) => item.id,
+    sortComparer: (a, b) => a.id > b.id ? 1 : -1,
+})
+const selectors = adapter.getSelectors();
+
 const productListSlice = createSlice({
-    name: "productList",
-    initialState: listAdapter.getInitialState(initialProductsListState()),
+    name: 'productList',
+    initialState: adapter.getInitialState(extraState()),
     reducers: {
-        setProductsSearch: (state, action: PayloadAction<string>) => {
+        setProductsSearch: (state, action) => {
             state.search = action.payload;
         },
         toggleFilterActive: (state, action: PayloadAction<boolean | undefined>) => {
@@ -76,7 +62,9 @@ const productListSlice = createSlice({
         setSeasonFilter: (state, action: PayloadAction<string>) => {
             state.filter.season = action.payload;
         },
-
+        setProductsSort: (state, action: PayloadAction<SortProps<ProductListItem>>) => {
+            state.sort = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -84,21 +72,18 @@ const productListSlice = createSlice({
                 state.loading = true;
             })
             .addCase(loadProductsList.fulfilled, (state, action) => {
-                listAdapter.setAll(state, action.payload);
+                adapter.setAll(state, action.payload);
                 state.loading = false;
             })
             .addCase(loadProductsList.rejected, (state) => {
                 state.loading = false;
             })
-            .addCase(setProductsSort, (state, action) => {
-                state.sort = action.payload;
-            })
             .addCase(saveProduct.fulfilled, (state, action) => {
                 if (action.payload) {
-                    listAdapter.setOne(state, listItemFromProduct(action.payload));
-                    const product = adapterSelectors.selectById(state, action.payload.defaultParentProductsId);
+                    adapter.setOne(state, listItemFromProduct(action.payload));
+                    const product = selectors.selectById(state, action.payload.defaultParentProductsId);
                     if (action.payload.defaultParentProductsId && product) {
-                        listAdapter.setOne(state, {
+                        adapter.setOne(state, {
                             ...listItemFromProduct(action.payload),
                             parentProductKeyword: product.keyword
                         });
@@ -107,36 +92,39 @@ const productListSlice = createSlice({
             })
     },
     selectors: {
-        selectProductList: (state) => adapterSelectors.selectAll(state),
+        selectProductList: (state) => selectors.selectAll(state),
+        selectProductsListStatus: (state) => state.status,
         selectProductListLoading: (state) => state.loading,
         selectProductsSearch: (state) => state.search,
         selectProductsFilterCategoryId: (state) => state.filter.categoryId,
         selectProductsFilterActive: (state) => state.filter.isActive,
         selectProductsFilterOnSale: (state) => state.filter.hasSalePrice,
         selectProductsFilterAvailable: (state) => state.filter.isAvailableForSale,
-        selectProductListSort: (state) => state.sort,
         selectProductSeasonFilter: (state) => state.filter.season,
+        selectProductListSort: (state) => state.sort,
     }
 })
-
+export default productListSlice;
 export const {
     setProductsSearch,
-    setSeasonFilter,
     toggleFilterActive,
-    toggleFilterAvailable,
     toggleFilterOnSale,
-    setCategoryFilter
+    toggleFilterAvailable,
+    setCategoryFilter,
+    setSeasonFilter,
+    setProductsSort
 } = productListSlice.actions;
 export const {
+    selectProductsListStatus,
     selectProductList,
-    selectProductListLoading,
     selectProductsSearch,
-    selectProductsFilterCategoryId,
-    selectProductsFilterActive,
-    selectProductsFilterAvailable,
     selectProductListSort,
+    selectProductsFilterActive,
     selectProductSeasonFilter,
-    selectProductsFilterOnSale
+    selectProductsFilterAvailable,
+    selectProductsFilterCategoryId,
+    selectProductsFilterOnSale,
+    selectProductListLoading
 } = productListSlice.selectors;
 
 export const selectFilteredList = createSelector(
@@ -167,6 +155,3 @@ export const selectFilteredList = createSelector(
             .sort(productListSorter(sort));
     }
 )
-
-
-export default productListSlice;

@@ -1,4 +1,3 @@
-import React from "react";
 import ProductVariantsEditor from "./ProductVariantsEditor";
 import SortableVariantList from "./SortableVariantList";
 

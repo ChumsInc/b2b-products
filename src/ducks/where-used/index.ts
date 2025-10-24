@@ -1,7 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
 import {loadWhereUsed} from "./actions";
 import {wuKeywordSorter} from "./utils";
-import {WhereUsed} from "./types";
+import type {WhereUsed} from "./types";
 
 
 export interface WhereUsedState {

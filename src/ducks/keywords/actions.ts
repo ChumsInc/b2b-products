@@ -1,8 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {RootState} from "../../app/configureStore";
+import {type RootState} from "@/app/configureStore";
 import {selectKeywordsLoading} from "./selectors";
 import {fetchKeywords} from "./api";
-import {Keyword} from "b2b-types";
+import type {Keyword} from "b2b-types";
 
 export const loadKeywords = createAsyncThunk<Keyword[], void, { state: RootState }>(
     'keywords/load',
@@ -10,7 +10,7 @@ export const loadKeywords = createAsyncThunk<Keyword[], void, { state: RootState
         return await fetchKeywords({includeInactive: true});
     },
     {
-        condition: (arg, {getState}) => {
+        condition: (_, {getState}) => {
             const state = getState();
             return !selectKeywordsLoading(state);
         }

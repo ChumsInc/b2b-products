@@ -1,17 +1,16 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import ErrorFallbackComponent from "./ErrorFallbackComponent";
 import ProductEditorTitle from "../products/product/ProductEditorTitle";
 import ProductEditTabs from "../products/ProductEditTabs";
 import {Outlet, useParams} from "react-router";
 import {ErrorBoundary} from "react-error-boundary";
-import {useSelector} from "react-redux";
-import {selectCurrentKeyword} from "@/ducks/products/keyword/selectors";
-import {useAppDispatch} from "./hooks";
-import {loadProduct} from "@/ducks/products/product/actions";
+import {selectCurrentKeyword} from "@/ducks/products/productKeywordSlice.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {loadProduct} from "@/ducks/products/actions/product-actions.ts";
 
 export default function ProductEditor() {
     const dispatch = useAppDispatch();
-    const keyword = useSelector(selectCurrentKeyword);
+    const keyword = useAppSelector(selectCurrentKeyword);
     const params = useParams<'keyword'>();
 
     useEffect(() => {

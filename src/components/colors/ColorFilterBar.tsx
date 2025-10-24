@@ -1,20 +1,17 @@
-import React, {ChangeEvent} from "react";
-import {useSelector} from "react-redux";
-
+import React, {type ChangeEvent} from "react";
 import FormCheck from "react-bootstrap/FormCheck";
-
-import {loadColors, setColorFilter, toggleFilterInactiveColors} from "../../ducks/colors/actions";
-import {selectColorFilter, selectColorsFilterInactive, selectColorsLoading} from "../../ducks/colors/selectors";
-import {useAppDispatch} from "../app/hooks";
+import {loadColors, setColorFilter, toggleFilterInactiveColors} from "@/ducks/colors/actions";
+import {selectColorFilter, selectColorsFilterInactive, selectColorsLoading} from "@/ducks/colors/selectors";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 
 const ColorFilterBar: React.FC = () => {
     const dispatch = useAppDispatch();
-    const loading = useSelector(selectColorsLoading);
-    const filter = useSelector(selectColorFilter);
-    const filterInactive = useSelector(selectColorsFilterInactive);
+    const loading = useAppSelector(selectColorsLoading);
+    const filter = useAppSelector(selectColorFilter);
+    const filterInactive = useAppSelector(selectColorsFilterInactive);
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
         dispatch(setColorFilter(ev.target.value));

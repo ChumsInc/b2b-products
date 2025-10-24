@@ -1,7 +1,5 @@
-import React from 'react';
-import {useAppSelector} from "@/components/app/hooks";
+import {useAppSelector} from "@/app/configureStore";
 import {selectSeasonByCode} from "@/ducks/seasons";
-import {Badge} from "react-bootstrap";
 import styled from "@emotion/styled";
 
 const BadgeIcon = styled.span`

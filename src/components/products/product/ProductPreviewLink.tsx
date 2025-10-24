@@ -1,5 +1,5 @@
-import React, {AnchorHTMLAttributes} from 'react';
-import {Product} from "b2b-types";
+import {type AnchorHTMLAttributes} from 'react';
+import type {Product} from "b2b-types";
 
 export interface ProductPreviewLinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
     product: Product;

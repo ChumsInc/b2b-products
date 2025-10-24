@@ -2,7 +2,7 @@
 # Project exclude paths
 /node_modules/
 /.idea
-/public/css/.sass-cache
+/css/.sass-cache
 /public/css/**/*.css
 /public/css/**/*.map
 /public/js

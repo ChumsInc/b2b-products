@@ -1,5 +1,5 @@
-import React, {ReactNode, useId} from 'react';
-import KeywordSelect, {KeywordSelectProps} from "./KeywordSelect";
+import {type ReactNode, useId} from 'react';
+import KeywordSelect, {type KeywordSelectProps} from "./KeywordSelect";
 import {InputGroup} from "react-bootstrap";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";

@@ -1,6 +1,5 @@
-import React from 'react';
 import {loadProductsList} from "@/ducks/productList/actions";
-import {useAppDispatch} from "../../app/hooks";
+import {useAppDispatch} from "@/app/configureStore";
 import {loadKeywords} from "@/ducks/keywords/actions";
 import {loadColors} from "@/ducks/colors/actions";
 import {loadSeasons} from "@/ducks/seasons/actions";

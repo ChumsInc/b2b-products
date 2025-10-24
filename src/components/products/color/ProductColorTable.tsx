@@ -1,14 +1,10 @@
-import React from 'react';
-import {useSelector} from "react-redux";
-import {selectCurrentColorItem, selectCurrentColorSort} from "@/ducks/products/color/selectors";
-import {ProductColorItem} from "b2b-types/src/products";
+import {selectCurrentColorItem, selectCurrentColorSort, setColorsSort} from "@/ducks/products/productColorItemsSlice";
+import type {ProductColorItem} from "b2b-types";
 import SeasonIcon from "../../season/SeasonIcon";
-import ColorSwatch from "../../colors/ColorSwatch";
-import {SortableTable, SortableTableField} from "@chumsinc/sortable-tables";
+import {SortableTable, type SortableTableField} from "@chumsinc/sortable-tables";
 import classNames from "classnames";
-import {useAppDispatch, useAppSelector} from "@/components/app/hooks";
-import {SortProps} from "chums-types";
-import {setColorsSort} from "@/ducks/products/color/actions";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import type {SortProps} from "chums-types";
 import ProductColorSwatch from "@/components/products/color/ProductColorSwatch";
 import {Badge} from "react-bootstrap";
 
@@ -57,7 +53,7 @@ const fields: SortableTableField<ProductColorItem>[] = [
         render: (row) => (
             <div style={{height: '2rem', display: 'flex', justifyContent: 'center'}}>
                 <ProductColorSwatch colorCode={row.colorCode}
-                             swatchFormat={row.additionalData?.swatch_code} style={{height: '100%'}}/>
+                                    swatchFormat={row.additionalData?.swatch_code} style={{height: '100%'}}/>
             </div>
 
         )
@@ -72,7 +68,7 @@ export interface ProductColorTableProps {
 
 export default function ProductColorTable({list, onSelectItem}: ProductColorTableProps) {
     const dispatch = useAppDispatch()
-    const selected = useSelector(selectCurrentColorItem);
+    const selected = useAppSelector(selectCurrentColorItem);
     const sort = useAppSelector(selectCurrentColorSort);
 
     const sortChangeHandler = (sort: SortProps<ProductColorItem>) => {

@@ -1,13 +1,15 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from 'react';
-import {useSelector} from "react-redux";
-import {selectCurrentColorItem, selectCurrentColorStatus} from "@/ducks/products/color/selectors";
-import {selectCurrentProduct, selectCurrentProductId} from "@/ducks/products/product/selectors";
-import {ProductColorItem, ProductColorItemAdditionalData} from "b2b-types/src/products";
+import {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from 'react';
+import {
+    selectCurrentColorItem,
+    selectCurrentColorStatus,
+    setCurrentColorItem
+} from "@/ducks/products/productColorItemsSlice";
+import {selectCurrentProduct, selectCurrentProductId} from "@/ducks/products/productSlice.ts";
+import type {Editable, ProductColor, ProductColorItem, ProductColorItemAdditionalData, ProductSeason} from "b2b-types";
 import SeasonSelect from "../../season/SeasonSelect";
-import {Editable, ProductColor, ProductSeason} from "b2b-types";
 import {defaultColorItem} from "@/src/defaults";
-import {removeColorItem, saveCurrentColorItem, setCurrentColorItem} from "@/ducks/products/color/actions";
-import {useAppDispatch} from "../../app/hooks";
+import {removeColorItem, saveCurrentColorItem} from "@/ducks/products/actions/color-item-actions.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import ColorAutoComplete from "../../colors/ColorAutoComplete";
 import classNames from "classnames";
 import {Badge, Button, Col, Form, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
@@ -18,10 +20,10 @@ const ProductColorEditor = () => {
     const dispatch = useAppDispatch();
     const itemCodeRef = useRef<HTMLInputElement>(null)
     const imageRef = useRef<HTMLInputElement>(null)
-    const productId = useSelector(selectCurrentProductId);
-    const currentProduct = useSelector(selectCurrentProduct);
-    const current = useSelector(selectCurrentColorItem);
-    const status = useSelector(selectCurrentColorStatus);
+    const productId = useAppSelector(selectCurrentProductId);
+    const currentProduct = useAppSelector(selectCurrentProduct);
+    const current = useAppSelector(selectCurrentColorItem);
+    const status = useAppSelector(selectCurrentColorStatus);
     const seasonAvailableId = useId();
     const statusId = useId();
     const seasonId = useId();

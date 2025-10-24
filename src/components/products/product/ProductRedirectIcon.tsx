@@ -1,5 +1,4 @@
-import React from 'react';
-import {ProductListItem} from "b2b-types";
+import type {ProductListItem} from "b2b-types";
 import {Link} from "react-router";
 
 export interface ProductRedirectIconProps {

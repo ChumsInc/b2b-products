@@ -1,8 +1,8 @@
-import React, {TableHTMLAttributes} from 'react';
+import {type TableHTMLAttributes} from 'react';
 import BomDetailRow from "@/components/products/mix/BomDetailRow";
-import {useAppSelector} from "@/components/app/hooks";
-import {selectCurrentMixBOMDetail} from "@/ducks/products/mix/selectors";
-import {BOMComponent} from "@/types/item-search";
+import {useAppSelector} from "@/app/configureStore";
+import {selectCurrentMixBOMDetail} from "@/ducks/products/productMixBOMSlice";
+import type {BOMComponent} from "@/types/item-search";
 
 export interface BOMDetailTableProps extends Omit<TableHTMLAttributes<HTMLTableElement>, 'onClick'> {
     onClick?: (item: BOMComponent) => void;

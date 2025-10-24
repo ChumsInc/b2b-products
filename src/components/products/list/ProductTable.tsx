@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {SortableTable, SortableTableField, SortProps, TablePagination} from "@chumsinc/sortable-tables";
-import {ProductListItem} from "b2b-types";
+import {useEffect, useState} from "react";
+import {SortableTable, type SortableTableField, type SortProps, TablePagination} from "@chumsinc/sortable-tables";
+import type {ProductListItem} from "b2b-types";
 import SeasonIcon from "../../season/SeasonIcon";
 import ProductSellAsIcon from "./ProductSellAsIcon";
 import classNames from "classnames";
 import ProductRedirectIcon from "../product/ProductRedirectIcon";
-import {setProductsSort} from "@/ducks/productList/actions";
-import {useAppDispatch} from "../../app/hooks";
-import {selectFilteredList, selectProductListSort} from "@/ducks/productList/productListSlice";
-import {selectCurrentProductId} from "@/ducks/products/product/selectors";
+import {selectFilteredList, selectProductListSort, setProductsSort} from "@/ducks/productList/productListSlice.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {selectCurrentProductId} from "@/ducks/products/productSlice.ts";
 import ProductTableCategoryName from "./ProductTableCategoryName";
 import {useNavigate} from "react-router";
 import {localStorageKeys} from "@/src/api/preferences";
@@ -53,9 +51,9 @@ const rowClassName = (row: ProductListItem) => {
 const ProductTable = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const sort = useSelector(selectProductListSort);
-    const list = useSelector(selectFilteredList);
-    const currentId = useSelector(selectCurrentProductId);
+    const sort = useAppSelector(selectProductListSort);
+    const list = useAppSelector(selectFilteredList);
+    const currentId = useAppSelector(selectCurrentProductId);
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(
         LocalStore.getItem<number>(localStorageKeys.products.rowsPerPage, 25) ?? 25

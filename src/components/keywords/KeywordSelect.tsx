@@ -1,10 +1,9 @@
-import React, {ChangeEvent, useEffect} from "react";
-import {Keyword} from "b2b-types";
-import {useAppDispatch} from "../app/hooks";
-import {useSelector} from "react-redux";
-import {selectKeywordsList, selectKeywordsLoaded} from "../../ducks/keywords/selectors";
-import {loadKeywords} from "../../ducks/keywords/actions";
-import {FormSelect, FormSelectProps} from "react-bootstrap";
+import {type ChangeEvent, useEffect} from "react";
+import type {Keyword} from "b2b-types";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {selectKeywordsList, selectKeywordsLoaded} from "@/ducks/keywords/selectors";
+import {loadKeywords} from "@/ducks/keywords/actions";
+import {FormSelect, type FormSelectProps} from "react-bootstrap";
 
 export interface KeywordSelectProps extends FormSelectProps {
     pageType: 'product' | 'category' | 'page',
@@ -13,8 +12,8 @@ export interface KeywordSelectProps extends FormSelectProps {
 
 const KeywordSelect = ({pageType, value, onSelectKeyword, ...rest}: KeywordSelectProps) => {
     const dispatch = useAppDispatch();
-    const keywords = useSelector(selectKeywordsList);
-    const loaded = useSelector(selectKeywordsLoaded);
+    const keywords = useAppSelector(selectKeywordsList);
+    const loaded = useAppSelector(selectKeywordsLoaded);
 
 
     useEffect(() => {

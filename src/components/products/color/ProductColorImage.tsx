@@ -1,15 +1,15 @@
-import React, {useId, useState} from 'react';
-import {useSelector} from "react-redux";
-import {selectCurrentColorItem} from "../../../ducks/products/color/selectors";
+import {useId, useState} from 'react';
+import {selectCurrentColorItem} from "@/ducks/products/productColorItemsSlice";
 import classNames from "classnames";
 import ProductImage from "../../app/ProductImage";
-import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
+import {selectCurrentProduct} from "@/ducks/products/productSlice.ts";
 import SeasonAlert from "../../season/SeasonAlert";
 import {Alert, FormCheck} from "react-bootstrap";
+import {useAppSelector} from "@/app/configureStore.ts";
 
 const ProductColorImage = () => {
-    const current = useSelector(selectCurrentColorItem);
-    const product = useSelector(selectCurrentProduct);
+    const current = useAppSelector(selectCurrentColorItem);
+    const product = useAppSelector(selectCurrentProduct);
     const [showImage, setShowImage] = useState(true);
     const idShowImage = useId();
     const idShowJSON = useId();
@@ -43,10 +43,10 @@ const ProductColorImage = () => {
             <div className="mt-1">
                 <FormCheck type="radio" value={0} name="show-image" inline
                            checked={showImage} onChange={(ev) => setShowImage(ev.target.checked)}
-                           label="Show Image" id={idShowImage} />
-                <FormCheck type="radio" value={1}  name="show-image" inline
+                           label="Show Image" id={idShowImage}/>
+                <FormCheck type="radio" value={1} name="show-image" inline
                            checked={!showImage} onChange={(ev) => setShowImage(!ev.target.checked)}
-                           label="Show Data" id={idShowJSON} />
+                           label="Show Data" id={idShowJSON}/>
             </div>
         </div>
     )

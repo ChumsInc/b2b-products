@@ -1,5 +1,4 @@
-import React from 'react';
-import {Button, ButtonProps, SpinnerProps} from "react-bootstrap";
+import {Button, type ButtonProps, type SpinnerProps} from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import classNames from "classnames";
 

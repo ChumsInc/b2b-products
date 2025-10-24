@@ -1,5 +1,5 @@
 import Debug from "debug";
-import {ProductSeason} from "b2b-types";
+import type {ProductSeason} from "b2b-types";
 import {fetchJSON} from "chums-ui-utils";
 
 const debug = Debug('chums:api:seasonsAPI');

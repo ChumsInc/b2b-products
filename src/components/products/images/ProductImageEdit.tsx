@@ -1,12 +1,11 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useRef, useState} from "react";
-import {useAppDispatch} from "../../app/hooks";
-import {useSelector} from "react-redux";
-import {removeImage, saveImage, setCurrentImage} from "../../../ducks/products/images/actions";
-import {Editable, ProductAlternateImage} from "b2b-types";
-import {selectCurrentProductId} from "../../../ducks/products/product/selectors";
+import {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from "react";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {removeImage, saveImage} from "@/ducks/products/actions/images-actions.ts";
+import type {Editable, ProductAlternateImage} from "b2b-types";
+import {selectCurrentProductId} from "@/ducks/products/productSlice.ts";
 import classNames from "classnames";
 import ProductImage from "../../app/ProductImage";
-import {selectCurrentImage, selectImagesStatus} from "../../../ducks/products/images/selectors";
+import {selectCurrentImage, selectImagesStatus, setCurrentImage} from "@/ducks/products/productImagesSlice";
 import {Alert, Button, Col, Form, FormCheck, Row} from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -20,9 +19,9 @@ const newImage: ProductAlternateImage = {
 }
 const ProductImageEdit = () => {
     const dispatch = useAppDispatch();
-    const productId = useSelector(selectCurrentProductId);
-    const current = useSelector(selectCurrentImage);
-    const status = useSelector(selectImagesStatus);
+    const productId = useAppSelector(selectCurrentProductId);
+    const current = useAppSelector(selectCurrentImage);
+    const status = useAppSelector(selectImagesStatus);
     const [image, setImage] = useState<ProductAlternateImage & Editable>(current ?? {...newImage, productId});
     const filenameRef = useRef<HTMLInputElement | null>(null);
     const filenameId = useId();

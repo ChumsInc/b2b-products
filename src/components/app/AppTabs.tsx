@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Nav, NavProps} from "react-bootstrap";
+import {useEffect} from 'react';
+import {Nav, type NavProps} from "react-bootstrap";
 import {Link, useMatch} from "react-router";
 
 export default function AppTabs(props: NavProps) {

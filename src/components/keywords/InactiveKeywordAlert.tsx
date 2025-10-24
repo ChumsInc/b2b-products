@@ -1,5 +1,5 @@
 import React from 'react';
-import {Keyword} from "b2b-types";
+import type {Keyword} from "b2b-types";
 import Alert from "react-bootstrap/Alert";
 
 export interface InactiveKeywordAlertProps {

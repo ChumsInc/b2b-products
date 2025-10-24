@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import ProductScreen from "../products/ProductScreen";
 import ColorScreen from "../colors/ColorScreen";
 import {loadColors} from "@/ducks/colors/actions";
 import {loadProductsList} from "@/ducks/productList/actions";
-import {useAppDispatch} from "./hooks";
+import {useAppDispatch} from "@/app/configureStore";
 import {loadSeasons} from "@/ducks/seasons/actions";
 import {Navigate, Route, Routes} from "react-router";
 import AppContent from "./AppContent";

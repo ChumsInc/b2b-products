@@ -1,18 +1,23 @@
-import {
+import type {
     CategoryChildCategory,
     CategoryChildLink,
     CategoryChildProduct,
-    CategoryChildSection, Product,
-    ProductCategoryChild, ProductListItem,
+    CategoryChildSection,
+    Product,
+    ProductCategoryChild,
+    ProductListItem,
     ProductSellAsColors,
     ProductSellAsMix,
     ProductSellAsSelf,
-    ProductSellAsVariants, ProductVariant,
-    SellAsSelfProduct
+    ProductSellAsVariants,
+    ProductVariant,
+    SellAsColorsProduct,
+    SellAsMixProduct,
+    SellAsSelfProduct,
+    SellAsVariantsProduct
 } from "b2b-types";
-import {SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types/src/products";
 
-export const parseColor = (str:string, colorCode:string = ''):string => {
+export const parseColor = (str: string, colorCode: string = ''): string => {
     if (!str) {
         return '';
     }
@@ -55,10 +60,11 @@ export function isSellAsVariants(product: Product | null): product is SellAsVari
     return !!product && (product as SellAsVariantsProduct).sellAs === SELL_AS_VARIANTS;
 }
 
-export function isProduct(product: Product|ProductListItem|null): product is Product {
+export function isProduct(product: Product | ProductListItem | null): product is Product {
     return !!product && !isProductListItem(product);
 }
-export function isProductListItem(product: Product|ProductListItem|null): product is ProductListItem {
+
+export function isProductListItem(product: Product | ProductListItem | null): product is ProductListItem {
     return !!product && (product as ProductListItem).variantsCount !== undefined;
 }
 
@@ -115,7 +121,7 @@ export const defaultProduct: Product = {
 }
 
 
-export const defaultVariant:ProductVariant = {
+export const defaultVariant: ProductVariant = {
     id: 0,
     parentProductID: 0,
     variantProductID: 0,
@@ -137,11 +143,11 @@ export const reloadSwatchCSSFile = () => {
     })
 }
 
-export function isObject(a:unknown): a is object {
+export function isObject(a: unknown): a is object {
     return typeof a === 'object' && a !== null;
 }
 
-export function deepStrictEqual<T>(a:T|null, b:T|null) {
+export function deepStrictEqual<T>(a: T | null, b: T | null) {
     if (typeof a !== typeof b) return false;
 
     if (isObject(a) && b !== null) {

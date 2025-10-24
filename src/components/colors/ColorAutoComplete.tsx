@@ -1,12 +1,12 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useId, useRef, useState} from 'react';
-import {useSelector} from "react-redux";
+import {type ChangeEvent, type KeyboardEvent, useEffect, useId, useRef, useState} from 'react';
 import {selectColorList} from "@/ducks/colors/selectors";
 import {useFloating} from '@floating-ui/react-dom'
-import {ProductColor} from "b2b-types";
+import type {ProductColor} from "b2b-types";
 import useClickOutside from "../../hooks/click-outside";
 import classNames from "classnames";
-import {FormControl, FormControlProps, InputGroup, InputGroupProps, ListGroup} from "react-bootstrap";
+import {FormControl, type FormControlProps, InputGroup, type InputGroupProps, ListGroup} from "react-bootstrap";
 import ColorSwatch from "./ColorSwatch";
+import {useAppSelector} from "@/app/configureStore.ts";
 
 export interface ColorAutoCompleteProps extends InputGroupProps {
     value: string;
@@ -26,7 +26,7 @@ const ColorAutoComplete = ({
                                onChangeColor,
                                ...rest
                            }: ColorAutoCompleteProps) => {
-    const colorList = useSelector(selectColorList);
+    const colorList = useAppSelector(selectColorList);
     const containerRef = useRef<HTMLDivElement>(null);
 
     const [colors, setColors] = useState(Object.values(colorList));

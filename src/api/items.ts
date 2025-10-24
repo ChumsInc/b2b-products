@@ -1,5 +1,5 @@
 import {api} from './base-api'
-import {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
+import type {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
 
 interface ItemSearchResponse {
     result: ItemSearchRecord[];

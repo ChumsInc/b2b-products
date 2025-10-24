@@ -1,30 +1,23 @@
-import {ProductSeason} from "b2b-types";
-import {createEntityAdapter, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import type {ProductSeason} from "b2b-types";
+import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {loadSeasons} from "./actions";
-import {SortProps} from "chums-types";
-import {dismissAlert} from "@/ducks/alerts";
+import type {SortProps} from "chums-types";
 
-
-const seasonsAdapter = createEntityAdapter<ProductSeason, number>({
-    selectId: (season) => season.product_season_id,
+const adapter = createEntityAdapter<ProductSeason, number>({
+    selectId: (arg) => arg.product_season_id,
     sortComparer: (a, b) => a.product_season_id - b.product_season_id,
-});
+})
 
-const adapterSelectors = seasonsAdapter.getSelectors();
+const selectors = adapter.getSelectors();
 
-interface SeasonsSliceExtraSate {
-    status: 'idle' | 'loading' | 'saving' | 'rejected';
-    sort: SortProps<ProductSeason>;
-}
-
-const extraSates: SeasonsSliceExtraSate = {
+const extraState: SeasonsState = {
     status: 'idle',
     sort: {field: 'code', ascending: true},
 }
 
 const seasonsSlice = createSlice({
     name: 'seasons',
-    initialState: seasonsAdapter.getInitialState(extraSates),
+    initialState: adapter.getInitialState(extraState),
     reducers: {
         setSeasonsSort: (state, action: PayloadAction<SortProps<ProductSeason>>) => {
             state.sort = action.payload;
@@ -37,35 +30,27 @@ const seasonsSlice = createSlice({
             })
             .addCase(loadSeasons.fulfilled, (state, action) => {
                 state.status = 'idle';
-                seasonsAdapter.setAll(state, action.payload);
+                adapter.setAll(state, action.payload);
             })
             .addCase(loadSeasons.rejected, (state) => {
                 state.status = 'rejected';
             })
-            .addCase(dismissAlert, (state, action) => {
-                if (action.payload.context === loadSeasons.typePrefix) {
-                    state.status = 'idle';
-                }
-            })
     },
     selectors: {
-        selectSeasonsList: (state) => adapterSelectors.selectAll(state),
-        selectSeasonById: (state, id: number) => adapterSelectors.selectById(state, id),
         selectSeasonsStatus: (state) => state.status,
+        selectSeasonsList: (state) => selectors.selectAll(state),
         selectSeasonsSort: (state) => state.sort,
     }
-})
-export const {
-    selectSeasonsStatus,
-    selectSeasonsSort,
-    selectSeasonsList,
-    selectSeasonById
-} = seasonsSlice.selectors;
+});
+
+export default seasonsSlice;
+export const {setSeasonsSort} = seasonsSlice.actions;
+export const {selectSeasonsStatus, selectSeasonsList, selectSeasonsSort} = seasonsSlice.selectors;
 
 export const selectSeasonByCode = createSelector(
-    [selectSeasonsList, (state, code: string) => code],
-    (list, code):ProductSeason|null => {
-        const [season] = list.filter(season => season.code === code);
+    [selectSeasonsList, (_, code: string) => code],
+    (list, code): ProductSeason | null => {
+        const season = list.find(season => season.code === code);
         return season ?? null;
     }
 )
@@ -73,9 +58,12 @@ export const selectSeasonByCode = createSelector(
 export const selectSortedSeasons = createSelector(
     [selectSeasonsList],
     (list) => {
-        return list.sort((a, b) => a.code.toLowerCase().localeCompare(b.code.toLowerCase()))
+        return [...list].sort((a, b) => a.code.toLowerCase().localeCompare(b.code.toLowerCase()))
     }
 )
 
 
-export default seasonsSlice;
+export interface SeasonsState {
+    status: 'idle' | 'loading' | 'saving' | 'rejected';
+    sort: SortProps<ProductSeason>;
+}

@@ -1,18 +1,16 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
-import {useSelector} from "react-redux";
+import {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
 import SpinnerButton from "@/components/common/SpinnerButton";
 import {
     selectCurrentProductVariants,
     selectCurrentVariant,
     selectCurrentVariantStatus
-} from "@/ducks/productVariants/productVariantsSlice";
-import {ProductVariant} from "b2b-types/src/products";
-import {Editable, Keyword} from "b2b-types";
+} from "@/ducks/products/productVariantsSlice";
+import type {Editable, Keyword, ProductVariant} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import {defaultVariant} from "@/src/defaults";
-import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/productVariants/actions";
-import {selectCurrentProductId} from "@/ducks/products/product/selectors";
-import {useAppDispatch} from "../../app/hooks";
+import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/products/actions/variants-actions.ts";
+import {selectCurrentProductId} from "@/ducks/products/productSlice.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import ProductImage from "./ProductImage";
 import {Alert, Button, Col, Collapse, Form, FormCheck, FormControl, InputGroup, Row} from "react-bootstrap";
 import {Link} from "react-router";
@@ -21,10 +19,10 @@ import {Link} from "react-router";
 const colWidth = 9;
 const ProductVariantsEditor = () => {
     const dispatch = useAppDispatch();
-    const productId = useSelector(selectCurrentProductId);
-    const current = useSelector(selectCurrentVariant);
-    const status = useSelector(selectCurrentVariantStatus);
-    const currentVariants = useSelector(selectCurrentProductVariants);
+    const productId = useAppSelector(selectCurrentProductId);
+    const current = useAppSelector(selectCurrentVariant);
+    const status = useAppSelector(selectCurrentVariantStatus);
+    const currentVariants = useAppSelector(selectCurrentProductVariants);
     const [variant, setVariant] = useState<ProductVariant & Editable>(current ?? {...defaultVariant});
     const [alert, setAlert] = useState<string | null>(null);
     const variantIdId = useId();

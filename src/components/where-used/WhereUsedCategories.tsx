@@ -1,10 +1,9 @@
-import React from 'react';
-import {useSelector} from "react-redux";
-import {selectWhereUsedCategories, selectWhereUsedProducts} from "../../ducks/where-used/selectors";
+import {selectWhereUsedCategories} from "@/ducks/where-used/selectors";
 import classNames from "classnames";
+import {useAppSelector} from "@/app/configureStore.ts";
 
 const WhereUsedCategories = () => {
-    const categories = useSelector(selectWhereUsedCategories);
+    const categories = useAppSelector(selectWhereUsedCategories);
 
     return (
         <table className="table table-xs">

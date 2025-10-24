@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector} from "react-redux";
-import {selectCurrentMix, selectCurrentMixComponents} from "../../../ducks/products/mix/selectors";
-import {ProductMixComponent} from "b2b-types/src/products";
+import {useEffect, useState} from 'react';
+import {selectCurrentMix, selectCurrentMixComponents} from "@/ducks/products/productMixSlice";
+import type {ProductMixComponent} from "b2b-types";
 import ProductMixComponentRow from "./ProductMixComponentRow";
-import BOMDetail from "./BOMDetail";
-import {defaultMixComponent} from "../../../ducks/products/mix/utils";
+import {defaultMixComponent} from "@/ducks/products/utils/mix-utils.ts";
 import {Button, Col, Row} from "react-bootstrap";
 import MixComponentEditor from "@/components/products/mix/MixComponentEditor";
+import {useAppSelector} from "@/app/configureStore.ts";
 
 
 const ProductMixComponents = () => {
-    const mix = useSelector(selectCurrentMix);
-    const components = useSelector(selectCurrentMixComponents);
+    const mix = useAppSelector(selectCurrentMix);
+    const components = useAppSelector(selectCurrentMixComponents);
     const [editorOpen, setEditorOpen] = useState(false);
     const [component, setComponent] = useState<ProductMixComponent>({
         ...defaultMixComponent,

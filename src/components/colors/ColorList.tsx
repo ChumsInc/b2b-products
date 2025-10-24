@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from "react-redux";
-import {SortableTable, SortableTableField, TablePagination} from '@chumsinc/sortable-tables';
-import {ProductColor} from "b2b-types";
+import {SortableTable, type SortableTableField, TablePagination} from '@chumsinc/sortable-tables';
+import type {ProductColor} from "b2b-types";
 import {setCurrentColorByCode, setSort} from "@/ducks/colors/actions";
 import {selectCurrentColor, selectSort, selectSortedList} from "@/ducks/colors/selectors";
-import {useAppDispatch} from "../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import ColorFilterBar from "./ColorFilterBar";
 import classNames from "classnames";
 import {useNavigate, useParams} from "react-router";
@@ -28,9 +27,9 @@ const rowClassName = (row: ProductColor) => {
 
 const ColorList: React.FC = () => {
     const dispatch = useAppDispatch();
-    const selected = useSelector(selectCurrentColor);
-    const list = useSelector(selectSortedList);
-    const sort = useSelector(selectSort);
+    const selected = useAppSelector(selectCurrentColor);
+    const list = useAppSelector(selectSortedList);
+    const sort = useAppSelector(selectSort);
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(getPreference(localStorageKeys.colors.rowsPerPage, 25) ?? 25);

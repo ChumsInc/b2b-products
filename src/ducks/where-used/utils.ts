@@ -1,4 +1,4 @@
-import {WhereUsed} from "./types";
+import type {WhereUsed} from "./types";
 
 export const wuKeywordSorter = (a:WhereUsed, b:WhereUsed):number => {
     return a.keyword === b.keyword

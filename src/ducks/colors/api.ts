@@ -1,5 +1,5 @@
 import {fetchJSON} from 'chums-ui-utils';
-import {ColorProductUsage, ProductColor} from "b2b-types";
+import type {ColorProductUsage, ProductColor} from "b2b-types";
 import Debug from "debug";
 
 const debug = Debug('chums:api:colorAPI');

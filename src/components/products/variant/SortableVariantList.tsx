@@ -1,63 +1,65 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {SortProps} from "@chumsinc/sortable-tables";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
-import {useSelector} from "react-redux";
-import {selectCurrentProductVariants, selectCurrentVariantSort} from "@/ducks/productVariants/productVariantsSlice";
-import {variantListSorter} from "@/ducks/products/sorter";
+import {useEffect, useState} from 'react';
+import {
+    selectCurrentVariantId,
+    selectCurrentVariantSort,
+    selectSortedVariants
+} from "@/ducks/products/productVariantsSlice";
 import SortableVariantItem from "./SortableVariantItem";
-import {saveVariantsSort} from "@/ducks/productVariants/actions";
-import {useAppDispatch} from "../../app/hooks";
-import {ProductVariant} from "b2b-types";
-import update from 'immutability-helper';
-import {VariantSortArgs} from "@/types/variant";
-import {variantSortKey} from "@/ducks/productVariants/utils";
+import {saveVariantsSort} from "@/ducks/products/actions/variants-actions.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import type {ProductVariant} from "b2b-types";
+import type {VariantSortArgs} from "@/types/variant";
+import {variantSortKey} from "@/ducks/products/utils/variants-utils.ts";
 import SpinnerButton from "@/components/common/SpinnerButton";
-
-
-export const variantPrioritySort: SortProps<ProductVariant> = {
-    field: 'priority',
-    ascending: true,
-}
+import {closestCenter, DndContext, type DragEndEvent, DragOverlay, type DragStartEvent} from "@dnd-kit/core";
+import {arrayMove, SortableContext} from "@dnd-kit/sortable";
+import ThumbedVariantItem from "@/components/products/variant/ThumbedVariantItem.tsx";
 
 const SortableVariantList = () => {
     const dispatch = useAppDispatch();
-    const variants = useSelector(selectCurrentProductVariants);
-    const currentSort = useSelector(selectCurrentVariantSort);
+    const variants = useAppSelector(selectSortedVariants);
+    const currentVariantId = useAppSelector(selectCurrentVariantId);
+    const currentSort = useAppSelector(selectCurrentVariantSort);
     const saving = false;
 
-    const [items, setItems] = useState([...variants].sort(variantListSorter(variantPrioritySort)));
+    const [items, setItems] = useState<ProductVariant[]>(variants);
+    const [draggingItem, setDraggingItem] = useState<ProductVariant | null>(null);
     const [sorted, setSorted] = useState(currentSort);
 
     useEffect(() => {
-        setItems([...variants].sort(variantListSorter(variantPrioritySort)));
+        setItems(variants);
     }, [variants]);
 
     useEffect(() => {
         setSorted(variantSortKey(items));
     }, [items]);
 
-
-    const onMoveItem = useCallback((dragIndex: number, hoverIndex: number) => {
-        setItems((prevItems: ProductVariant[]) =>
-            update(prevItems, {
-                $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, prevItems[dragIndex] as ProductVariant]
-                ]
-            })
-        )
-    }, [variants]);
-
-    // const renderVariant = useCallback((variant: ProductVariant, index: number) => {
-    //     return (
-    //         <SortableVariantItem key={variant.id} variant={variant} index={index} moveItem={onMoveItem}/>
-    //     )
-    // }, [variants])
-
     const saveClickHandler = async () => {
-        const sorted:VariantSortArgs[] = items.map((item, index) => ({parentProductID: item.parentProductID, id: item.id, priority: index}))
+        const sorted: VariantSortArgs[] = items.map((item, index) => ({
+            parentProductID: item.parentProductID,
+            id: item.id,
+            priority: index
+        }))
         await dispatch(saveVariantsSort(sorted));
+    }
+
+    const handleDragStart = (event: DragStartEvent) => {
+        const item = variants.find((variant) => variant.id === event.active.id);
+        setDraggingItem(item ?? null);
+    }
+    const handleDragEnd = (event: DragEndEvent) => {
+        const {active, over} = event;
+        if (!over) {
+            return;
+        }
+        if (active.id !== over.id) {
+            setItems((items) => {
+                const oldIndex = items.findIndex((el) => el.id === active.id);
+                const newIndex = items.findIndex((el) => el.id === over.id);
+                return arrayMove(items, oldIndex, newIndex);
+            })
+        }
+        setDraggingItem(null);
     }
 
     console.log('sorted', items.map(item => item.id))
@@ -72,13 +74,19 @@ const SortableVariantList = () => {
                     </SpinnerButton>
                 </div>
             </div>
-            <DndProvider backend={HTML5Backend}>
-                <div className="sortable-variant-list">
-                    {items.map((variant, index) => (
-                        <SortableVariantItem key={variant.id} variant={variant} index={index} moveItem={onMoveItem}/>
+            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
+                <SortableContext items={items}>
+                    {items.map((variant) => (
+                        <SortableVariantItem variant={variant} key={variant.id}
+                                             active={variant.id === currentVariantId}/>
                     ))}
-                </div>
-            </DndProvider>
+                </SortableContext>
+                <DragOverlay>
+                    {draggingItem && (
+                        <ThumbedVariantItem variant={draggingItem} active={draggingItem.id === currentVariantId}/>
+                    )}
+                </DragOverlay>
+            </DndContext>
         </div>
     )
 }

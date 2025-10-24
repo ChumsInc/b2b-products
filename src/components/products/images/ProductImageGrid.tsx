@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {setCurrentImage} from "../../../ducks/products/images/actions";
+import {useEffect, useState} from "react";
+import {selectSortedImages, setCurrentImage} from "@/ducks/products/productImagesSlice";
 import {TablePagination} from "@chumsinc/sortable-tables";
-import {useAppDispatch} from "../../app/hooks";
-import {ProductAlternateImage} from "b2b-types";
-import {selectSortedImages} from "../../../ducks/products/images/selectors";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import type {ProductAlternateImage} from "b2b-types";
 import {Card, Col, Row} from "react-bootstrap";
-import ResponsiveProductImage from "@/components/common/ResponsiveProductImage";
-import {imageFilter, ImageFilterProps, productAltImageSrc} from "@/ducks/products/images/utils";
+import {imageFilter, type ImageFilterProps, productAltImageSrc} from "@/ducks/products/utils/images-utils.ts";
 
 export default function ProductImageGrid({search, itemCode}: ImageFilterProps) {
     const dispatch = useAppDispatch();
-    const images = useSelector(selectSortedImages);
+    const images = useAppSelector(selectSortedImages);
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(25);
     const [list, setList] = useState(images);

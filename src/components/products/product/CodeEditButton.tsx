@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react';
-import {Button, ButtonProps} from "react-bootstrap";
+import {type ReactNode} from 'react';
+import {Button, type ButtonProps} from "react-bootstrap";
 import classNames from "classnames";
 
 export interface CodeEditButtonProps extends ButtonProps {

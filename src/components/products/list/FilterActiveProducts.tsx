@@ -1,13 +1,12 @@
-import React, {ChangeEvent, useId} from 'react';
-import {useAppDispatch} from "../../app/hooks";
-import {useSelector} from "react-redux";
-import {selectProductsFilterActive, toggleFilterActive} from "@/ducks/productList/productListSlice";
+import {type ChangeEvent, useId} from 'react';
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {selectProductsFilterActive, toggleFilterActive} from "@/ducks/productList/productListSlice.ts";
 import {localStorageKeys, setPreference} from "@/src/api/preferences";
 import {FormCheck} from "react-bootstrap";
 
 export default function FilterActiveProducts() {
     const dispatch = useAppDispatch();
-    const checked = useSelector(selectProductsFilterActive);
+    const checked = useAppSelector(selectProductsFilterActive);
     const id = useId();
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {

@@ -1,20 +1,18 @@
-import React, {ChangeEvent, FormEvent, useEffect, useId, useState} from 'react';
-import {useSelector} from "react-redux";
-import {selectCurrentMix, selectCurrentMixStatus} from "@/ducks/products/mix/selectors";
-import {ProductMixItem} from "b2b-types/src/products";
-import {loadMixBOM, saveMix} from "@/ducks/products/mix/actions";
-import {selectCurrentProduct} from "@/ducks/products/product/selectors";
-import {useAppDispatch} from "../../app/hooks";
-import {Editable} from "b2b-types";
-import {defaultMixItem} from "@/ducks/products/mix/utils";
+import React, {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
+import {selectCurrentMix, selectCurrentMixStatus} from "@/ducks/products/productMixSlice";
+import type {Editable, ProductMixItem} from "b2b-types";
+import {loadMixBOM, saveMix} from "@/ducks/products/actions/mix-actions.ts";
+import {selectCurrentProduct} from "@/ducks/products/productSlice.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {defaultMixItem} from "@/ducks/products/utils/mix-utils.ts";
 import {Alert, Col, Form, FormCheck, FormControl, Row} from "react-bootstrap";
 import SpinnerButton from "@/components/common/SpinnerButton";
 
 const ProductMixEditor: React.FC = () => {
     const dispatch = useAppDispatch();
-    const product = useSelector(selectCurrentProduct);
-    const current = useSelector(selectCurrentMix);
-    const status = useSelector(selectCurrentMixStatus);
+    const product = useAppSelector(selectCurrentProduct);
+    const current = useAppSelector(selectCurrentMix);
+    const status = useAppSelector(selectCurrentMixStatus);
     const id = useId();
     const nameId = useId();
     const statusId = useId();

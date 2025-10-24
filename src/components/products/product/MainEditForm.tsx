@@ -1,22 +1,20 @@
-import React, {ChangeEvent, FormEvent, useId} from 'react';
-import {useSelector} from "react-redux";
-import {selectCurrentProduct, selectCurrentProductSaving} from "@/ducks/products/product/selectors";
-import {Keyword, Product, ProductAdditionalData, ProductSeason} from "b2b-types";
+import {type ChangeEvent, type FormEvent, useId} from 'react';
+import {
+    duplicateProduct,
+    selectCurrentProduct,
+    selectCurrentProductSaving,
+    updateProduct,
+    updateProductAdditionalData,
+    updateProductSeason
+} from "@/ducks/products/productSlice.ts";
+import type {Keyword, Product, ProductAdditionalData, ProductSeason} from "b2b-types";
 import SeasonSelect from "../../season/SeasonSelect";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import ProductSellAsToggle from "./ProductSellAsToggle";
 import ProductItemCodeInput from "./ProductItemCodeInput";
 import SeasonAlert from "../../season/SeasonAlert";
 import RedirectToParent from "./RedirectToParent";
-import {
-    duplicateProduct,
-    loadProduct,
-    saveProduct,
-    updateProduct,
-    updateProductAdditionalData,
-    updateProductSeason
-} from "@/ducks/products/product/actions";
-import {useAppDispatch} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {generatePath, useMatch, useNavigate} from "react-router";
 import SpinnerButton from "../../common/SpinnerButton";
 import {Alert, Button, Col, Form, FormCheck, FormControl, Row} from "react-bootstrap";
@@ -24,14 +22,15 @@ import InputGroup from "react-bootstrap/InputGroup";
 import ProductPreviewLink from "@/components/products/product/ProductPreviewLink";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
+import {loadProduct, saveProduct} from "@/ducks/products/actions/product-actions.ts";
 
 
 const colWidth = 8;
 const MainEditForm = () => {
     const dispatch = useAppDispatch();
     const match = useMatch('/products/:keyword');
-    const product = useSelector(selectCurrentProduct);
-    const saving = useSelector(selectCurrentProductSaving);
+    const product = useAppSelector(selectCurrentProduct);
+    const saving = useAppSelector(selectCurrentProductSaving);
     const navigate = useNavigate();
     const idProductId = useId();
     const keywordId = useId();

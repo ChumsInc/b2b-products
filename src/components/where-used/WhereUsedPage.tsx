@@ -1,6 +1,5 @@
-import React, {FormEvent, useEffect, useId, useState} from 'react';
-import {useAppDispatch} from "../app/hooks";
-import {useSelector} from "react-redux";
+import {type FormEvent, useEffect, useId, useState} from 'react';
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {selectWhereUsedLoading, selectWhereUsedSearch} from "@/ducks/where-used/selectors";
 import WhereUsedProducts from "./WhereUsedProducts";
 import WhereUsedCategories from "./WhereUsedCategories";
@@ -9,8 +8,8 @@ import {Button, Col, Form, FormControl, ProgressBar, Row} from "react-bootstrap"
 
 const WhereUsedPage = () => {
     const dispatch = useAppDispatch();
-    const search = useSelector(selectWhereUsedSearch);
-    const loading = useSelector(selectWhereUsedLoading);
+    const search = useAppSelector(selectWhereUsedSearch);
+    const loading = useAppSelector(selectWhereUsedLoading);
     const id = useId();
     const [value, setValue] = useState<string>(search);
 

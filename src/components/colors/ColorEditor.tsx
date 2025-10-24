@@ -1,11 +1,9 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {saveColor} from "../../ducks/colors/actions";
-import {Editable, ProductColor} from "b2b-types";
-import {selectColorsStatus, selectCurrentColor} from "../../ducks/colors/selectors";
-
+import React, {type ChangeEvent, type FormEvent, useEffect, useState} from "react";
+import {saveColor} from "@/ducks/colors/actions";
+import type {Editable, ProductColor} from "b2b-types";
+import {selectColorsStatus, selectCurrentColor} from "@/ducks/colors/selectors";
 import {defaultColor} from "../../defaults";
-import {useAppDispatch} from "../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import Button from 'react-bootstrap/Button'
 import {useNavigate} from "react-router";
 import Alert from "react-bootstrap/Alert";
@@ -20,8 +18,8 @@ export type EditableProductColor = ProductColor & Editable;
 
 const ColorEditor: React.FC = () => {
     const dispatch = useAppDispatch();
-    const current = useSelector(selectCurrentColor);
-    const status = useSelector(selectColorsStatus);
+    const current = useAppSelector(selectCurrentColor);
+    const status = useAppSelector(selectColorsStatus);
     const navigate = useNavigate();
     const [color, setColor] = useState<EditableProductColor>(current ?? defaultColor);
 
@@ -52,8 +50,8 @@ const ColorEditor: React.FC = () => {
                 <InputGroup size="sm" className="mb-1">
                     <InputGroup.Text className="input-group-text bi-key-fill"/>
                     <FormControl type="text"
-                           value={color.code} onChange={onChangeField('code')}
-                           className="form-control form-control-sm"/>
+                                 value={color.code} onChange={onChangeField('code')}
+                                 className="form-control form-control-sm"/>
                     <InputGroup.Text className="input-group-text">
                         id: {color.id}
                     </InputGroup.Text>

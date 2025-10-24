@@ -1,18 +1,17 @@
 import React, {useEffect, useId, useState} from "react";
-import {useSelector} from "react-redux";
-import {selectCurrentColor, selectWhereUsed} from "../../ducks/colors/selectors";
-import {loadColorUsage} from "../../ducks/colors/actions";
+import {selectCurrentColor, selectWhereUsed} from "@/ducks/colors/selectors";
+import {loadColorUsage} from "@/ducks/colors/actions";
 import ProductImage from "../app/ProductImage";
-import {ColorProductUsage} from "b2b-types";
+import type {ColorProductUsage} from "b2b-types";
 import {TablePagination} from "@chumsinc/sortable-tables";
-import {useAppDispatch} from "../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {FormCheck} from "react-bootstrap";
 
 
 const ColorUsageList: React.FC = () => {
     const dispatch = useAppDispatch();
-    const selected = useSelector(selectCurrentColor);
-    const whereUsed = useSelector(selectWhereUsed);
+    const selected = useAppSelector(selectCurrentColor);
+    const whereUsed = useAppSelector(selectWhereUsed);
     const id = useId();
 
     const [list, setList] = useState<ColorProductUsage[]>([]);

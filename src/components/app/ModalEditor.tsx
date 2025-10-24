@@ -1,8 +1,8 @@
-import React, {useEffect, useId, useState} from 'react';
+import {useEffect, useId, useState} from 'react';
 import Modal from "react-bootstrap/Modal";
-import Editor, {useMonaco} from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import FormCheck from "react-bootstrap/FormCheck";
-import {LocalStore, storeWordWrap} from "../../localStore";
+import {LocalStore, storeWordWrap} from "@/api/localStore";
 import {Button, Col, Row} from "react-bootstrap";
 
 

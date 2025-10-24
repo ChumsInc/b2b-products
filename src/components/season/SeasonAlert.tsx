@@ -1,5 +1,4 @@
-import React from 'react';
-import {useAppSelector} from "@/components/app/hooks";
+import {useAppSelector} from "@/app/configureStore";
 import {selectSeasonByCode} from "@/ducks/seasons";
 
 export interface SeasonAlertProps {

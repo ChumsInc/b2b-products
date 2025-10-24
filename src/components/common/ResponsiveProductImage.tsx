@@ -1,4 +1,4 @@
-import React, {ImgHTMLAttributes} from "react";
+import {type ImgHTMLAttributes} from "react";
 import classNames from "classnames";
 
 export interface ResponsiveProductImageProps extends ImgHTMLAttributes<HTMLImageElement>{

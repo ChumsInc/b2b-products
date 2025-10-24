@@ -1,4 +1,3 @@
-import React from 'react';
 import ProductImageList from "./ProductImageList";
 import ProductImageEdit from "./ProductImageEdit";
 

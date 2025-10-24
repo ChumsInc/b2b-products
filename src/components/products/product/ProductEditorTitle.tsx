@@ -1,22 +1,21 @@
-import React from 'react';
 import classNames from "classnames";
 import Spinner from "react-bootstrap/Spinner";
-import {useSelector} from "react-redux";
 import {
     selectCurrentProduct,
     selectCurrentProductChanged,
     selectCurrentProductLoading
-} from "@/ducks/products/product/selectors";
+} from "@/ducks/products/productSlice.ts";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
+import {useAppSelector} from "@/app/configureStore.ts";
 
 
 const ProductEditorTitle = () => {
-    const product = useSelector(selectCurrentProduct);
-    const loading = useSelector(selectCurrentProductLoading);
-    const changed = useSelector(selectCurrentProductChanged);
+    const product = useAppSelector(selectCurrentProduct);
+    const loading = useAppSelector(selectCurrentProductLoading);
+    const changed = useAppSelector(selectCurrentProductChanged);
 
     return (
         <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>

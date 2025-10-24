@@ -1,4 +1,4 @@
-import {ProductBase, ProductColor, ProductColorItem, ProductVariant} from "b2b-types";
+import type {ProductBase, ProductColor, ProductColorItem, ProductVariant} from "b2b-types";
 
 
 export const defaultColor: ProductColor = {

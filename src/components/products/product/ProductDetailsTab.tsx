@@ -1,10 +1,14 @@
-import React, {ChangeEvent, FormEvent, useId, useState} from 'react';
-import {useSelector} from "react-redux";
-import {selectCurrentProduct, selectCurrentProductSaving} from "@/ducks/products/product/selectors";
-import {Product, ProductAdditionalData} from "b2b-types/src/products";
+import React, {type ChangeEvent, type FormEvent, useId, useState} from 'react';
+import {
+    selectCurrentProduct,
+    selectCurrentProductSaving,
+    updateProduct,
+    updateProductAdditionalData
+} from "@/ducks/products/productSlice.ts";
+import type {Product, ProductAdditionalData} from "b2b-types";
 import ModalEditor from "../../app/ModalEditor";
-import {saveProduct, updateProduct, updateProductAdditionalData} from "@/ducks/products/product/actions";
-import {useAppDispatch} from "../../app/hooks";
+import {saveProduct} from "@/ducks/products/actions/product-actions.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import CodeEditButton from "./CodeEditButton";
 import {Alert, Col, Form, FormControl, Row} from "react-bootstrap";
 import SpinnerButton from "../../common/SpinnerButton";
@@ -13,8 +17,8 @@ import TextArea from "@/components/common/TextArea";
 const colWidth = 8;
 const ProductDetailsTab: React.FC = () => {
     const dispatch = useAppDispatch();
-    const product = useSelector(selectCurrentProduct);
-    const saving = useSelector(selectCurrentProductSaving);
+    const product = useAppSelector(selectCurrentProduct);
+    const saving = useAppSelector(selectCurrentProductSaving);
 
     const [showEditor, setShowEditor] = useState(false);
     const [editorField, setEditorField] = useState<'details' | 'description'>('details');

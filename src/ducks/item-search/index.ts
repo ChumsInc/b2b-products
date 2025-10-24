@@ -1,4 +1,4 @@
-import {ItemSearchList} from "../../types/item-search";
+import type {ItemSearchList} from "@/types/item-search";
 import {createReducer} from "@reduxjs/toolkit";
 import {loadItemSearch} from "./actions";
 

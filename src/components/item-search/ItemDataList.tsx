@@ -1,5 +1,5 @@
-import React, {HTMLAttributes, useEffect, useState} from 'react';
-import {ItemSearchFilter} from "../../types/item-search";
+import React, {type HTMLAttributes, useEffect, useState} from 'react';
+import type {ItemSearchFilter} from "@/types/item-search";
 import {useLazyGetItemSearchQuery} from "@/src/api/items";
 
 

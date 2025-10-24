@@ -1,4 +1,4 @@
-import {ProductListItem} from "b2b-types";
+import type {ProductListItem} from "b2b-types";
 import {fetchJSON} from "chums-ui-utils";
 
 export const manufacturerId__CHUMS = 12;

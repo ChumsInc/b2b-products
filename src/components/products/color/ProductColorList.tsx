@@ -1,33 +1,27 @@
-import React, {ChangeEvent, useEffect, useId, useState} from 'react';
-import {useSelector} from "react-redux";
+import React, {type ChangeEvent, useEffect, useId, useState} from 'react';
 import {
-    selectCurrentColorItem, selectCurrentColorShowInactive,
-    selectCurrentProductColors,
-    selectFilteredProductColors
-} from "../../../ducks/products/color/selectors";
-import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
-import ProductImage from "../../app/ProductImage";
-import {ProductColorItem} from "b2b-types/src/products";
+    selectCurrentColorShowInactive,
+    selectFilteredProductColors,
+    setColorsShowInactive,
+    setCurrentColorItem
+} from "@/ducks/products/productColorItemsSlice";
+import {selectCurrentProduct} from "@/ducks/products/productSlice.ts";
+import type {ProductColorItem} from "b2b-types";
 import {TablePagination} from "@chumsinc/sortable-tables";
-import classNames from "classnames";
-import {LocalStore, storeProductItemsRowsPerPage} from "../../../localStore";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {setColorsShowInactive, setCurrentColorItem} from "../../../ducks/products/color/actions";
-import SeasonIcon from "../../season/SeasonIcon";
-import {Badge, Card, Col, FormCheck, Row} from "react-bootstrap";
-import {localStorageKeys} from "../../../api/preferences";
-import ColorSwatch from "../../colors/ColorSwatch";
-import numeral from "numeral";
+import {LocalStore, storeProductItemsRowsPerPage} from "@/api/localStore";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {Col, FormCheck, Row} from "react-bootstrap";
+import {localStorageKeys} from "@/api/preferences";
 import ProductColorGrid from "@/components/products/color/ProductColorGrid";
 import ProductColorTable from "@/components/products/color/ProductColorTable";
 
 
 const ProductColorList = () => {
     const dispatch = useAppDispatch();
-    const list = useSelector(selectFilteredProductColors);
-    const product = useSelector(selectCurrentProduct);
-    const showInactiveId = useId();
+    const list = useAppSelector(selectFilteredProductColors);
+    const product = useAppSelector(selectCurrentProduct);
     const showInactive = useAppSelector(selectCurrentColorShowInactive);
+    const showInactiveId = useId();
     const showGridId = useId();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(25);
@@ -53,7 +47,7 @@ const ProductColorList = () => {
 
     const selectItemHandler = (item: ProductColorItem) => dispatch(setCurrentColorItem(item));
 
-    const showInactiveChangeHandler = (ev:ChangeEvent<HTMLInputElement>) => {
+    const showInactiveChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
         LocalStore.setItem<boolean>(localStorageKeys.productColors.showInactive, ev.target.checked);
         dispatch(setColorsShowInactive(ev.target.checked));
     }
@@ -82,10 +76,10 @@ const ProductColorList = () => {
                 </Col>
             </Row>
             {showGrid && (
-                <ProductColorGrid list={list} onSelectItem={selectItemHandler} />
+                <ProductColorGrid list={list} onSelectItem={selectItemHandler}/>
             )}
             {!showGrid && (
-                <ProductColorTable list={list} onSelectItem={selectItemHandler} />
+                <ProductColorTable list={list} onSelectItem={selectItemHandler}/>
             )}
         </>
     )

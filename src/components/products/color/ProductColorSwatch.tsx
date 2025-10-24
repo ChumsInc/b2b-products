@@ -1,7 +1,6 @@
-import React from 'react';
-import ColorSwatch, {ColorSwatchProps} from "@/components/colors/ColorSwatch";
-import {useAppSelector} from "@/components/app/hooks";
-import {selectCurrentProduct} from "@/ducks/products/product/selectors";
+import ColorSwatch, {type ColorSwatchProps} from "@/components/colors/ColorSwatch";
+import {useAppSelector} from "@/app/configureStore";
+import {selectCurrentProduct} from "@/ducks/products/productSlice.ts";
 
 
 export default function ProductColorSwatch({colorCode, swatchFormat, ...rest }:ColorSwatchProps) {

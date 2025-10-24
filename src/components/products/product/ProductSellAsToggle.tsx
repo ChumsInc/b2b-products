@@ -1,17 +1,14 @@
-import React from 'react';
-import {useSelector} from "react-redux";
 import classNames from "classnames";
-import {ProductSellAs} from "b2b-types";
+import type {ProductSellAs} from "b2b-types";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from '@/src/utils'
-import {updateProduct} from "@/ducks/products/product/actions";
-import {selectCurrentProductSellAs} from "@/ducks/products/product/selectors";
-import {useAppDispatch} from "../../app/hooks";
+import {selectCurrentProductSellAs, updateProduct} from "@/ducks/products/productSlice.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
 
 export default function ProductSellAsToggle() {
     const dispatch = useAppDispatch();
-    const sellAs = useSelector(selectCurrentProductSellAs);
+    const sellAs = useAppSelector(selectCurrentProductSellAs);
 
 
     const cSellAsSelf = classNames('btn btn-sm', {

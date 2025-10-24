@@ -3,15 +3,14 @@ import ColorList from "./ColorList";
 import ColorEditor from "./ColorEditor";
 import ColorUsageList from "./ColorUsageList";
 import {useParams} from "react-router";
-import {setCurrentColorByCode} from "../../ducks/colors/actions";
-import {useAppDispatch} from "../app/hooks";
-import {useSelector} from "react-redux";
-import {selectCurrentColorCode} from "../../ducks/colors/selectors";
+import {setCurrentColorByCode} from "@/ducks/colors/actions";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {selectCurrentColorCode} from "@/ducks/colors/selectors";
 
 const ColorScreen: React.FC = () => {
     const dispatch = useAppDispatch();
-    const colorCode = useSelector(selectCurrentColorCode);
-    const params = useParams<{code:string}>();
+    const colorCode = useAppSelector(selectCurrentColorCode);
+    const params = useParams<{ code: string }>();
 
     useEffect(() => {
         if (params.code !== colorCode) {

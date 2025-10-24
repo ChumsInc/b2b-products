@@ -1,11 +1,9 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
-import {useSelector} from "react-redux";
-import {selectCurrentProduct} from "@/ducks/products/product/selectors";
-import {updateProduct} from "@/ducks/products/product/actions";
-import {useAppDispatch} from "../../app/hooks";
-import {Button, FormControlProps, InputGroup} from "react-bootstrap";
+import {type ChangeEvent, useEffect, useState} from 'react'
+import {selectCurrentProduct, updateProduct} from "@/ducks/products/productSlice.ts";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {Button, type FormControlProps, InputGroup} from "react-bootstrap";
 import ItemFormControl from "@/components/common/ItemFormControl";
-import {ItemSearchRecord} from "@/types/item-search";
+import type {ItemSearchRecord} from "@/types/item-search";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
 import {ErrorBoundary} from "react-error-boundary";
 
@@ -16,7 +14,7 @@ export interface ProductItemCodeInputProps {
 
 export const ProductItemCodeInput = ({id, inputProps}: ProductItemCodeInputProps) => {
     const dispatch = useAppDispatch();
-    const product = useSelector(selectCurrentProduct);
+    const product = useAppSelector(selectCurrentProduct);
     const [itemCode, setItemCode] = useState(product?.itemCode ?? '');
     const [item, setItem] = useState<ItemSearchRecord | null>(null);
 

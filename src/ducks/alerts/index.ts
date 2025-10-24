@@ -1,7 +1,7 @@
-import {createEntityAdapter, createSlice, isRejected, PayloadAction, SerializedError,} from "@reduxjs/toolkit";
-import {RootState} from "@/app/configureStore";
-import {BasicAlert, ErrorAlert} from "chums-ui-utils";
-import {AlertProps} from "react-bootstrap";
+import {createEntityAdapter, createSlice, isRejected, type PayloadAction, type SerializedError,} from "@reduxjs/toolkit";
+import {type RootState} from "@/app/configureStore";
+import {type BasicAlert, type ErrorAlert} from "chums-ui-utils";
+import {type AlertProps} from "react-bootstrap";
 
 export interface UIAlert extends Omit<ErrorAlert, 'context'>,
     Partial<Pick<ErrorAlert, 'context'>>,

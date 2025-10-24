@@ -1,12 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {setCurrentImage, setImagesSort} from "@/ducks/products/images/actions";
-import {SortableTable, SortableTableField, TablePagination} from "@chumsinc/sortable-tables";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {ProductAlternateImage} from "b2b-types";
-import {selectImagesSort, selectSortedImages} from "@/ducks/products/images/selectors";
-import {SortProps} from "chums-types";
-import {imageFilter, ImageFilterProps} from "@/ducks/products/images/utils";
+import {useEffect, useState} from "react";
+import {setCurrentImage, setImagesSort} from "@/ducks/products/productImagesSlice";
+import {SortableTable, type SortableTableField, TablePagination} from "@chumsinc/sortable-tables";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import type {ProductAlternateImage} from "b2b-types";
+import {selectImagesSort, selectSortedImages} from "@/ducks/products/productImagesSlice";
+import type {SortProps} from "chums-types";
+import {imageFilter, type ImageFilterProps} from "@/ducks/products/utils/images-utils.ts";
 import classNames from "classnames";
 
 const fields: SortableTableField<ProductAlternateImage>[] = [
@@ -19,7 +18,7 @@ const fields: SortableTableField<ProductAlternateImage>[] = [
 
 export default function ProductImageTable({search, itemCode}: ImageFilterProps) {
     const dispatch = useAppDispatch();
-    const images = useSelector(selectSortedImages);
+    const images = useAppSelector(selectSortedImages);
     const sort = useAppSelector(selectImagesSort);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(25);

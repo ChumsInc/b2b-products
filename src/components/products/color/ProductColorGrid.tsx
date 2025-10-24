@@ -1,14 +1,13 @@
-import React from 'react';
-import {selectCurrentColorItem} from "@/ducks/products/color/selectors";
-import {selectCurrentProduct} from "@/ducks/products/product/selectors";
+import {selectCurrentColorItem} from "@/ducks/products/productColorItemsSlice";
+import {selectCurrentProduct} from "@/ducks/products/productSlice.ts";
 import ProductImage from "../../app/ProductImage";
-import {ProductColorItem} from "b2b-types/src/products";
+import type {ProductColorItem} from "b2b-types";
 import classNames from "classnames";
 import SeasonIcon from "../../season/SeasonIcon";
 import {Badge, Card, Col, Row} from "react-bootstrap";
 import ColorSwatch from "../../colors/ColorSwatch";
 import numeral from "numeral";
-import {useAppSelector} from "@/components/app/hooks";
+import {useAppSelector} from "@/app/configureStore";
 
 export interface ProductColorGridProps {
     list: ProductColorItem[];

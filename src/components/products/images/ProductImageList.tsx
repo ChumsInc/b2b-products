@@ -4,9 +4,8 @@ import ProductImageGrid from "@/components/products/images/ProductImageGrid";
 import ProductImageTable from "@/components/products/images/ProductImageTable";
 import {LocalStore} from "chums-ui-utils";
 import InputGroup from "react-bootstrap/InputGroup";
-import {useAppDispatch, useAppSelector} from "@/components/app/hooks";
-import {setShowInactiveImages} from "@/ducks/products/images/actions";
-import {selectShowInactiveImages} from "@/ducks/products/images/selectors";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {selectShowInactiveImages, setShowInactiveImages} from "@/ducks/products/productImagesSlice";
 
 const showGridKey = 'b2b-products/productImagesGrid';
 

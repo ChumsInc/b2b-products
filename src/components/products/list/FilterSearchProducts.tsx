@@ -1,15 +1,14 @@
-import React, {useId} from 'react';
-import {useSelector} from "react-redux";
-import {useAppDispatch} from "../../app/hooks";
-import {selectProductsSearch, setProductsSearch} from "@/ducks/productList/productListSlice";
-import {useDebounceCallback} from "usehooks-ts";
+import {useId} from 'react';
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {selectProductsSearch, setProductsSearch} from "@/ducks/productList/productListSlice.ts";
 import {FormControl, InputGroup} from "react-bootstrap";
+import {useDebouncedCallback} from "@mantine/hooks";
 
 export default function FilterSearchProducts() {
     const dispatch = useAppDispatch();
-    const search = useSelector(selectProductsSearch);
+    const search = useAppSelector(selectProductsSearch);
     const id = useId();
-    const debounced = useDebounceCallback((value: string) => {
+    const debounced = useDebouncedCallback((value: string) => {
         dispatch(setProductsSearch(value));
     }, 350)
 

@@ -1,10 +1,9 @@
-import React from 'react';
 import {ProgressBar} from "react-bootstrap";
-import {useSelector} from "react-redux";
-import {selectProductListLoading} from "@/ducks/productList/productListSlice";
+import {selectProductListLoading} from "@/ducks/productList/productListSlice.ts";
+import {useAppSelector} from "@/app/configureStore.ts";
 
 export default function ProductsLoading() {
-    const loading = useSelector(selectProductListLoading);
+    const loading = useAppSelector(selectProductListLoading);
 
     return (
         <div style={{height: '5px'}} className="mb-1">

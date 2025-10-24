@@ -1,4 +1,3 @@
-import React from "react";
 import ProductTable from "./list/ProductTable";
 import {Outlet} from "react-router";
 import {Col, Row} from "react-bootstrap";

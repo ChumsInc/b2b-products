@@ -1,26 +1,23 @@
 import React from 'react';
-import {useSelector} from "react-redux";
-import {selectCurrentProduct} from "../../../ducks/products/product/selectors";
+import {selectCurrentProduct, updateProduct} from "@/ducks/products/productSlice.ts";
 import classNames from "classnames";
-
-import {updateProduct} from "../../../ducks/products/product/actions";
-import {useAppDispatch} from "../../app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 
 const RedirectToParent: React.FC = () => {
     const dispatch = useAppDispatch();
-    const {redirectToParent, defaultParentProductsId} = useSelector(selectCurrentProduct) ?? {};
-    const onChange = () => dispatch(updateProduct({redirectToParent: !redirectToParent}))
+    const product = useAppSelector(selectCurrentProduct);
+    const onChange = () => dispatch(updateProduct({redirectToParent: !product?.redirectToParent}))
     const iconClassName = {
-        'bi-arrow-up-right-square-fill': redirectToParent,
-        'bi-arrow-up-right-square': !redirectToParent,
+        'bi-arrow-up-right-square-fill': product?.redirectToParent,
+        'bi-arrow-up-right-square': !product?.redirectToParent,
     }
 
     return (
         <div className="input-group-text" title="Redirect to parent">
             <input type="checkbox" className="form-check-input mt-0 me-1"
-                   disabled={defaultParentProductsId === 0}
+                   disabled={product?.defaultParentProductsId === 0}
                    id="product-main--redirectToParent"
-                   checked={redirectToParent}
+                   checked={product?.redirectToParent}
                    onChange={onChange}/>
             <label htmlFor="product-main--redirectToParent">
                 <span className={classNames('me-1', iconClassName)}/>301
