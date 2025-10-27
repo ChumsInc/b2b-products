@@ -2,8 +2,8 @@ import type {ProductListItem} from "b2b-types";
 import type {SortProps} from "chums-types";
 
 export interface ProductFilter {
-    isActive: boolean,
-    isAvailableForSale: boolean;
+    showInactive: boolean,
+    showUnavailable: boolean;
     hasSalePrice: boolean,
     categoryId: number | null;
     season: string;

@@ -19,6 +19,15 @@ const ProductSellAsIcon = ({showStatusIcon, product, ...rest}: ProductSellAsIcon
     if (!product) {
         return null;
     }
+    if ((isProductListItem(product) && product.isRedirect) || (!isProductListItem(product) && product.additionalData?.isRedirect)) {
+        return (
+            <SellAsBadgeList>
+                <Badge bg="transparent" text="dark"><span className="bi-link-45deg" /></Badge>
+                <Badge pill bg="info">Redirect</Badge>
+            </SellAsBadgeList>
+
+        )
+    }
     return (
         <SellAsBadgeList {...rest}>
             {showStatusIcon && (

@@ -5,7 +5,7 @@ import {defaultProduct} from "../utils/product-utils.ts";
 
 export async function fetchProduct(keyword: string): Promise<Product> {
     try {
-        const url = `/api/b2b/products/v2/keyword/${encodeURIComponent(keyword)}`;
+        const url = `/api/b2b/products/v2/keyword/${encodeURIComponent(keyword)}.json`;
         const res = await fetchJSON<{ products: Product[] }>(url, {cache: 'no-cache'});
         if (!res?.products.length) {
             return {...defaultProduct};
@@ -26,7 +26,7 @@ export async function postProduct(_product: Product): Promise<Product | null> {
         if (!_product.keyword) {
             return Promise.reject(new Error('Keyword must be provided.'));
         }
-        const url = `/api/b2b/products/v2/${encodeURIComponent(_product.id)}`;
+        const url = `/api/b2b/products/v2/${encodeURIComponent(_product.id)}.json`;
         const method = _product.id === 0 ? 'POST' : 'PUT';
         let baseProduct: BasicProduct = {..._product};
         if (isSellAsVariantsProduct(_product)) {

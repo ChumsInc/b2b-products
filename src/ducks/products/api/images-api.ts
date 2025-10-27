@@ -6,7 +6,7 @@ export async function deleteAltImage(image: ProductAlternateImage): Promise<Prod
         if (!image.productId || !image.image || !image.id) {
             return Promise.reject(new Error('Invalid Image: missing ID, value ID or filename'));
         }
-        const url = '/api/b2b/products/v2/image/:productId/:id'
+        const url = '/api/b2b/products/v2/image/:productId/:id.json'
             .replace(':productId', encodeURIComponent(image.productId))
             .replace(':id', encodeURIComponent(image.id));
         const res = await fetchJSON<{ images: ProductAlternateImage[] }>(url, {method: 'DELETE'});
@@ -42,7 +42,10 @@ export async function postAltImage(image: ProductAlternateImage): Promise<Produc
         if (!image.productId || !image.image) {
             return Promise.reject(new Error('Invalid Image: missing value ID or filename'));
         }
-        const url = '/api/b2b/products/v2/images/:id'.replace(':id', encodeURIComponent(image.id === 0 ? '' : image.id));
+        const url = image.id === 0
+            ? '/api/b2b/products/v2/images.json'
+            : '/api/b2b/products/v2/images/:id.json'
+                .replace(':id', encodeURIComponent(image.id === 0 ? '' : image.id));
         const method = image.id === 0 ? 'POST' : 'PUT';
         const res = await fetchJSON<{ images: ProductAlternateImage[] }>(url, {
             method,

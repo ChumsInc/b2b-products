@@ -80,5 +80,6 @@ export function listItemFromProduct(product: Product): ProductListItem {
         defaultCategoriesId,
         season_code: season_code,
         seasonAvailable: (product.additionalData?.seasonAvailable ?? false) || !product.season_code,
+        isRedirect: product.additionalData?.isRedirect ?? false,
     }
 }

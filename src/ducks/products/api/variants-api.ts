@@ -8,7 +8,7 @@ export async function deleteVariant(_variant: ProductVariant): Promise<ProductVa
         if (!id || !parentProductID) {
             return Promise.reject(new Error('Invalid productVariants, must have ID and parentProductID'));
         }
-        const url = `/api/b2b/products/v2/variants/${parentProductID}/${id}`;
+        const url = `/api/b2b/products/v2/variants/${parentProductID}/${id}.json`;
         const res = await fetchJSON<{ variants: ProductVariant[] }>(url, {method: 'DELETE'});
         return res?.variants ?? [];
     } catch (err: unknown) {
@@ -26,7 +26,9 @@ export async function postVariant(_variant: ProductVariant): Promise<ProductVari
         if (!_variant.parentProductID) {
             return Promise.reject(new Error('Invalid parentProductID'));
         }
-        const url = `/api/b2b/products/v2/variants/${_variant.parentProductID}/${_variant.id || ''}`;
+        const url = _variant.id === 0
+            ? `/api/b2b/products/v2/variants/${_variant.parentProductID}.json`
+            : `/api/b2b/products/v2/variants/${_variant.parentProductID}/${_variant.id}.json`;
         const method = _variant.id ? 'PUT' : 'POST';
         const res = await fetchJSON<{ variant: ProductVariant }>(url, {method, body: JSON.stringify(_variant)});
         return res?.variant ?? null;
@@ -45,7 +47,7 @@ export async function putVariantSort(_variants: VariantSortArgs[]): Promise<Prod
         if (_variants.length === 0) {
             return [];
         }
-        const url = `/api/b2b/products/v2/variants/${_variants[0].parentProductID}/sort`;
+        const url = `/api/b2b/products/v2/variants/${_variants[0].parentProductID}/sort.json`;
         const body = _variants.map(v => ({parentProductID: v.parentProductID, id: v.id, priority: v.priority}));
         const res = await fetchJSON<{ variants: ProductVariant[] }>(url, {
             method: 'PUT',
@@ -67,7 +69,7 @@ export async function putDefaultVariant(variant: ProductVariant): Promise<Produc
         if (!variant.id || !variant.parentProductID) {
             return Promise.reject(new Error('invalid productVariants'));
         }
-        const url = `/api/b2b/products/v2/variants/${variant.parentProductID}/${variant.id}/default`;
+        const url = `/api/b2b/products/v2/variants/${variant.parentProductID}/${variant.id}/default.json`;
         const res = await fetchJSON<{ variants: ProductVariant[] }>(url, {method: 'PUT'});
         return res?.variants ?? [];
     } catch (err: unknown) {

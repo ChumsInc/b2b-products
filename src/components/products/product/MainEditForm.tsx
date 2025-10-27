@@ -37,6 +37,7 @@ const MainEditForm = () => {
     const titleId = useId();
     const enabledId = useId();
     const availableId = useId();
+    const isRedirectId = useId();
     const seasonId = useId();
     const seasonAvailableId = useId();
     const availabilityId = useId();
@@ -127,6 +128,7 @@ const MainEditForm = () => {
             case 'sublimation':
             case 'rfidBlocking':
             case 'newColors':
+            case 'isRedirect':
                 return dispatch(updateProductAdditionalData({[field]: !checked}));
         }
     }
@@ -221,6 +223,9 @@ const MainEditForm = () => {
                         <FormCheck label='Available for Sale' id={availableId}
                                    checked={product.availableForSale}
                                    onChange={toggleChangeHandler('availableForSale')} type="checkbox" inline/>
+                        <FormCheck label='Redirect Only' id={isRedirectId}
+                                   checked={product.additionalData?.isRedirect ?? false}
+                                   onChange={toggleAdditionalDataChangeHandler('isRedirect')} type="checkbox" inline/>
                     </Col>
                 </Form.Group>
                 <Form.Group as={Row}>

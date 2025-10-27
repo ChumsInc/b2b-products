@@ -7,7 +7,7 @@ const debug = Debug('chums:api:seasonsAPI');
 
 export async function fetchSeasons():Promise<ProductSeason[]> {
     try {
-        const url = '/api/b2b/products/v2/seasons';
+        const url = '/api/b2b/products/v2/seasons.json';
         const res = await fetchJSON<{seasons:ProductSeason[]}>(url, {cache: 'no-cache'});
         return res?.seasons ?? [];
     } catch(err:unknown) {

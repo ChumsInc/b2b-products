@@ -46,6 +46,8 @@ const productSlice = createSlice({
                     state.value.product_season_id = action.payload.product_season_id ?? null;
                 } else {
                     state.value.season = null;
+                    state.value.product_season_id = null;
+                    state.value.season_code = null;
                 }
                 state.value.season_code = action.payload?.code ?? null;
             }

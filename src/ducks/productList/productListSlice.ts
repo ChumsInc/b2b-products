@@ -16,8 +16,8 @@ const defaultSort: SortProps<ProductListItem> = {
 }
 
 export const defaultFilter: ProductFilter = {
-    isActive: true,
-    isAvailableForSale: false,
+    showInactive: false,
+    showUnavailable: false,
     hasSalePrice: false,
     categoryId: null,
     season: '',
@@ -29,7 +29,7 @@ export const extraState = (): ProductsListState => ({
     search: '',
     filter: {
         ...defaultFilter,
-        isActive: LocalStore.getItem<boolean>(localStorageKeys.products.filterActive, true) ?? true,
+        showInactive: LocalStore.getItem<boolean>(localStorageKeys.products.showInactive, true) ?? true,
     },
     sort: LocalStore.getItem<SortProps<ProductListItem>>(localStorageKeys.products.sort, {...defaultSort}),
 })
@@ -47,14 +47,14 @@ const productListSlice = createSlice({
         setProductsSearch: (state, action) => {
             state.search = action.payload;
         },
-        toggleFilterActive: (state, action: PayloadAction<boolean | undefined>) => {
-            state.filter.isActive = action.payload ?? !state.filter.isActive;
+        toggleShowInactive: (state, action: PayloadAction<boolean>) => {
+            state.filter.showInactive = action.payload;
         },
         toggleFilterOnSale: (state, action: PayloadAction<boolean | undefined>) => {
             state.filter.hasSalePrice = action.payload ?? !state.filter.hasSalePrice;
         },
-        toggleFilterAvailable: (state, action: PayloadAction<boolean | undefined>) => {
-            state.filter.isAvailableForSale = action.payload ?? !state.filter.isAvailableForSale;
+        toggleShowUnavailable: (state, action: PayloadAction<boolean>) => {
+            state.filter.showUnavailable = action.payload ?? !state.filter.showUnavailable;
         },
         setCategoryFilter: (state, action: PayloadAction<number | null>) => {
             state.filter.categoryId = action.payload ?? null;
@@ -97,9 +97,9 @@ const productListSlice = createSlice({
         selectProductListLoading: (state) => state.loading,
         selectProductsSearch: (state) => state.search,
         selectProductsFilterCategoryId: (state) => state.filter.categoryId,
-        selectProductsFilterActive: (state) => state.filter.isActive,
+        selectProductsShowInactive: (state) => state.filter.showInactive,
         selectProductsFilterOnSale: (state) => state.filter.hasSalePrice,
-        selectProductsFilterAvailable: (state) => state.filter.isAvailableForSale,
+        selectProductsShowUnavailable: (state) => state.filter.showUnavailable,
         selectProductSeasonFilter: (state) => state.filter.season,
         selectProductListSort: (state) => state.sort,
     }
@@ -107,9 +107,9 @@ const productListSlice = createSlice({
 export default productListSlice;
 export const {
     setProductsSearch,
-    toggleFilterActive,
+    toggleShowInactive,
     toggleFilterOnSale,
-    toggleFilterAvailable,
+    toggleShowUnavailable,
     setCategoryFilter,
     setSeasonFilter,
     setProductsSort
@@ -119,18 +119,18 @@ export const {
     selectProductList,
     selectProductsSearch,
     selectProductListSort,
-    selectProductsFilterActive,
+    selectProductsShowInactive,
     selectProductSeasonFilter,
-    selectProductsFilterAvailable,
+    selectProductsShowUnavailable,
     selectProductsFilterCategoryId,
     selectProductsFilterOnSale,
     selectProductListLoading
 } = productListSlice.selectors;
 
 export const selectFilteredList = createSelector(
-    [selectProductList, selectProductsSearch, selectProductsFilterActive, selectProductsFilterAvailable,
+    [selectProductList, selectProductsSearch, selectProductsShowInactive, selectProductsShowUnavailable,
         selectProductsFilterOnSale, selectProductsFilterCategoryId, selectProductSeasonFilter, selectProductListSort],
-    (list, search, filterActive, filterAvailable, filterOnSale, categoryId, season, sort) => {
+    (list, search, showInactive, showUnavailable, filterOnSale, categoryId, season, sort) => {
         let reSearch = /^/;
         try {
             reSearch = new RegExp(search, 'i');
@@ -139,8 +139,8 @@ export const selectFilteredList = createSelector(
             reSearch = /^/;
         }
         return (list as ProductListItem[])
-            .filter(i => !filterActive || i.status)
-            .filter(i => !filterAvailable || i.availableForSale)
+            .filter(i => showInactive || i.status)
+            .filter(i => showUnavailable || i.availableForSale)
             .filter(i => !filterOnSale || !!i.salePrice)
             .filter(i => !categoryId || i.defaultCategoriesId === categoryId)
             .filter(i => !season || i.season_code === season)

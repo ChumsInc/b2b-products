@@ -43,6 +43,8 @@ const fields: SortableTableField<ProductListItem>[] = [
 
 const rowClassName = (row: ProductListItem) => {
     return classNames({
+        'table-info': row.status && row.isRedirect,
+        'table-warning': row.status && !row.availableForSale && !row.isRedirect,
         'table-danger': !row.status,
     })
 }

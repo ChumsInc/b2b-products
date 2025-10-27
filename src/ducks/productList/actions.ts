@@ -11,7 +11,7 @@ import {localStorageKeys} from "@/src/api/preferences";
 export const setProductsSearch = createAction<string>('productsList/setSearch');
 export const toggleFilterActive = createAction<boolean|undefined>('productsList/toggleFilterActive');
 export const toggleFilterOnSale = createAction<boolean|undefined>('productsList/toggleFilterOnSale');
-export const toggleFilterAvailable = createAction<boolean|undefined>('productsList/toggleFilterAvailable');
+export const toggleFilterAvailable = createAction<boolean|undefined>('productsList/toggleShowUnavailable');
 export const setCategoryFilter = createAction<number|null>('productsList/setCategoryFilter');
 export const setSeasonFilter = createAction<string>('productsList/setSeasonFilter');
 

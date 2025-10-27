@@ -33,7 +33,7 @@ export const saveProduct = createAsyncThunk<Product | null, Product>(
             redirect(generatePath('/products/:keyword', {keyword: product.keyword}))
             return null;
         }
-        return postProduct(arg);
+        return product;
     },
     {
         condition: (arg, {getState}) => {

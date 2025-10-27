@@ -21,7 +21,7 @@ export async function postMix(_mix: ProductMixItem): Promise<ProductMixItem|null
         if (!_mix.productId) {
             return Promise.reject(new Error('Invalid Mix: missing value ID'));
         }
-        const url = '/api/b2b/products/v2/mix/:productId/:mixID'
+        const url = '/api/b2b/products/v2/mix/:productId/:mixID.json'
             .replace(':productId', encodeURIComponent(_mix.productId))
             .replace(':mixID', encodeURIComponent(_mix.id || ''));
         const method = _mix.id ? 'PUT' : 'POST';
@@ -45,7 +45,7 @@ export async function postMixComponent(productId: number, component: ProductMixC
         if (!component.colorsId || !component.itemCode) {
             return Promise.reject(new Error('Mix component is missing component.colorsId or component.itemCode'));
         }
-        const url = '/api/b2b/products/v2/mix/:productId/:mixID/items'
+        const url = '/api/b2b/products/v2/mix/:productId/:mixID/items.json'
             .replace(':productId', encodeURIComponent(productId))
             .replace(':mixID', encodeURIComponent(component.mixID));
         const res = await fetchJSON<{ mix: ProductMixItem }>(url, {

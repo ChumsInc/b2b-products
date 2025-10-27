@@ -19,7 +19,7 @@ export const localStorageKeys = {
     },
     products: {
         rowsPerPage: `${localStoragePrefix}/products/rowsPerPage`,
-        filterActive: `${localStoragePrefix}/products/filterActive`,
+        showInactive: `${localStoragePrefix}/products/showInactive`,
         sort: `${localStoragePrefix}/products/sort`,
     },
     items: {
@@ -34,7 +34,7 @@ function getStorage(key:string):Storage {
 
 export const setPreference = <T = unknown>(key:string, value:T) => {
     try {
-        if (!global.window) {
+        if (!window) {
             return;
         }
         getStorage(key).setItem(key, JSON.stringify(value));
@@ -54,7 +54,7 @@ export const clearPreference = (key:string) => {
 
 export const getPreference = <T = unknown>(key:string, defaultValue: T):T|null => {
     try {
-        if (!global.window) {
+        if (!window) {
             return defaultValue;
         }
         const value = getStorage(key).getItem(key);

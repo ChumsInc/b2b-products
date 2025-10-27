@@ -6,7 +6,6 @@ import {loadSeasons} from "@/ducks/seasons/actions";
 import {reloadSwatchCSSFile} from "@/src/utils";
 import {Button, Col, Row} from "react-bootstrap";
 import FilterActiveProducts from "./FilterActiveProducts";
-import FilterOnSaleProducts from "./FilterOnSaleProducts";
 import FilterAvailableProducts from "./FilterAvailableProducts";
 import FilterSeasonProducts from "./FilterSeasonProducts";
 import FilterCategoryProducts from "./FilterCategoryProducts";
@@ -28,14 +27,11 @@ export default function ProductTableFilterBar() {
     return (
         <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
             <Row className="row g-3 mb-1 align-items-baseline">
-                <Col style={{minWidth: '15rem'}}>
+                <Col>
                     <FilterSearchProducts/>
                 </Col>
                 <Col xs="auto">
                     <FilterActiveProducts/>
-                </Col>
-                <Col xs="auto">
-                    <FilterOnSaleProducts/>
                 </Col>
                 <Col xs="auto">
                     <FilterAvailableProducts/>
