@@ -11,6 +11,5 @@ $ui = new WebUI2([
     'contentFile' => 'body.inc.php'
 ]);
 $ui->addCSS('/css/b2b-swatches/swatches.css')
-    ->addCSS('./public/css/styles.css')
-    ->addManifestJSON('public/js/manifest.json')
+    ->addViteManifest()
     ->render();

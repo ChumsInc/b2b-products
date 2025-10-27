@@ -12,7 +12,7 @@ import type {VariantSortArgs} from "@/types/variant";
 import {variantSortKey} from "@/ducks/products/utils/variants-utils.ts";
 import SpinnerButton from "@/components/common/SpinnerButton";
 import {closestCenter, DndContext, type DragEndEvent, DragOverlay, type DragStartEvent} from "@dnd-kit/core";
-import {arrayMove, SortableContext} from "@dnd-kit/sortable";
+import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import ThumbedVariantItem from "@/components/products/variant/ThumbedVariantItem.tsx";
 
 const SortableVariantList = () => {
@@ -74,8 +74,8 @@ const SortableVariantList = () => {
                     </SpinnerButton>
                 </div>
             </div>
-            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
-                <SortableContext items={items}>
+            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={closestCenter} >
+                <SortableContext items={items} strategy={verticalListSortingStrategy}>
                     {items.map((variant) => (
                         <SortableVariantItem variant={variant} key={variant.id}
                                              active={variant.id === currentVariantId}/>

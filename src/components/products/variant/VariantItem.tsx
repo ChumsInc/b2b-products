@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import type {Variant} from "react-bootstrap/types";
 import type {MouseEvent} from "react";
 
-const SortableItem = styled.div`
+const VariantItemContainer = styled.div`
     flex: 1 1 auto;
     width: 100%;
     margin: 0.25rem 0.5rem;
@@ -47,7 +47,7 @@ export default function VariantItem({variant, active}:VariantItemProps) {
     }
 
     return (
-        <SortableItem>
+        <VariantItemContainer>
             <span className="text-secondary" style={{flex: '0 0 3rem'}}>{variant.id}</span>
             <Button type="button" size="sm" variant={btnVariant} onClick={clickHandler} className="me-3">
                 Edit
@@ -66,6 +66,6 @@ export default function VariantItem({variant, active}:VariantItemProps) {
             </div>
             <div style={{flex: '1 1 auto'}}>{variant.product?.keyword}</div>
             <div style={{flex: '0 0 auto'}} className="text-end">{variant.product?.itemCode}</div>
-        </SortableItem>
+        </VariantItemContainer>
     )
 }
