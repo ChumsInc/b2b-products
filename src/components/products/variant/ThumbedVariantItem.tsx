@@ -29,6 +29,7 @@ const SortableVariantContainer = styled.div`
         border-radius: 0;
         border-right: 1px solid var(--bs-border-color);
         cursor: grab;
+        width: 3rem;
     }
 `
 

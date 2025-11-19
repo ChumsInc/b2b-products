@@ -25,7 +25,7 @@ export default function SortableVariantItem({variant, active}: SortableVariantIt
     }
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <div ref={setNodeRef} style={style} {...attributes}>
             <ThumbedVariantItem variant={variant} active={active}
                                 setActivatorNodeRef={setActivatorNodeRef}
                                 listeners={listeners}/>

@@ -48,22 +48,19 @@ export default function VariantItem({variant, active}:VariantItemProps) {
 
     return (
         <VariantItemContainer>
-            <span className="text-secondary" style={{flex: '0 0 3rem'}}>{variant.id}</span>
             <Button type="button" size="sm" variant={btnVariant} onClick={clickHandler} className="me-3">
                 Edit
             </Button>
             <div className={classNames('text-start', {'text-primary': variant.isDefaultVariant,})}
                  style={{flex: '0 0 8rem'}}>
-                <div>
-                    {variant.title}
-                    {variant.product && (
-                        <ProductSellAsIcon product={variant.product} style={{display: 'inline-block'}}
-                                           className="ms-1"/>)}
-                </div>
-                {(!variant.status || !variant.product?.status) && (
-                    <span className="ms-1 bi-exclamation-triangle-fill text-warning"/>
-                )}
+                {variant.title}
             </div>
+            {variant.product && (
+                <ProductSellAsIcon product={variant.product} style={{flex: '0 0 3rem'}}
+                                   className="mx-1"/>)}
+            {(!variant.status || !variant.product?.status) && (
+                <div className="ms-1 bi-exclamation-triangle-fill text-warning" style={{flex: '0 0 1.5rem'}}/>
+            )}
             <div style={{flex: '1 1 auto'}}>{variant.product?.keyword}</div>
             <div style={{flex: '0 0 auto'}} className="text-end">{variant.product?.itemCode}</div>
         </VariantItemContainer>
