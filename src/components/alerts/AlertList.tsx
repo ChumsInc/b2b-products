@@ -12,7 +12,9 @@ const AlertList = () => {
     return (
         <div>
             {alerts.map(alert => (
-                <Alert key={alert.id} variant={alert.variant ?? 'info'} onClose={() => dismissHandler(alert)}>
+                <Alert key={alert.id} variant={alert.variant ?? 'info'}
+                       dismissible
+                       onClose={() => dismissHandler(alert)}>
                     <Alert.Heading>
                         {alert.context && <strong>{alert.context}</strong>}
                         {alert.title}
@@ -21,7 +23,7 @@ const AlertList = () => {
                         )}
                     </Alert.Heading>
                     {!!alert.error && (
-                        <div style={{whiteSpace: 'pre-wrap'}}>{JSON.stringify(alert.error?.stack ?? null)}</div>
+                        <div style={{whiteSpace: 'pre-wrap'}}>{alert.error?.stack ?? null}</div>
                     )}
                 </Alert>
             ))}

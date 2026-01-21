@@ -80,13 +80,11 @@ const productListSlice = createSlice({
             })
             .addCase(saveProduct.fulfilled, (state, action) => {
                 if (action.payload) {
-                    adapter.setOne(state, listItemFromProduct(action.payload));
-                    const product = selectors.selectById(state, action.payload.defaultParentProductsId);
-                    if (action.payload.defaultParentProductsId && product) {
-                        adapter.setOne(state, {
-                            ...listItemFromProduct(action.payload),
-                            parentProductKeyword: product.keyword
-                        });
+                    const payload = listItemFromProduct(action.payload);
+                    const parent = selectors.selectById(state, action.payload.defaultParentProductsId);
+                    adapter.setOne(state, payload);
+                    if (parent) {
+                        adapter.updateOne(state, {id: payload.id, changes: {parentProductKeyword: parent.keyword}});
                     }
                 }
             })

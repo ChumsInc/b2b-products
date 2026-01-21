@@ -112,19 +112,19 @@ const ProductImageEdit = () => {
                 </Form.Group>
                 <hr/>
                 <Row>
-                    <Col>
+                    <Col xs="auto">
                         <Button type="submit" variant="primary" size="sm"
                                 disabled={!productId || !image.image || status !== 'idle'}>
                             {status === 'saving' && (<Spinner size="sm" role="status" aria-hidden="true"/>)}
                             Save
                         </Button>
                     </Col>
-                    <Col>
+                    <Col xs="auto">
                         <Button type="button" variant="outline-secondary" size="sm" onClick={newImageHandler}>
                             New Image
                         </Button>
                     </Col>
-                    <Col>
+                    <Col xs="auto">
                         <Button type="button" variant="outline-danger" size="sm" onClick={deleteImageHandler}
                                 disabled={!productId || !image.id || status !== 'idle'}>
                             {status === 'deleting' && (<Spinner size="sm" role="status" aria-hidden="true"/>)}

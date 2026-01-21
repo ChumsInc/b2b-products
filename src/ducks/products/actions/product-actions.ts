@@ -1,9 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import type {Product} from "b2b-types";
-import {generatePath, redirect} from "react-router";
 import {fetchProduct, postProduct} from "../api/product-api.ts";
 import {type RootState} from "@/app/configureStore.ts";
-import {selectCurrentKeyword} from "../productKeywordSlice.ts";
 import {defaultProduct} from "../utils/product-utils.ts";
 import {selectCurrentProductStatus} from "@/ducks/products/productSlice.ts";
 
@@ -23,21 +21,14 @@ export const loadProduct = createAsyncThunk<Product | null, string>(
     }
 )
 
-export const saveProduct = createAsyncThunk<Product | null, Product>(
+export const saveProduct = createAsyncThunk<Product | null, Product, { state: RootState }>(
     'value/current/save',
-    async (arg, {getState}) => {
-        const state = getState() as RootState;
-        const keyword = selectCurrentKeyword(state);
-        const product = await postProduct(arg);
-        if (product && product?.keyword !== keyword) {
-            redirect(generatePath('/products/:keyword', {keyword: product.keyword}))
-            return null;
-        }
-        return product;
+    async (arg) => {
+        return await postProduct(arg);
     },
     {
         condition: (arg, {getState}) => {
-            const state = getState() as RootState;
+            const state = getState();
             return !!arg.keyword && selectCurrentProductStatus(state) === 'idle';
         }
     }

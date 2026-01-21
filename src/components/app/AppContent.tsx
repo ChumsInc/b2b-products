@@ -3,6 +3,7 @@ import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "./ErrorFallbackComponent";
 import AppTabs from "./AppTabs";
 import styled from "@emotion/styled";
+import AlertList from "@/components/alerts/AlertList.tsx";
 
 const AppContainer = styled.div`
     --sell-as-self-color: var(--bs-primary);
@@ -93,6 +94,7 @@ const AppContainer = styled.div`
 const AppContent = () => {
     return (
         <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
+            <AlertList />
             <AppTabs className="mb-3"/>
             <AppContainer>
                 <Outlet/>
