@@ -4,13 +4,15 @@ import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {selectKeywordsList, selectKeywordsLoaded} from "@/ducks/keywords/selectors";
 import {loadKeywords} from "@/ducks/keywords/actions";
 import {FormSelect, type FormSelectProps} from "react-bootstrap";
+import classNames from "classnames";
 
 export interface KeywordSelectProps extends FormSelectProps {
+    disabledKeywords?: string[],
     pageType: 'product' | 'category' | 'page',
     onSelectKeyword: (kw: Keyword | null) => void,
 }
 
-const KeywordSelect = ({pageType, value, onSelectKeyword, ...rest}: KeywordSelectProps) => {
+const KeywordSelect = ({disabledKeywords, pageType, value, onSelectKeyword, ...rest}: KeywordSelectProps) => {
     const dispatch = useAppDispatch();
     const keywords = useAppSelector(selectKeywordsList);
     const loaded = useAppSelector(selectKeywordsLoaded);
@@ -20,7 +22,7 @@ const KeywordSelect = ({pageType, value, onSelectKeyword, ...rest}: KeywordSelec
         if (!loaded) {
             dispatch(loadKeywords());
         }
-    }, [])
+    }, [dispatch, loaded])
 
     const changeHandler = (ev: ChangeEvent<HTMLSelectElement>) => {
         const [kw] = keywords.filter(kw => kw.pagetype === pageType && String(kw.id) === ev.target.value);
@@ -35,7 +37,7 @@ const KeywordSelect = ({pageType, value, onSelectKeyword, ...rest}: KeywordSelec
                 .filter(kw => kw.pagetype === pageType)
                 .filter(kw => !!kw.status || kw.id === value)
                 .map(kw => (
-                    <option key={kw.keyword} value={kw.id} disabled={!kw.status}>
+                    <option key={kw.keyword} value={kw.id} className={classNames({'text-danger': !kw.status})} disabled={disabledKeywords?.includes(kw.keyword)}>
                         {kw.keyword} - {kw.title}
                     </option>
                 ))}

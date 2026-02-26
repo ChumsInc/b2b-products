@@ -30,7 +30,6 @@ export const defaultProductBase: ProductBase = {
 
 
 export const defaultVariant: ProductVariant = {
-
     id: 0,
     parentProductID: 0,
     variantProductID: 0,

@@ -17,7 +17,7 @@ export interface CurrentVariantState {
     productId: number | null;
     variant: ProductVariant | null;
     currentSort: string;
-    status: 'idle' | 'loading' | 'saving' | 'deleting' | 'rejected';
+    status: 'idle' | 'loading' | 'saving' | 'set-default' | 'deleting' | 'rejected';
     loading: boolean;
     saving: boolean;
 }
@@ -92,7 +92,7 @@ export const productVariantsSlice = createSlice({
                 state.status = 'rejected';
             })
             .addCase(setDefaultVariant.pending, (state) => {
-                state.status = 'saving';
+                state.status = 'set-default';
             })
             .addCase(setDefaultVariant.fulfilled, (state, action) => {
                 state.status = 'idle';

@@ -11,7 +11,9 @@ const ProductScreen = () => {
                 <h2>Product List</h2>
                 <ProductTableFilterBar/>
                 <ProductsLoading />
-                <ProductTable/>
+                <div className="table-responsive-xl">
+                    <ProductTable/>
+                </div>
             </Col>
             <Col md={6} lg={5}>
                 <Outlet/>

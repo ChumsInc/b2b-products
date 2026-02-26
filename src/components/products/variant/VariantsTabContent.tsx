@@ -1,12 +1,13 @@
-import ProductVariantsEditor from "./ProductVariantsEditor";
 import SortableVariantList from "./SortableVariantList";
+import ProductVariantEditContainer from "@/components/products/variant/editor/ProductVariantEditContainer.tsx";
 
 const VariantsTabContent = () => {
 
     return (
         <div>
-            <ProductVariantsEditor />
-            <SortableVariantList />
+            <ProductVariantEditContainer/>
+            {/*<ProductVariantsEditor />*/}
+            <SortableVariantList/>
         </div>
     )
 }

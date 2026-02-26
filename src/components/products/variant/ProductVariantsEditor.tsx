@@ -37,12 +37,12 @@ const ProductVariantsEditor = () => {
             setVariant(variant);
             setAlert(null);
         }
-    }, [productId]);
+    }, [productId, variant]);
 
     useEffect(() => {
         setVariant(current ? {...current} : {...defaultVariant, parentProductID: productId});
         setAlert(null);
-    }, [current]);
+    }, [current, productId]);
 
     const submitHandler = async (ev: FormEvent) => {
         ev.preventDefault();
@@ -91,9 +91,7 @@ const ProductVariantsEditor = () => {
         if (!current) {
             return;
         }
-        if (window.confirm('Are you sure you want to make this the default productVariants?')) {
-            dispatch(setDefaultVariant(current));
-        }
+        dispatch(setDefaultVariant(current));
     }
 
     return (

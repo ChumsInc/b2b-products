@@ -61,8 +61,7 @@ const SortableVariantList = () => {
         }
         setDraggingItem(null);
     }
-
-    console.log('sorted', items.map(item => item.id))
+    
     return (
         <div>
             <div className="row g-3 my-1 align-items-baseline">
