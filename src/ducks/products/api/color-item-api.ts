@@ -6,7 +6,13 @@ export async function postColorItem(item: ProductColorVariant): Promise<ProductC
         if (!item.productId || !item.colorCode) {
             return Promise.reject(new Error('Invalid color item - missing value ID or color code'));
         }
-        const url = `/api/b2b/products/items/${item.productId}/${item.id || ''}`;
+        const url = item.id === 0
+            ? '/api/b2b/products/items/:productId.json'
+                .replace(':productId', encodeURIComponent(item.productId))
+            : '/api/b2b/products/items/:productId/:id.json'
+                .replace(':productId', encodeURIComponent(item.productId))
+                .replace(':id', encodeURIComponent(item.id))
+        ;
         const method = item.id === 0 ? 'POST' : 'PUT';
         const res = await fetchJSON<{ items: ProductColorVariant[] }>(url, {method, body: JSON.stringify(item)});
         return res?.items ?? [];
@@ -25,7 +31,9 @@ export async function deleteColorItem(item: ProductColorItem): Promise<ProductCo
         if (!item.productId || !item.id) {
             return Promise.reject(new Error('Invalid color item - missing value ID or item ID'));
         }
-        const url = `/api/b2b/products/items/${item.productId}/${item.id}`;
+        const url = `/api/b2b/products/items/:productId/:id.json`
+            .replace(':productId', encodeURIComponent(item.productId))
+            .replace(':id', encodeURIComponent(item.id))
         const method = 'DELETE';
         const res = await fetchJSON<{ items: ProductColorItem[] }>(url, {method});
         return res?.items ?? [];

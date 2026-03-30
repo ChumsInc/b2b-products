@@ -6,7 +6,7 @@ const debug = Debug('chums:api:colorAPI');
 
 export async function fetchColors():Promise<ProductColor[]> {
     try {
-        const url = '/api/b2b/products/colors';
+        const url = '/api/b2b/products/colors.json';
         const res = await fetchJSON<{colors:ProductColor[]}>(url, {cache: 'no-cache'});
         return res?.colors ?? [];
     } catch(err:unknown) {
@@ -21,7 +21,7 @@ export async function fetchColors():Promise<ProductColor[]> {
 
 export async function postColor(_color:ProductColor):Promise<{list:ProductColor[], color:ProductColor|null }> {
     try {
-        const url = '/api/b2b/products/colors';
+        const url = '/api/b2b/products/colors.json';
         const body = JSON.stringify(_color);
         const res = await fetchJSON<{colors:ProductColor[], color: ProductColor}>(url, {method: 'POST', body});
         return {list: res?.colors ?? [], color: res?.color ?? null};
@@ -37,7 +37,7 @@ export async function postColor(_color:ProductColor):Promise<{list:ProductColor[
 
 export async function fetchWhereUsed(id:number):Promise<ColorProductUsage[]> {
     try {
-        const url = `/api/b2b/products/colors/${id}/items`;
+        const url = `/api/b2b/products/colors/${id}/items.json`;
         const res = await fetchJSON<{items:ColorProductUsage[]}>(url, {cache: 'no-cache'});
         return res?.items ?? [];
     } catch(err:unknown) {
