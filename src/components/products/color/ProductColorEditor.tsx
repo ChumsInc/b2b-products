@@ -133,7 +133,7 @@ const ProductColorEditor = () => {
                 <Form.Group as={Row}>
                     <Form.Label column xs={4}>Image</Form.Label>
                     <Col>
-                        <FormControl type="text" size="sm" ref={imageRef}
+                        <FormControl type="text" size="sm" ref={imageRef} required
                                      placeholder={currentProduct?.image}
                                      value={colorItem.additionalData?.image_filename || ''}
                                      onChange={additionalDataChangeHandler('image_filename')}/>

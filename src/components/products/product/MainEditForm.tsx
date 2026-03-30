@@ -235,7 +235,7 @@ const MainEditForm = () => {
                             <InputGroup.Text as="label" htmlFor={seasonId}>Season</InputGroup.Text>
                             <SeasonSelect value={product.season?.code || ''} id={seasonId}
                                           onChange={seasonChangeHandler}/>
-                            <InputGroup.Text as="label" htmlFor={seasonAvailableId}>Season Available</InputGroup.Text>
+                            <InputGroup.Text as="label" htmlFor={seasonAvailableId}>Avail.</InputGroup.Text>
                             <InputGroup.Checkbox id={seasonAvailableId} type="checkbox"
                                                  checked={product.additionalData?.seasonAvailable ?? false}
                                                  onChange={toggleAdditionalDataChangeHandler('seasonAvailable')}

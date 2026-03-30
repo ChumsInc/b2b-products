@@ -79,7 +79,9 @@ const ProductColorList = () => {
                 <ProductColorGrid list={list} onSelectItem={selectItemHandler}/>
             )}
             {!showGrid && (
-                <ProductColorTable list={list} onSelectItem={selectItemHandler}/>
+                <div className="table-responsive-lg" style={{maxHeight: '70vh', overflow: 'auto'}}>
+                    <ProductColorTable list={list} onSelectItem={selectItemHandler}/>
+                </div>
             )}
         </>
     )

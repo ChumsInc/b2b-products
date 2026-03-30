@@ -76,7 +76,7 @@ export default function ProductColorTable({list, onSelectItem}: ProductColorTabl
     }
 
     return (
-        <SortableTable fields={fields} keyField="id" size="sm"
+        <SortableTable fields={fields} keyField="id" size="xs"
                        rowClassName={(row) => classNames({'text-danger': !row.status})}
                        data={list}
                        currentSort={sort} onChangeSort={sortChangeHandler}

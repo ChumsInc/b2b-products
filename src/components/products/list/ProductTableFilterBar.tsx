@@ -27,7 +27,7 @@ export default function ProductTableFilterBar() {
     return (
         <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
             <Row className="row g-3 mb-1 align-items-baseline">
-                <Col>
+                <Col style={{minWidth: '10rem'}}>
                     <FilterSearchProducts/>
                 </Col>
                 <Col xs="auto">
