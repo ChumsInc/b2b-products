@@ -24,18 +24,15 @@ export default defineConfig({
     build: {
         manifest: true,
         sourcemap: true,
-        rollupOptions: {
+        rolldownOptions: {
             output: {
-                manualChunks(id) {
-                    if (id.includes('node_modules')) {
-                        return 'vendor'
-                    }
-                    if (id.includes('src/components')) {
-                        return 'components';
-                    }
+                codeSplitting: {
+                    groups: [
+                        {test: /node_modules/, name: 'vendor'},
+                    ]
                 }
             }
-        }
+        },
     },
     server: {
         port: 8080,
