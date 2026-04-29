@@ -15,7 +15,6 @@ const ColorUsageList: React.FC = () => {
     const id = useId();
 
     const [list, setList] = useState<ColorProductUsage[]>([]);
-    const [pagedList, setPagedList] = useState<ColorProductUsage[]>([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(25);
     const [checked, setChecked] = useState(true);
@@ -24,25 +23,16 @@ const ColorUsageList: React.FC = () => {
         if (selected?.id) {
             dispatch(loadColorUsage(selected?.id));
         }
-    }, [selected?.id]);
+    }, [selected?.id, dispatch]);
 
     useEffect(() => {
-        const page = 0;
-        setPage(0);
-        const list = whereUsed.filter(row => !checked || row.status);
-        setList(list);
-        setPagedList(list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
-    }, [whereUsed, checked]);
+        Promise.resolve().then(() => {
+            setPage(0);
+            const list = whereUsed.filter(row => !checked || row.status);
+            setList(list);
+        })
+    }, [whereUsed, checked, rowsPerPage]);
 
-    useEffect(() => {
-        setPagedList(list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
-    }, [rowsPerPage, page]);
-
-    useEffect(() => {
-        const page = 0;
-        setPage(0);
-        setPagedList(list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
-    }, [rowsPerPage]);
 
     return (
         <div>
@@ -59,7 +49,7 @@ const ColorUsageList: React.FC = () => {
                 </div>
             </div>
             <div className="d-flex flex-wrap justify-content-start">
-                {!!selected && pagedList.map(c => (
+                {selected && list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(c => (
                     <ProductImage key={c.productId} filename={c.image} itemCode={c.itemCode}
                                   colorCode={selected.code} size={80} className="p-1"/>
                 ))}

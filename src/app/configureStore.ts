@@ -1,6 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit'
 import {combineReducers} from "redux";
-import {api} from "@/src/api/base-api";
+import {api} from "@/api/base-api";
 import alertsSlice from "../ducks/alerts";
 import {default as colorsReducer} from '../ducks/colors';
 import {default as itemSearchReducer} from '../ducks/item-search';

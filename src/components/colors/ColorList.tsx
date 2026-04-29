@@ -7,7 +7,7 @@ import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import ColorFilterBar from "./ColorFilterBar";
 import classNames from "classnames";
 import {useNavigate, useParams} from "react-router";
-import {getPreference, localStorageKeys, setPreference} from "@/src/api/preferences";
+import {getPreference, localStorageKeys, setPreference} from "@/api/preferences";
 
 
 const colorFields: SortableTableField<ProductColor>[] = [
@@ -40,7 +40,9 @@ const ColorList: React.FC = () => {
     }, [params.code]);
 
     useEffect(() => {
-        setPage(0);
+        Promise.resolve().then(() => {
+            setPage(0);
+        })
     }, [sort, list]);
 
     const onSelectColor = (color: ProductColor) => {

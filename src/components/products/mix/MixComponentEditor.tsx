@@ -1,6 +1,6 @@
 import React, {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from 'react';
 import type {ProductColor, ProductMixComponent, ProductMixItem} from "b2b-types";
-import {deepStrictEqual} from "@/src/utils";
+import {deepStrictEqual} from "../../../utils/common-utils";
 import ItemFormControl from "@/components/common/ItemFormControl";
 import type {BOMComponent, ItemSearchRecord} from "@/types/item-search";
 import {selectCurrentMixComponents, selectCurrentMixStatus} from "@/ducks/products/productMixSlice";
@@ -38,16 +38,20 @@ export default function MixComponentEditor({mix, value, show, onClose}: MixCompo
     const itemRef = useRef<HTMLInputElement | null>(null);
 
     useEffect(() => {
-        setExisting(components.map(c => c.itemCode.toUpperCase()).sort());
-    }, [component]);
+        Promise.resolve().then(() => {
+            setExisting(components.map(c => c.itemCode.toUpperCase()).sort());
+        })
+    }, [components]);
 
     useEffect(() => {
-        if (value) {
-            setComponent({...value});
-            setEqual(true);
-        } else {
-            setComponent({...defaultMixComponent, mixID: mix?.id ?? 0});
-        }
+        Promise.resolve().then(() => {
+            if (value) {
+                setComponent({...value});
+                setEqual(true);
+            } else {
+                setComponent({...defaultMixComponent, mixID: mix?.id ?? 0});
+            }
+        })
     }, [mix, value]);
 
     const selectBOMComponent = (item: BOMComponent) => {

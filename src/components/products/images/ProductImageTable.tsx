@@ -25,9 +25,11 @@ export default function ProductImageTable({search, itemCode}: ImageFilterProps) 
     const [list, setList] = useState(imageFilter(images, {search, itemCode}));
 
     useEffect(() => {
-        const list = imageFilter(images, {search, itemCode})
-        setList(list);
-        setPage(0);
+        Promise.resolve().then(() => {
+            const list = imageFilter(images, {search, itemCode})
+            setList(list);
+            setPage(0);
+        })
     }, [images, sort, search, itemCode, rowsPerPage]);
 
     const sortChangeHandler = (sort: SortProps<ProductAlternateImage>) => {

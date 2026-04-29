@@ -1,6 +1,6 @@
 import {useAppSelector} from "@/app/configureStore";
 import {generatePath, NavLink, useMatch} from "react-router";
-import {isSellAsColors, isSellAsMix, isSellAsVariants} from "../../utils";
+import {isSellAsColors, isSellAsMix, isSellAsVariants} from "../../utils/common-utils";
 import {selectCurrentProduct} from "@/ducks/products/productSlice.ts";
 import {Nav} from "react-bootstrap";
 import {ErrorBoundary} from "react-error-boundary";

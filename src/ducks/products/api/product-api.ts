@@ -30,15 +30,12 @@ export async function postProduct(_product: Product): Promise<Product | null> {
         const method = _product.id === 0 ? 'POST' : 'PUT';
         let baseProduct: BasicProduct = {..._product};
         if (isSellAsVariantsProduct(_product)) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const {variants, ...p} = (_product as SellAsVariantsProduct);
             baseProduct = p;
         } else if (isSellAsMixProduct(_product)) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const {mix, ...p} = (_product as SellAsMixProduct);
             baseProduct = p;
         } else if (isSellAsColorsProduct(_product)) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const {items, ...p} = (_product as SellAsColorsProduct);
             baseProduct = p;
         }

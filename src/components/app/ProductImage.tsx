@@ -1,4 +1,4 @@
-import {parseColor} from "@/src/utils";
+import {parseColor} from "../../utils/common-utils";
 import classNames from "classnames";
 
 export type ProductImageSize = 80 | 125 | 250 | 400 | 800 | 2048;

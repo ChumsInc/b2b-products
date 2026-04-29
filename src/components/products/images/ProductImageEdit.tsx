@@ -1,4 +1,4 @@
-import {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from "react";
+import {type ChangeEvent, useEffect, useId, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {removeImage, saveImage} from "@/ducks/products/actions/images-actions.ts";
 import type {Editable, ProductAlternateImage} from "b2b-types";
@@ -30,7 +30,9 @@ const ProductImageEdit = () => {
     const priorityId = useId();
 
     useEffect(() => {
-        setImage(current || {...newImage, productId});
+        Promise.resolve().then(() => {
+            setImage(current || {...newImage, productId});
+        })
     }, [current, productId]);
 
     const changeHandler = (field: keyof ProductAlternateImage) => (ev: ChangeEvent<HTMLInputElement>) => {
@@ -45,8 +47,7 @@ const ProductImageEdit = () => {
         }
     }
 
-    const submitHandler = async (ev: FormEvent) => {
-        ev.preventDefault();
+    const submitHandler = async () => {
         if (!productId || !image.image) {
             return;
         }
@@ -71,7 +72,7 @@ const ProductImageEdit = () => {
     }
 
     return (
-        <Row as="form" onSubmit={submitHandler}>
+        <Row as="form" action={submitHandler}>
             <Col xs={12} lg={6}>
                 <Form.Group as={Row}>
                     <Form.Label column={true} xs={4}>ID</Form.Label>

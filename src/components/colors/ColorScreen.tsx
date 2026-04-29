@@ -16,7 +16,7 @@ const ColorScreen: React.FC = () => {
         if (params.code !== colorCode) {
             dispatch(setCurrentColorByCode(params.code));
         }
-    }, [params.code, colorCode]);
+    }, [params.code, colorCode, dispatch]);
 
     return (
         <div className="container">

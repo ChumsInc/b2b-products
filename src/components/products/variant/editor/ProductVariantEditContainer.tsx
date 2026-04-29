@@ -1,7 +1,7 @@
 import EditorProvider from "@/hooks/editor/EditorProvider.tsx";
 import {useAppSelector} from "@/app/configureStore.ts";
 import {selectCurrentProductId} from "@/ducks/products/productSlice.ts";
-import {defaultVariant} from "@/src/defaults.ts";
+import {defaultVariant} from "../../../../utils/defaults.ts";
 import {selectCurrentVariant} from "@/ducks/products/productVariantsSlice.ts";
 import {Col, Row} from "react-bootstrap";
 import VariantForm from "@/components/products/variant/editor/VariantForm.tsx";

@@ -67,5 +67,5 @@ export const productMixSlice = createSlice({
     }
 })
 
-export const {} = productMixSlice.actions;
+// export const {} = productMixSlice.actions;
 export const {selectCurrentMixComponents, selectCurrentMixStatus, selectCurrentMix} = productMixSlice.selectors;

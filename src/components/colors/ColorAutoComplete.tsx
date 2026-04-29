@@ -34,16 +34,19 @@ const ColorAutoComplete = ({
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(-1);
     const {refs, floatingStyles} = useFloating({placement: 'bottom-start'});
-    const inputId = id ?? useId();
+    const _inputId = useId();
+    const inputId = id ?? _inputId;
 
     useClickOutside(containerRef, () => setOpen(false));
 
     useEffect(() => {
-        const colors = Object.values(colorList);
-        setColors(colors.filter(color => color.code.toLowerCase().startsWith(value.toLowerCase()) || color.name.toLowerCase().includes(value.toLowerCase())));
-        setColor(colorList[value] ?? null);
-        setIndex(-1);
-    }, [value])
+        Promise.resolve().then(() => {
+            const colors = Object.values(colorList);
+            setColors(colors.filter(color => color.code.toLowerCase().startsWith(value.toLowerCase()) || color.name.toLowerCase().includes(value.toLowerCase())));
+            setColor(colorList[value] ?? null);
+            setIndex(-1);
+        })
+    }, [value, colorList]);
 
     const clickHandler = (color: ProductColor) => {
         onChangeColor(color);
@@ -62,7 +65,6 @@ const ColorAutoComplete = ({
 
     const inputHandler = (ev: KeyboardEvent<HTMLInputElement>) => {
         const len = Math.min(colors.length, 25);
-        let current: ProductColor | null = null;
         console.log(ev.key);
         switch (ev.key) {
             case 'Escape':
@@ -80,8 +82,8 @@ const ColorAutoComplete = ({
                 setOpen(true);
                 setIndex((index - 1 + len) % len);
                 return;
-            case 'Enter':
-                current = colors[index];
+            case 'Enter': {
+                const current = colors[index];
                 if (!open) {
                     return;
                 }
@@ -89,6 +91,7 @@ const ColorAutoComplete = ({
                     return onChangeColor(current);
                 }
                 return;
+            }
             default:
                 if (inputProps?.onKeyDown) {
                     inputProps.onKeyDown(ev);
@@ -120,6 +123,7 @@ const ColorAutoComplete = ({
                 </InputGroup.Text>
             </InputGroup>
             {open && (
+                // eslint-disable-next-line react-hooks/refs
                 <div ref={refs.setFloating} style={{
                     height: '20rem',
                     maxHeight: '90vh',

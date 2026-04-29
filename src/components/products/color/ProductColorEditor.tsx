@@ -1,4 +1,4 @@
-import {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from 'react';
+import {type ChangeEvent, useEffect, useId, useRef, useState} from 'react';
 import {
     selectCurrentColorItem,
     selectCurrentColorStatus,
@@ -7,7 +7,7 @@ import {
 import {selectCurrentProduct, selectCurrentProductId} from "@/ducks/products/productSlice.ts";
 import type {Editable, ProductColor, ProductColorItem, ProductColorItemAdditionalData, ProductSeason} from "b2b-types";
 import SeasonSelect from "../../season/SeasonSelect";
-import {defaultColorItem} from "@/src/defaults";
+import {defaultColorItem} from "../../../utils/defaults";
 import {removeColorItem, saveCurrentColorItem} from "@/ducks/products/actions/color-item-actions.ts";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import ColorAutoComplete from "../../colors/ColorAutoComplete";
@@ -31,16 +31,19 @@ const ProductColorEditor = () => {
     const [colorItem, setColorItem] = useState<ProductColorItem & Editable>(current ?? {...defaultColorItem});
 
     useEffect(() => {
-        setColorItem({...defaultColorItem, productId});
-        dispatch(setCurrentColorItem(null));
-    }, [productId]);
+        Promise.resolve().then(() => {
+            setColorItem({...defaultColorItem, productId});
+            dispatch(setCurrentColorItem(null));
+        })
+    }, [productId, dispatch]);
 
     useEffect(() => {
-        setColorItem({...(current ?? defaultColorItem), productId});
-    }, [current])
+        Promise.resolve().then(() => {
+            setColorItem({...(current ?? defaultColorItem), productId});
+        })
+    }, [current, productId])
 
-    const submitHandler = async (ev: FormEvent) => {
-        ev.preventDefault();
+    const submitHandler = async () => {
         await dispatch(saveCurrentColorItem({...colorItem, productId}));
         // setColorItem({...defaultColorItem, productId});
     }
@@ -107,7 +110,7 @@ const ProductColorEditor = () => {
 
     return (
         <>
-            <Form onSubmit={submitHandler}>
+            <Form action={submitHandler}>
                 <Form.Group as={Row}>
                     <Form.Label column xs={4}>ID</Form.Label>
                     <Col>

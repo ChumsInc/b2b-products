@@ -10,7 +10,7 @@ import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {selectCurrentProductId} from "@/ducks/products/productSlice.ts";
 import ProductTableCategoryName from "./ProductTableCategoryName";
 import {useNavigate} from "react-router";
-import {localStorageKeys} from "@/src/api/preferences";
+import {localStorageKeys} from "@/api/preferences";
 import {LocalStore} from "chums-ui-utils";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
@@ -62,7 +62,9 @@ const ProductTable = () => {
     );
 
     useEffect(() => {
-        setPage(0);
+        Promise.resolve().then(() => {
+            setPage(0);
+        })
     }, [list.length, rowsPerPage]);
 
     const rowsPerPageChangeHandler = (rpp: number) => {
@@ -70,6 +72,7 @@ const ProductTable = () => {
         setPage(0);
         setRowsPerPage(rpp);
     }
+
     const onSelectRow = (row: ProductListItem) => {
         const url = `/products/${encodeURIComponent(row.keyword)}`;
         navigate(url);

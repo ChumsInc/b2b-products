@@ -18,7 +18,9 @@ const ProductMixComponents = () => {
     });
 
     useEffect(() => {
-        setComponent({...defaultMixComponent, mixID: mix?.id ?? 0});
+        Promise.resolve().then(() => {
+            setComponent({...defaultMixComponent, mixID: mix?.id ?? 0});
+        })
     }, [mix?.id])
 
 

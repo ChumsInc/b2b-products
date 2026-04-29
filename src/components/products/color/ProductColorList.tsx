@@ -24,16 +24,13 @@ const ProductColorList = () => {
     const showInactiveId = useId();
     const showGridId = useId();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(25);
+    const [rowsPerPage, setRowsPerPage] = useState(LocalStore.getItem<number>(storeProductItemsRowsPerPage, 25) ?? 25);
     const [showGrid, setShowGrid] = useState(LocalStore.getItem<boolean>(localStorageKeys.items.showImages, true));
 
     useEffect(() => {
-        const rowsPerPage = LocalStore.getItem<number>(storeProductItemsRowsPerPage, 25) ?? 25;
-        setRowsPerPage(rowsPerPage);
-    }, [])
-
-    useEffect(() => {
-        setPage(0);
+        Promise.resolve().then(() => {
+            setPage(0);
+        })
     }, [list, rowsPerPage]);
 
     const onChangeShowImages = (ev: React.ChangeEvent<HTMLInputElement>) => {

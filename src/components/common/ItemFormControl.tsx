@@ -1,14 +1,14 @@
-import React, {type HTMLAttributes, type KeyboardEvent, useEffect, useRef, useState} from 'react';
+import {type HTMLAttributes, type KeyboardEvent, type RefObject, useEffect, useRef, useState} from 'react';
 import {FormControl, type FormControlProps, ListGroup} from "react-bootstrap";
-import {useLazyGetItemSearchQuery} from "@/src/api/items";
+import {useLazyGetItemSearchQuery} from "@/api/items";
 import {useFloating} from '@floating-ui/react-dom'
 import type {ItemSearchFilter, ItemSearchRecord} from "@/types/item-search";
-import useClickOutside from "@/src/hooks/click-outside";
+import useClickOutside from "@/hooks/click-outside";
 
 export interface ItemFormControlProps extends Omit<FormControlProps, 'ref'> {
     value: string;
     onChangeItem: (item: ItemSearchRecord) => void;
-    ref?: React.RefObject<HTMLInputElement | null>;
+    ref?: RefObject<HTMLInputElement | null>;
     containerProps?: HTMLAttributes<HTMLDivElement>;
     lookupDelay?: number;
     invalidItems?: string[];
@@ -25,21 +25,30 @@ export default function ItemFormControl({
                                             invalidItems,
                                             ...rest
                                         }: ItemFormControlProps) {
-    const inputRef = useRef<HTMLInputElement | null>(null);
+    const _inputRef = useRef<HTMLInputElement | null>(null);
+    const inputRef = ref ?? _inputRef;
     const containerRef = useRef<HTMLDivElement>(null);
-    const [reference, setReference] = useState<HTMLInputElement | null>(inputRef.current);
     const [trigger, result] = useLazyGetItemSearchQuery({});
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(-1);
-    const {refs, floatingStyles} = useFloating({placement: 'bottom-start', elements: {reference}});
+    const [reference, setReference] = useState<HTMLInputElement | null>(null);
+    const {refs, floatingStyles} = useFloating({
+        placement: 'bottom-start',
+        elements: {
+            reference,
+        }
+    });
     const timerRef = useRef<number>(0);
     const [items, setItems] = useState<ItemSearchRecord[]>([]);
 
     useClickOutside(containerRef, () => setOpen(false));
 
     useEffect(() => {
-        setReference(ref?.current ?? inputRef.current)
-    }, [inputRef, ref]);
+        Promise.resolve().then(() => {
+            setReference(inputRef.current);
+        })
+    }, [inputRef]);
+
 
     useEffect(() => {
         if (!value) {
@@ -51,17 +60,18 @@ export default function ItemFormControl({
         return () => {
             window.clearTimeout(timerRef.current);
         }
-    }, [value, filter]);
+    }, [value, filter, lookupDelay, trigger,]);
 
     useEffect(() => {
-        const isFocused = open || document.activeElement === refs.reference.current;
-        setItems(result.data ?? []);
-        setOpen((result.data ?? []).length > 0 && isFocused);
-    }, [result]);
+        Promise.resolve().then(() => {
+            const isFocused = open || document.activeElement === refs.reference.current;
+            setItems(result.data ?? []);
+            setOpen((result.data ?? []).length > 0 && isFocused);
+        })
+    }, [result, open, refs.reference]);
 
     const inputHandler = (ev: KeyboardEvent<HTMLInputElement>) => {
         const len = Math.min(items.length, 25);
-        let current: ItemSearchRecord | null = null;
         switch (ev.key) {
             case 'Escape':
                 setOpen(false);
@@ -78,10 +88,10 @@ export default function ItemFormControl({
                 setOpen(true);
                 setIndex((index - 1 + len) % len);
                 return;
-            case 'Enter':
+            case 'Enter': {
                 ev.stopPropagation();
                 ev.preventDefault();
-                current = items[index];
+                const current = items[index];
                 if (!open) {
                     return;
                 }
@@ -89,6 +99,7 @@ export default function ItemFormControl({
                 if (onChangeItem) {
                     onChangeItem(current);
                 }
+            }
         }
 
     }
@@ -96,6 +107,7 @@ export default function ItemFormControl({
     return (
         <div ref={containerRef} {...containerProps}>
             <FormControl ref={refs.setReference} value={value} {...rest} onKeyDown={inputHandler} autoComplete="off"/>
+            {/* eslint-disable-next-line react-hooks/refs */}
             <div style={{height: '20rem', zIndex: 10, ...floatingStyles}} ref={refs.setFloating}>
                 {open && (
                     <ListGroup>

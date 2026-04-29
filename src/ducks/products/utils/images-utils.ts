@@ -1,7 +1,7 @@
 import type {SortProps} from "chums-types";
 import type {ProductAlternateImage} from "b2b-types";
 
-export const altImageSort = (sort:SortProps<ProductAlternateImage>) => (a:ProductAlternateImage, b:ProductAlternateImage) => {
+export const altImageSort = (sort: SortProps<ProductAlternateImage>) => (a: ProductAlternateImage, b: ProductAlternateImage) => {
     const sortMod = sort.ascending ? 1 : -1;
     switch (sort.field) {
         case 'altText':
@@ -16,8 +16,6 @@ export const altImageSort = (sort:SortProps<ProductAlternateImage>) => (a:Produc
     }
 }
 
-export const defaultAltImageSort:SortProps<ProductAlternateImage> = {field: 'altText', ascending: true};
-
 export interface ImageFilterProps {
     search?: string;
     itemCode?: string;
@@ -30,6 +28,6 @@ export const imageFilter = (list: ProductAlternateImage[], options: ImageFilterP
             || i.image.toLowerCase().includes(options.search.toLowerCase()))
 }
 
-export const productAltImageSrc = (img: ProductAlternateImage, size?: string|number) => {
+export const productAltImageSrc = (img: ProductAlternateImage, size?: string | number) => {
     return `/images/products/${size ?? 80}/${img.image}`
 }

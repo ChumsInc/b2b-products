@@ -4,7 +4,7 @@ import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import type {Product, ProductAdditionalData, ProductSeason, ProductVariant} from "b2b-types";
 import {loadProduct, saveProduct} from "@/ducks/products/actions/product-actions.ts";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/products/actions/variants-actions.ts";
-import {isSellAsVariants} from "@/src/utils.ts";
+import {isSellAsVariants} from "@/utils/common-utils.ts";
 import {variantListSorter} from "@/ducks/products/utils/sorter.ts";
 import type {SortProps} from "chums-types";
 

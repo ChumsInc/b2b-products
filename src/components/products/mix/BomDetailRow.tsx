@@ -12,8 +12,10 @@ export default function BomDetailRow({item, ...rest}: BomDetailRowProps) {
     const components = useAppSelector(selectCurrentMixComponents);
     const [component, setComponent] = React.useState<ProductMixComponent|null>(null);
     useEffect(() => {
-        const [component] = components.filter(c => c.itemCode === item.ComponentItemCode)
-        setComponent(component ?? null);
+        Promise.resolve().then(() => {
+            const [component] = components.filter(c => c.itemCode === item.ComponentItemCode)
+            setComponent(component ?? null);
+        })
     }, [item, components]);
 
     const rowClassName = classNames({

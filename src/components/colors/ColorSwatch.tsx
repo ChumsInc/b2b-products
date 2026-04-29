@@ -1,6 +1,6 @@
 import {type HTMLAttributes} from 'react';
 import classNames from "classnames";
-import {parseColor} from "../../utils";
+import {parseColor} from "../../utils/common-utils";
 import styled from "@emotion/styled";
 
 const ColorSwatchEl = styled.div`

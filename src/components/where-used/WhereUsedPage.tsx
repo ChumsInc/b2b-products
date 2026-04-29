@@ -14,7 +14,9 @@ const WhereUsedPage = () => {
     const [value, setValue] = useState<string>(search);
 
     useEffect(() => {
-        setValue(search);
+        Promise.resolve().then(() => {
+            setValue(search);
+        })
     }, [search]);
 
     const submitHandler = (ev: FormEvent) => {

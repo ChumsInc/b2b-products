@@ -27,11 +27,15 @@ const SortableVariantList = () => {
     const [sorted, setSorted] = useState(currentSort);
 
     useEffect(() => {
-        setItems(variants);
+        Promise.resolve().then(() => {
+            setItems(variants);
+        })
     }, [variants]);
 
     useEffect(() => {
-        setSorted(variantSortKey(items));
+        Promise.resolve().then(() => {
+            setSorted(variantSortKey(items));
+        })
     }, [items]);
 
     const saveClickHandler = async () => {

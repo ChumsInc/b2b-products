@@ -1,6 +1,6 @@
 import {type HTMLAttributes} from 'react';
 import type {Product, ProductListItem} from "b2b-types";
-import {isProductListItem, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "@/src/utils";
+import {isProductListItem, SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from "../../../utils/common-utils";
 import {Badge} from "react-bootstrap";
 import styled from "@emotion/styled";
 

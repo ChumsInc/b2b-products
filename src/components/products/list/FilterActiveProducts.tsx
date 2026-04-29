@@ -1,7 +1,7 @@
 import {type ChangeEvent, useId} from 'react';
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {selectProductsShowInactive, toggleShowInactive} from "@/ducks/productList/productListSlice.ts";
-import {localStorageKeys, setPreference} from "@/src/api/preferences";
+import {localStorageKeys, setPreference} from "@/api/preferences";
 import {FormCheck} from "react-bootstrap";
 
 export default function FilterActiveProducts() {

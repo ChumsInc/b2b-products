@@ -8,14 +8,12 @@ export default defineConfig({
     plugins: [react()],
     resolve: {
         alias: {
-            '@/': path.resolve(process.cwd(), 'src'),
             "@/api": path.resolve(process.cwd(), 'src/api'),
             '@/app': path.resolve(process.cwd(), 'src/app'),
             '@/components': path.resolve(process.cwd(), 'src/components'),
             "@/ducks": path.resolve(process.cwd(), 'src/ducks'),
             "@/hooks": path.resolve(process.cwd(), 'src/hooks'),
             '@/slices': path.resolve(process.cwd(), 'src/slices'),
-            "@/src": path.resolve(process.cwd(), 'src'),
             "@/types": path.resolve(process.cwd(), 'src/types'),
             "@/utils": path.resolve(process.cwd(), 'src/utils'),
         }
@@ -28,7 +26,8 @@ export default defineConfig({
             output: {
                 codeSplitting: {
                     groups: [
-                        {test: /node_modules/, name: 'vendor'},
+                        {name: 'react', test: /node_modules\/(react|react-dom)\//, priority: 20},
+                        {name: 'vendor', test: /node_modules/},
                     ]
                 }
             }

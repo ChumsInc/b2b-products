@@ -1,5 +1,5 @@
 import type {ProductVariant} from "b2b-types";
-import {defaultVariant} from "@/src/utils.ts";
+import {defaultVariant} from "../../utils/common-utils.ts";
 import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {loadProduct} from "@/ducks/products/actions/product-actions.ts";
 import {isSellAsVariantsProduct} from "@/ducks/products/utils/utils.ts";

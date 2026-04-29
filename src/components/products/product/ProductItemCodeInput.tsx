@@ -19,7 +19,9 @@ export const ProductItemCodeInput = ({id, inputProps}: ProductItemCodeInputProps
     const [item, setItem] = useState<ItemSearchRecord | null>(null);
 
     useEffect(() => {
-        setItemCode(product?.itemCode ?? '');
+        Promise.resolve().then(() => {
+            setItemCode(product?.itemCode ?? '');
+        });
     }, [product?.itemCode])
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {

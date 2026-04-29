@@ -1,5 +1,5 @@
 import type {Product, ProductListItem, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types";
-import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "../../../utils.ts";
+import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "../../../utils/common-utils.ts";
 import Decimal from "decimal.js";
 
 export function isSellAsVariantsProduct(product: Product|null): product is SellAsVariantsProduct {
@@ -43,10 +43,10 @@ export function listItemFromProduct(product: Product): ProductListItem {
             .filter(i => i.status)
             .reduce((pv, cv) => {
                 return {
-                    min: !!pv.min
+                    min: pv.min
                         ? (new Decimal(cv.msrp ?? 0).lt(pv.min) ? (cv.msrp ?? 0) : pv.min)
                         : (cv.msrp ?? 0),
-                    max: !!pv.max
+                    max: pv.max
                         ? (new Decimal(cv.msrp ?? 0).gt(pv.max) ? (cv.msrp ?? 0) : pv.max)
                         : (cv.msrp ?? 0)
                 }

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import type {ProductSellAs} from "b2b-types";
-import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from '@/src/utils'
+import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_SELF, SELL_AS_VARIANTS} from '../../../utils/common-utils'
 import {selectCurrentProductSellAs, updateProduct} from "@/ducks/products/productSlice.ts";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {ErrorBoundary} from "react-error-boundary";

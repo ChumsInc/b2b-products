@@ -3,7 +3,7 @@ import type {SortProps} from "chums-types";
 import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {LocalStore} from "chums-ui-utils";
 import {loadProductsList} from "./actions";
-import {localStorageKeys} from "@/src/api/preferences";
+import {localStorageKeys} from "@/api/preferences";
 import {saveProduct} from "../products/actions/product-actions.ts";
 import {listItemFromProduct} from "../products/utils/utils.ts";
 import type {ProductFilter, ProductsListState} from "@/ducks/productList/types.ts";

@@ -26,7 +26,7 @@ export default function App() {
         dispatch(loadColors());
         dispatch(loadProductsList())
         dispatch(loadSeasons())
-    }, []);
+    }, [dispatch]);
 
     return (
         <Routes>

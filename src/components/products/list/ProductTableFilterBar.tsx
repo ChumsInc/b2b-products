@@ -3,7 +3,7 @@ import {useAppDispatch} from "@/app/configureStore";
 import {loadKeywords} from "@/ducks/keywords/actions";
 import {loadColors} from "@/ducks/colors/actions";
 import {loadSeasons} from "@/ducks/seasons/actions";
-import {reloadSwatchCSSFile} from "@/src/utils";
+import {reloadSwatchCSSFile} from "../../../utils/common-utils";
 import {Button, Col, Row} from "react-bootstrap";
 import FilterActiveProducts from "./FilterActiveProducts";
 import FilterAvailableProducts from "./FilterAvailableProducts";

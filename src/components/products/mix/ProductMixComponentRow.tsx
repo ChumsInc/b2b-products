@@ -16,21 +16,20 @@ export interface ProductMixComponentRowProps {
 const ProductMixComponentRow = ({productId, component}: ProductMixComponentRowProps) => {
     const dispatch = useAppDispatch();
     const bomDetail = useAppSelector(selectCurrentMixBOMDetail);
-    const [comp, setComp] = useState<ProductMixComponent & Editable>({...component});
+    const [mixComponent, setMixComponent] = useState<ProductMixComponent & Editable>({...component});
     const [bomComp, setBOMComp] = useState<BOMComponent|null>(null);
     const id = useId();
 
     useEffect(() => {
-        setComp({...component});
-    }, [component]);
-
-    useEffect(() => {
-        const [bomComponent] = bomDetail.filter(row => row.ComponentItemCode === component.itemCode);
-        setBOMComp(bomComponent ?? null);
+        Promise.resolve().then(() => {
+            setMixComponent({...component});
+            const [bomComponent] = bomDetail.filter(row => row.ComponentItemCode === component.itemCode);
+            setBOMComp(bomComponent ?? null);
+        })
     }, [component, bomDetail]);
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-        setComp({...comp, itemQuantity: ev.target.valueAsNumber, changed: true})
+        setMixComponent({...mixComponent, itemQuantity: ev.target.valueAsNumber, changed: true})
     }
 
     const submitHandler = (ev: FormEvent) => {
@@ -38,12 +37,12 @@ const ProductMixComponentRow = ({productId, component}: ProductMixComponentRowPr
         if (!productId) {
             return;
         }
-        dispatch(saveMixComponent({productId, component: comp}));
+        dispatch(saveMixComponent({productId, component: mixComponent}));
     }
 
     const buttonClassName = classNames('btn btn-sm', {
-        'btn-primary': new Decimal(bomComp?.QuantityPerBill ?? 0).eq(comp.itemQuantity ?? 0),
-        'btn-danger': !new Decimal(bomComp?.QuantityPerBill ?? 0).eq(comp.itemQuantity ?? 0),
+        'btn-primary': new Decimal(bomComp?.QuantityPerBill ?? 0).eq(mixComponent.itemQuantity ?? 0),
+        'btn-danger': !new Decimal(bomComp?.QuantityPerBill ?? 0).eq(mixComponent.itemQuantity ?? 0),
     })
 
     const rowClassName = classNames({
@@ -51,24 +50,24 @@ const ProductMixComponentRow = ({productId, component}: ProductMixComponentRowPr
     })
     return (
 
-        <tr key={comp.id} className={rowClassName}>
-            <td>{comp.itemCode}</td>
-            <td>{comp.color?.code}</td>
-            <td>{comp.color?.name}</td>
+        <tr key={mixComponent.id} className={rowClassName}>
+            <td>{mixComponent.itemCode}</td>
+            <td>{mixComponent.color?.code}</td>
+            <td>{mixComponent.color?.name}</td>
             <td>
                 <form onSubmit={submitHandler} id={id}>
                     <InputGroup size="sm">
                         <FormControl type="number" size="sm" className="text-end" min={0}
-                                     value={comp.itemQuantity} onChange={changeHandler}/>
+                                     value={mixComponent.itemQuantity} onChange={changeHandler}/>
                         <InputGroup.Text>
-                            {comp.itemQuantity === +(bomComp?.QuantityPerBill ?? 0) && (
+                            {mixComponent.itemQuantity === +(bomComp?.QuantityPerBill ?? 0) && (
                                 <span className="bi-check text-success"/>
                             )}
-                            {comp.itemQuantity !== +(bomComp?.QuantityPerBill ?? 0) && (
+                            {mixComponent.itemQuantity !== +(bomComp?.QuantityPerBill ?? 0) && (
                                 <span className="bi-exclamation-triangle text-danger me-1"/>
                             )}
                         </InputGroup.Text>
-                        {comp.itemQuantity !== +(bomComp?.QuantityPerBill ?? 0) && (
+                        {mixComponent.itemQuantity !== +(bomComp?.QuantityPerBill ?? 0) && (
                             <InputGroup.Text className="text-danger">
                                 {bomComp?.QuantityPerBill ?? 0}
                             </InputGroup.Text>
@@ -78,7 +77,7 @@ const ProductMixComponentRow = ({productId, component}: ProductMixComponentRowPr
                 </form>
             </td>
             <td>
-                <button type="button" className={buttonClassName} disabled={!comp.changed}
+                <button type="button" className={buttonClassName} disabled={!mixComponent.changed}
                         form={id}
                         onClick={submitHandler}>
                     Save

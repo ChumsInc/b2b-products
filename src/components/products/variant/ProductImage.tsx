@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {parseColor} from "../../../utils";
+import {parseColor} from "../../../utils/common-utils";
 
 interface ProductImageProps {
     title?: string,

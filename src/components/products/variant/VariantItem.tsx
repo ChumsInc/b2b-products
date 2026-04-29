@@ -37,7 +37,9 @@ export default function VariantItem({variant, active}:VariantItemProps) {
     const [btnVariant, setBtnVariant] = useState<Variant>(getButtonVariant(variant, active));
 
     useEffect(() => {
-        setBtnVariant(getButtonVariant(variant, active))
+        Promise.resolve().then(() => {
+            setBtnVariant(getButtonVariant(variant, active))
+        })
     }, [variant, active]);
 
     const clickHandler = (ev:MouseEvent<HTMLButtonElement>) => {

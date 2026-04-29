@@ -2,7 +2,7 @@ import React, {type ChangeEvent, type FormEvent, useEffect, useState} from "reac
 import {saveColor} from "@/ducks/colors/actions";
 import type {Editable, ProductColor} from "b2b-types";
 import {selectColorsStatus, selectCurrentColor} from "@/ducks/colors/selectors";
-import {defaultColor} from "../../defaults";
+import {defaultColor} from "../../utils/defaults";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import Button from 'react-bootstrap/Button'
 import {useNavigate} from "react-router";
@@ -24,7 +24,9 @@ const ColorEditor: React.FC = () => {
     const [color, setColor] = useState<EditableProductColor>(current ?? defaultColor);
 
     useEffect(() => {
-        setColor(current ?? defaultColor);
+        Promise.resolve().then(() => {
+            setColor(current ?? defaultColor);
+        })
     }, [current]);
 
     const onChangeField = (field: keyof ProductColor) => (ev: ChangeEvent<HTMLInputElement>) => {

@@ -14,9 +14,11 @@ export default function ProductImageGrid({search, itemCode}: ImageFilterProps) {
     const [list, setList] = useState(images);
 
     useEffect(() => {
-        const list = imageFilter(images, {search, itemCode});
-        setList(list);
-        setPage(0);
+        Promise.resolve().then(() => {
+            const list = imageFilter(images, {search, itemCode});
+            setList(list);
+            setPage(0);
+        })
     }, [images, search, itemCode, rowsPerPage]);
 
     const clickHandler = (image: ProductAlternateImage) => {

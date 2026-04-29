@@ -24,7 +24,9 @@ const ModalEditor = ({show, title, content, onClose, onCancel}:ModalEditorProps)
     }, [wordWrap]);
 
     useEffect(() => {
-        setHTML(content);
+        Promise.resolve().then(() => {
+            setHTML(content);
+        })
     }, [content]);
 
     return (

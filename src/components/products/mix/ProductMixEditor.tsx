@@ -1,4 +1,4 @@
-import React, {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
+import React, {type ChangeEvent, useEffect, useId, useState} from 'react';
 import {selectCurrentMix, selectCurrentMixStatus} from "@/ducks/products/productMixSlice";
 import type {Editable, ProductMixItem} from "b2b-types";
 import {loadMixBOM, saveMix} from "@/ducks/products/actions/mix-actions.ts";
@@ -21,18 +21,19 @@ const ProductMixEditor: React.FC = () => {
     const [mix, setMix] = useState<ProductMixItem & Editable>(current ?? {...defaultMixItem});
 
     useEffect(() => {
-        setMix({...(current ?? defaultMixItem)});
+        Promise.resolve().then(() => {
+            setMix({...(current ?? defaultMixItem)});
+        })
     }, [current]);
 
     useEffect(() => {
         if (current) {
             dispatch(loadMixBOM(current.itemCode));
         }
-    }, [current?.itemCode]);
+    }, [dispatch, current]);
 
 
-    const submitHandler = (ev: FormEvent) => {
-        ev.preventDefault();
+    const submitHandler = () => {
         dispatch(saveMix(mix));
     }
 
@@ -56,7 +57,7 @@ const ProductMixEditor: React.FC = () => {
 
     return (
         <>
-            <Form onSubmit={submitHandler} className="mt-3">
+            <Form action={submitHandler} className="mt-3">
                 <Form.Group as={Row}>
                     <Form.Label column={true} xs={4} lg={3} htmlFor={id}>ID / Item Code</Form.Label>
                     <Col>

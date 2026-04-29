@@ -20,7 +20,7 @@ export default function ProductEditor() {
         if (params.keyword !== keyword) {
             dispatch(loadProduct(params.keyword ?? 'new'))
         }
-    }, [keyword, params]);
+    }, [keyword, params, dispatch]);
 
     return (
         <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>

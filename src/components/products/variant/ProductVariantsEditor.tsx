@@ -1,4 +1,4 @@
-import {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
+import {type ChangeEvent, useEffect, useId, useState} from 'react';
 import SpinnerButton from "@/components/common/SpinnerButton";
 import {
     selectCurrentProductVariants,
@@ -7,7 +7,7 @@ import {
 } from "@/ducks/products/productVariantsSlice";
 import type {Editable, Keyword, ProductVariant} from "b2b-types";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
-import {defaultVariant} from "@/src/defaults";
+import {defaultVariant} from "../../../utils/defaults";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/products/actions/variants-actions.ts";
 import {selectCurrentProductId} from "@/ducks/products/productSlice.ts";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
@@ -34,18 +34,21 @@ const ProductVariantsEditor = () => {
         if (!variant?.id || variant?.parentProductID !== productId) {
             const variant: ProductVariant = {...defaultVariant, parentProductID: productId};
             console.log('useEffect()', productId, variant);
-            setVariant(variant);
-            setAlert(null);
+            Promise.resolve().then(() => {
+                setVariant(variant);
+                setAlert(null);
+            })
         }
     }, [productId, variant]);
 
     useEffect(() => {
-        setVariant(current ? {...current} : {...defaultVariant, parentProductID: productId});
-        setAlert(null);
+        Promise.resolve().then(() => {
+            setVariant(current ? {...current} : {...defaultVariant, parentProductID: productId});
+            setAlert(null);
+        })
     }, [current, productId]);
 
-    const submitHandler = async (ev: FormEvent) => {
-        ev.preventDefault();
+    const submitHandler = async () => {
         await dispatch(saveCurrentVariant(variant));
     }
 
@@ -97,7 +100,7 @@ const ProductVariantsEditor = () => {
     return (
         <Row>
             <Col md={8} xs={12}>
-                <Form onSubmit={submitHandler}>
+                <Form action={submitHandler}>
                     <Form.Group as={Row} label="ID" width={colWidth}>
                         <Form.Label column={true} xs={4} lg={3} htmlFor={variantIdId}>ID</Form.Label>
                         <Col>
