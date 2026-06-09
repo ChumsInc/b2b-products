@@ -1,12 +1,13 @@
-import {selectCurrentColorItem, selectCurrentColorSort, setColorsSort} from "@/ducks/products/productColorItemsSlice";
-import type {ProductColorItem} from "b2b-types";
-import SeasonIcon from "../../season/SeasonIcon";
+import {selectCurrentColorSort, setColorsSort} from "@/ducks/products/productColorItemsSlice.ts";
+import type {ProductColorItem} from "chums-types/b2b";
+import SeasonIcon from "../../../season/SeasonIcon.tsx";
 import {SortableTable, type SortableTableField} from "@chumsinc/sortable-tables";
 import classNames from "classnames";
-import {useAppDispatch, useAppSelector} from "@/app/configureStore";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
 import type {SortProps} from "chums-types";
-import ProductColorSwatch from "@/components/products/color/ProductColorSwatch";
+import ProductColorSwatch from "@/components/products/color/common/ProductColorSwatch.tsx";
 import {Badge} from "react-bootstrap";
+import useProductItems from "@/components/products/color/useProductItems.ts";
 
 
 const fields: SortableTableField<ProductColorItem>[] = [
@@ -63,12 +64,11 @@ const fields: SortableTableField<ProductColorItem>[] = [
 
 export interface ProductColorTableProps {
     list: ProductColorItem[];
-    onSelectItem: (item: ProductColorItem) => void;
 }
 
-export default function ProductColorTable({list, onSelectItem}: ProductColorTableProps) {
+export default function ProductColorTable({list}: ProductColorTableProps) {
     const dispatch = useAppDispatch()
-    const selected = useAppSelector(selectCurrentColorItem);
+    const {currentItem, setCurrentItem} = useProductItems();
     const sort = useAppSelector(selectCurrentColorSort);
 
     const sortChangeHandler = (sort: SortProps<ProductColorItem>) => {
@@ -80,8 +80,8 @@ export default function ProductColorTable({list, onSelectItem}: ProductColorTabl
                        rowClassName={(row) => classNames({'text-danger': !row.status})}
                        data={list}
                        currentSort={sort} onChangeSort={sortChangeHandler}
-                       onSelectRow={(row) => onSelectItem(row)}
-                       selected={row => row.id === selected?.id}
+                       onSelectRow={setCurrentItem}
+                       selected={row => row.id === currentItem?.id}
         />
     )
 }

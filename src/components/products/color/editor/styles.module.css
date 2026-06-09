@@ -1,0 +1,6 @@
+.product-color-editor {
+    :global(.row) {
+        --bs-gutter-x: 1rem;
+    }
+}
+

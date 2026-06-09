@@ -1,24 +1,22 @@
-import React from 'react';
-import ProductColorEditor from "./ProductColorEditor";
-import ProductColorList from "./ProductColorList";
-import ProductColorImage from "./ProductColorImage";
+import ProductColorEditor from "./editor/ProductColorEditor.tsx";
+import ProductColorList from "./list/ProductColorList.tsx";
+import ProductColorImage from "./editor/ProductColorImage.tsx";
 import {Col, Row} from "react-bootstrap";
+import ProductItemsProvider from "@/components/products/color/ProductItemsProvider.tsx";
 
-const ProductColorsTab:React.FC = () => {
+export default function ProductColorsTab() {
 
     return (
-        <div>
+        <ProductItemsProvider>
             <Row className="g-3">
-                <Col  lg={12} xl={6}>
+                <Col>
                     <ProductColorEditor />
                 </Col>
-                <Col xl={6} className="d-lg-none d-xl-block">
+                <Col lg="auto">
                     <ProductColorImage />
                 </Col>
             </Row>
             <ProductColorList />
-        </div>
+        </ProductItemsProvider>
     )
 }
-
-export default ProductColorsTab;
