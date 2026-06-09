@@ -1,5 +1,5 @@
 import React, {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from 'react';
-import type {ProductColor, ProductMixComponent, ProductMixItem} from "b2b-types";
+import type {ProductColor, ProductMixComponent, ProductMixItem} from "chums-types/b2b";
 import {deepStrictEqual} from "../../../utils/common-utils";
 import ItemFormControl from "@/components/common/ItemFormControl";
 import type {BOMComponent, ItemSearchRecord} from "@/types/item-search";

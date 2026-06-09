@@ -2,7 +2,7 @@ import React, {type TableHTMLAttributes, useEffect} from 'react';
 import type {BOMComponent} from "@/types/item-search";
 import {useAppSelector} from "@/app/configureStore";
 import {selectCurrentMixComponents} from "@/ducks/products/productMixSlice";
-import type {ProductMixComponent} from "b2b-types";
+import type {ProductMixComponent} from "chums-types/b2b";
 import classNames from "classnames";
 
 export interface BomDetailRowProps extends TableHTMLAttributes<HTMLTableRowElement> {

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {selectCurrentMix, selectCurrentMixComponents} from "@/ducks/products/productMixSlice";
-import type {ProductMixComponent} from "b2b-types";
+import type {ProductMixComponent} from "chums-types/b2b";
 import ProductMixComponentRow from "./ProductMixComponentRow";
 import {defaultMixComponent} from "@/ducks/products/utils/mix-utils.ts";
 import {Button, Col, Row} from "react-bootstrap";

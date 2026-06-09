@@ -1,5 +1,5 @@
 import {type ChangeEvent, type FormEvent, useEffect, useId, useState} from 'react';
-import type {Editable, ProductMixComponent} from "b2b-types";
+import type {Editable, ProductMixComponent} from "chums-types/b2b";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {saveMixComponent} from "@/ducks/products/actions/mix-actions.ts";
 import {selectCurrentMixBOMDetail} from "@/ducks/products/productMixBOMSlice";
