@@ -1,25 +1,26 @@
-import {parseColor} from "../../utils/common-utils";
+import {parseColor, productImagePath} from "@/utils/image-utils";
 import classNames from "classnames";
+import type {ProductImageSize} from "@/types/product-images.ts";
 
-export type ProductImageSize = 80 | 125 | 250 | 400 | 800 | 2048;
+
 
 export interface ProductImage {
-    filename: string|null,
+    filename: string | null,
     itemCode: string,
     colorCode?: string,
     size: ProductImageSize,
     className?: string,
 }
 
-const ProductImage = ({filename, itemCode, colorCode, size, className}:ProductImage) => {
+export default function ProductImage({filename, itemCode, colorCode, size, className}: ProductImage) {
     if (!filename) {
         filename = 'missing.png';
     }
     const image = parseColor(filename, colorCode);
-    const src = `/images/products/${size}/${image}`;
+    const src = productImagePath(image, size);
     return (
         <figure className={classNames('product-image', className, `image-${size}`)}>
-            <img src={src} alt={itemCode || filename} loading="lazy" className="img-fluid" />
+            <img src={src} alt={itemCode || filename} loading="lazy" className="img-fluid"/>
             <figcaption className="figure-caption">
                 <div><strong>{itemCode}</strong></div>
                 <div className="text-secondary filename" title={filename}>{image}</div>
@@ -28,5 +29,3 @@ const ProductImage = ({filename, itemCode, colorCode, size, className}:ProductIm
     )
 
 }
-
-export default ProductImage;

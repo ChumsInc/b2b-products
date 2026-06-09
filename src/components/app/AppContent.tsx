@@ -89,6 +89,18 @@ const AppContainer = styled.div`
         color: var(--sell-as-colors-color);
         border-color: var(--sell-as-colors-color);
     }
+    .table-responsive-container {
+        container-type: inline-size;
+    }
+    @container (width < 50vw) {
+        .size-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            tbody > tr > td {
+                white-space: nowrap;
+            }
+        }
+    }
 `
 
 const AppContent = () => {
