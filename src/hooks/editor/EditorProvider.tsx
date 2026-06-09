@@ -1,4 +1,4 @@
-import {type ReactNode, useCallback, useEffect, useMemo, useState} from "react";
+import {type ReactNode, startTransition, useCallback, useEffect, useMemo, useState} from "react";
 import isEqual from 'fast-deep-equal';
 import EditorContext, {type EditorContextData} from "@/hooks/editor/EditorContext.tsx";
 
@@ -16,10 +16,9 @@ export default function EditorProvider<T>({initialValue, children}: EditorProvid
     const [state, setState] = useState<EditorState<T>>({value: initialValue, changed:false});
 
     useEffect(() => {
-        const reset = () => {
+        startTransition(() => {
             setState({value: initialValue, changed:false});
-        }
-        reset();
+        })
     }, [initialValue]);
 
     const updateValue = useCallback((arg: Partial<T>) => {
