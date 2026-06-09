@@ -1,0 +1,15 @@
+.table-responsive-container {
+    container-type: inline-size;
+
+    @container (width < 50vw) {
+        .sizeResponsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            tbody > tr > td {
+                white-space: nowrap;
+            }
+        }
+    }
+
+}
+
