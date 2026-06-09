@@ -1,4 +1,4 @@
-import type {ProductSeason} from "b2b-types";
+import type {ProductSeason} from "chums-types/b2b";
 import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {loadSeasons} from "./actions";
 import type {SortProps} from "chums-types";
@@ -58,7 +58,7 @@ export const selectSeasonByCode = createSelector(
 export const selectSortedSeasons = createSelector(
     [selectSeasonsList],
     (list) => {
-        return [...list].sort((a, b) => a.code.toLowerCase().localeCompare(b.code.toLowerCase()))
+        return [...list].sort((a, b) => a.code.toLowerCase().localeCompare(b.code.toLowerCase())).reverse()
     }
 )
 

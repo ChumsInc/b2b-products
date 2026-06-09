@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import type {ProductSeason} from "b2b-types";
+import type {ProductSeason} from "chums-types/b2b";
 import {fetchSeasons} from "./api";
 import {type RootState} from "@/app/configureStore";
 import {selectSeasonsStatus} from "@/ducks/seasons";
