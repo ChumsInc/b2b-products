@@ -1,4 +1,4 @@
-import type {Editable, Product} from "b2b-types";
+import type {Editable, Product} from "chums-types/b2b";
 
 export type EditableProduct = Product & Editable;
 export interface CurrentProductState {

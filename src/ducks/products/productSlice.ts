@@ -1,7 +1,7 @@
 import type {CurrentProductState} from "@/ducks/products/types";
 import {defaultProduct, defaultProductSeason} from "@/ducks/products/utils/product-utils.ts";
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {Product, ProductAdditionalData, ProductSeason, ProductVariant} from "b2b-types";
+import type {Product, ProductAdditionalData, ProductSeason, ProductVariant} from "chums-types/b2b";
 import {loadProduct, saveProduct} from "@/ducks/products/actions/product-actions.ts";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/products/actions/variants-actions.ts";
 import {isSellAsVariants} from "@/utils/common-utils.ts";

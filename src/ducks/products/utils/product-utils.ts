@@ -1,4 +1,4 @@
-import type {Product, ProductBase, ProductSeason} from "b2b-types";
+import type {Product, ProductBase, ProductSeason} from "chums-types/b2b";
 
 export const defaultProductBase: ProductBase = {
     id: 0,

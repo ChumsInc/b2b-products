@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import type {ProductAlternateImage} from "b2b-types";
+import type {ProductAlternateImage} from "chums-types/b2b";
 import {deleteAltImage, fetchAltImages, postAltImage} from "../api/images-api.ts";
 
 export const loadImages = createAsyncThunk<ProductAlternateImage[], number>(

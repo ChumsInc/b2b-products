@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import type {ProductColorItem} from "b2b-types";
+import type {ProductColorItem} from "chums-types/b2b";
 import {deleteColorItem, postColorItem} from "../api/color-item-api.ts";
 import {selectColorByCode} from "../../colors/selectors.ts";
 import {type RootState} from "@/app/configureStore.ts";

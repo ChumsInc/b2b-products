@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import type {ProductMixComponent, ProductMixItem} from "b2b-types";
+import type {ProductMixComponent, ProductMixItem} from "chums-types/b2b";
 import {fetchMixBOM, postMix, postMixComponent} from "../api/mix-api.ts";
 import type {BOMResult} from "@/types/item-search.ts";
 import type {RootState} from "@/app/configureStore.ts";

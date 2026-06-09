@@ -1,5 +1,5 @@
 import type {SortProps} from "chums-types";
-import type {ProductAlternateImage} from "b2b-types";
+import type {ProductAlternateImage} from "chums-types/b2b";
 
 export const altImageSort = (sort: SortProps<ProductAlternateImage>) => (a: ProductAlternateImage, b: ProductAlternateImage) => {
     const sortMod = sort.ascending ? 1 : -1;

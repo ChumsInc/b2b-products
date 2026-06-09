@@ -1,4 +1,4 @@
-import type {ProductColorItem, ProductListItem, ProductMixComponent, ProductVariant} from "b2b-types";
+import type {ProductColorItem, ProductListItem, ProductMixComponent, ProductVariant} from "chums-types/b2b";
 import type {SortProps} from "chums-types";
 
 

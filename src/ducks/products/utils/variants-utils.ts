@@ -1,4 +1,4 @@
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import {variantListSorter} from "@/ducks/products/utils/sorter.ts";
 
 export const variantSortKey = (list: ProductVariant[]) => {

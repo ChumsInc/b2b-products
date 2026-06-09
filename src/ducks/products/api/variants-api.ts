@@ -1,4 +1,4 @@
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import {fetchJSON} from "chums-ui-utils";
 import type {VariantSortArgs} from "@/types/variant.ts";
 

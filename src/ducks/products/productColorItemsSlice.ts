@@ -1,4 +1,4 @@
-import type {ActionStatus, ProductColorItem} from "b2b-types";
+import type {ActionStatus, ProductColorItem} from "chums-types/b2b";
 import type {SortProps} from "chums-types";
 import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {removeColorItem, saveCurrentColorItem} from "@/ducks/products/actions/color-item-actions.ts";
@@ -34,9 +34,6 @@ export const productColorItemsSlice = createSlice({
     name: 'productColorItems',
     initialState: adapter.getInitialState(extraState),
     reducers: {
-        setCurrentColorItem: (state, action: PayloadAction<ProductColorItem | null>) => {
-            state.current = action.payload;
-        },
         setColorsSort: (state, action: PayloadAction<SortProps<ProductColorItem>>) => {
             state.sort = action.payload;
         },
@@ -89,7 +86,6 @@ export const productColorItemsSlice = createSlice({
     },
     selectors: {
         selectCurrentProductColors: (state) => selectors.selectAll(state),
-        selectCurrentColorItem: (state) => state.current,
         selectCurrentColorStatus: (state) => state.status,
         selectCurrentColorShowInactive: (state) => state.showInactive,
         selectCurrentColorSort: (state) => state.sort,
@@ -97,13 +93,11 @@ export const productColorItemsSlice = createSlice({
 });
 
 export const {
-    setCurrentColorItem,
     setColorsSort,
     setColorsShowInactive,
 } = productColorItemsSlice.actions;
 export const {
     selectCurrentProductColors,
-    selectCurrentColorItem,
     selectCurrentColorStatus,
     selectCurrentColorShowInactive,
     selectCurrentColorSort

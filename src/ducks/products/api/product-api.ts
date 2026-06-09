@@ -1,4 +1,4 @@
-import type {BasicProduct, Product, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types";
+import type {BasicProduct, Product, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "chums-types/b2b";
 import {fetchJSON} from "chums-ui-utils";
 import {isSellAsColorsProduct, isSellAsMixProduct, isSellAsVariantsProduct} from "../utils/utils.ts";
 import {defaultProduct} from "../utils/product-utils.ts";

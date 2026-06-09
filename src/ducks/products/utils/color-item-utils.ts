@@ -1,5 +1,5 @@
 import type {SortProps} from "chums-types";
-import type {ProductColorItem} from "b2b-types";
+import type {ProductColorItem} from "chums-types/b2b";
 
 export const productColorSorter = (sort:SortProps<ProductColorItem>) => (a:ProductColorItem, b:ProductColorItem) => {
     const {field, ascending} = sort;

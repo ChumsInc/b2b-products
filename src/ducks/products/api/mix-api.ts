@@ -1,6 +1,6 @@
 import type {BOMResult} from "@/types/item-search.ts";
 import {fetchJSON} from "chums-ui-utils";
-import type {ProductMixComponent, ProductMixItem} from "b2b-types";
+import type {ProductMixComponent, ProductMixItem} from "chums-types/b2b";
 
 export async function fetchMixBOM(itemCode: string):Promise<BOMResult|null> {
     try {

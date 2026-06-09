@@ -1,4 +1,4 @@
-import type {ActionStatus} from "b2b-types";
+import type {ActionStatus} from "chums-types/b2b";
 import {loadProduct, saveProduct} from "@/ducks/products/actions/product-actions.ts";
 import {isSellAsMixProduct} from "@/ducks/products/utils/utils.ts";
 import {loadMixBOM} from "@/ducks/products/actions/mix-actions.ts";

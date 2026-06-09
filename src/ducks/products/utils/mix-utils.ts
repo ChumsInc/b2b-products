@@ -1,4 +1,4 @@
-import type {ProductMixComponent, ProductMixItem} from "b2b-types";
+import type {ProductMixComponent, ProductMixItem} from "chums-types/b2b";
 import {defaultProductBase} from "./product-utils.ts";
 
 export const defaultMixItem: ProductMixItem = {

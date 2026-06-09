@@ -1,5 +1,5 @@
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import {deleteVariant, postVariant, putDefaultVariant, putVariantSort} from "../api/variants-api.ts";
 import {selectCurrentVariantStatus} from "@/ducks/products/productVariantsSlice";
 import {type RootState} from "@/app/configureStore.ts";

@@ -1,4 +1,4 @@
-import type {Product, ProductListItem, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "b2b-types";
+import type {Product, ProductListItem, SellAsColorsProduct, SellAsMixProduct, SellAsVariantsProduct} from "chums-types/b2b";
 import {SELL_AS_COLORS, SELL_AS_MIX, SELL_AS_VARIANTS} from "../../../utils/common-utils.ts";
 import Decimal from "decimal.js";
 
