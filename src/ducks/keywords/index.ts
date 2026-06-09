@@ -1,4 +1,4 @@
-import type {Keyword} from "b2b-types";
+import type {Keyword} from "chums-types/b2b";
 import {createReducer} from "@reduxjs/toolkit";
 import {loadKeywords} from "./actions";
 import {saveProduct} from "../products/actions/product-actions.ts";
