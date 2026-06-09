@@ -1,4 +1,4 @@
-import type {ProductListItem} from "b2b-types";
+import type {ProductListItem} from "chums-types/b2b";
 import {Link} from "react-router";
 
 export interface ProductRedirectIconProps {

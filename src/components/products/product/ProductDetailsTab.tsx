@@ -5,7 +5,7 @@ import {
     updateProduct,
     updateProductAdditionalData
 } from "@/ducks/products/productSlice.ts";
-import type {Product, ProductAdditionalData} from "b2b-types";
+import type {Product, ProductAdditionalData} from "chums-types/b2b";
 import ModalEditor from "../../app/ModalEditor";
 import {saveProduct} from "@/ducks/products/actions/product-actions.ts";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";

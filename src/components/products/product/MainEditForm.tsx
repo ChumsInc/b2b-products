@@ -7,7 +7,7 @@ import {
     updateProductAdditionalData,
     updateProductSeason
 } from "@/ducks/products/productSlice.ts";
-import type {Keyword, Product, ProductAdditionalData, ProductSeason} from "b2b-types";
+import type {Keyword, Product, ProductAdditionalData, ProductSeason} from "chums-types/b2b";
 import SeasonSelect from "../../season/SeasonSelect";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import ProductSellAsToggle from "./ProductSellAsToggle";
