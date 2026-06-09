@@ -1,5 +1,5 @@
 import {type ChangeEvent, useEffect} from "react";
-import type {Keyword} from "b2b-types";
+import type {Keyword} from "chums-types/b2b";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {selectKeywordsList, selectKeywordsLoaded} from "@/ducks/keywords/selectors";
 import {loadKeywords} from "@/ducks/keywords/actions";
