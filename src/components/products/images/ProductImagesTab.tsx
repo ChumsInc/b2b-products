@@ -1,12 +1,13 @@
-import ProductImageList from "./ProductImageList";
-import ProductImageEdit from "./ProductImageEdit";
+import ProductImageList from "./image-list/ProductImageList.tsx";
+import ProductImageEdit from "./editor/ProductImageEdit.tsx";
+import ProductImagesProvider from "@/components/products/images/ProductImagesProvider.tsx";
 
-const ProductImagesTab = () => {
+export default function ProductImagesTab() {
     return (
-        <div>
+        <ProductImagesProvider>
             <ProductImageEdit/>
             <ProductImageList/>
-        </div>
+        </ProductImagesProvider>
     )
 }
-export default ProductImagesTab;
+

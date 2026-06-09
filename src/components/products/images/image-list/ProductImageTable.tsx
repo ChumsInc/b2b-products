@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react";
-import {setCurrentImage, setImagesSort} from "@/ducks/products/productImagesSlice";
+import {selectImagesSort, setImagesSort} from "@/ducks/products/productImagesSlice.ts";
 import {SortableTable, type SortableTableField, TablePagination} from "@chumsinc/sortable-tables";
-import {useAppDispatch, useAppSelector} from "@/app/configureStore";
-import type {ProductAlternateImage} from "b2b-types";
-import {selectImagesSort, selectSortedImages} from "@/ducks/products/productImagesSlice";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
+import type {ProductAlternateImage} from "chums-types/b2b";
 import type {SortProps} from "chums-types";
-import {imageFilter, type ImageFilterProps} from "@/ducks/products/utils/images-utils.ts";
 import classNames from "classnames";
+import {useProductImages} from "@/components/products/images/useProductImages.ts";
 
 const fields: SortableTableField<ProductAlternateImage>[] = [
     {field: "id", title: 'ID', sortable: true},
@@ -16,40 +15,41 @@ const fields: SortableTableField<ProductAlternateImage>[] = [
     {field: 'priority', title: 'Sort Order', align: 'end', sortable: true},
 ];
 
-export default function ProductImageTable({search, itemCode}: ImageFilterProps) {
+export interface ProductImageListProps {
+    images: ProductAlternateImage[];
+}
+
+export default function ProductImageTable({images}: ProductImageListProps) {
+    const {setCurrentImage, currentImage} = useProductImages();
     const dispatch = useAppDispatch();
-    const images = useAppSelector(selectSortedImages);
     const sort = useAppSelector(selectImagesSort);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(25);
-    const [list, setList] = useState(imageFilter(images, {search, itemCode}));
 
     useEffect(() => {
         Promise.resolve().then(() => {
-            const list = imageFilter(images, {search, itemCode})
-            setList(list);
             setPage(0);
         })
-    }, [images, sort, search, itemCode, rowsPerPage]);
+    }, [images.length, sort, rowsPerPage]);
 
     const sortChangeHandler = (sort: SortProps<ProductAlternateImage>) => {
         dispatch(setImagesSort(sort));
     }
 
     const clickHandler = (image: ProductAlternateImage) => {
-        dispatch(setCurrentImage(image));
+        setCurrentImage(image);
     }
 
     return (
         <div>
             <SortableTable size="xs" fields={fields} keyField={(img) => img.id}
-                           data={list.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
+                           data={images.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
                            rowClassName={(row) => classNames({'text-danger': !row.status})}
                            currentSort={sort} onChangeSort={sortChangeHandler}
-                           onSelectRow={clickHandler}/>
+                           onSelectRow={clickHandler} selected={(row) => row.id === currentImage?.id}/>
             <TablePagination size="sm" page={page} onChangePage={setPage}
                              rowsPerPage={rowsPerPage} rowsPerPageProps={{onChange: setRowsPerPage}}
-                             count={list.length}/>
+                             count={images.length}/>
         </div>
     )
 }

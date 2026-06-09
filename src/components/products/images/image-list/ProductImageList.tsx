@@ -1,18 +1,18 @@
 import React, {useId, useState} from "react";
 import {Col, FormCheck, FormControl, Row} from "react-bootstrap";
-import ProductImageGrid from "@/components/products/images/ProductImageGrid";
-import ProductImageTable from "@/components/products/images/ProductImageTable";
-import {LocalStore} from "chums-ui-utils";
+import ProductImageGrid from "@/components/products/images/image-list/ProductImageGrid.tsx";
+import ProductImageTable from "@/components/products/images/image-list/ProductImageTable.tsx";
 import InputGroup from "react-bootstrap/InputGroup";
-import {useAppDispatch, useAppSelector} from "@/app/configureStore";
-import {selectShowInactiveImages, setShowInactiveImages} from "@/ducks/products/productImagesSlice";
+import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
+import {selectShowInactiveImages, selectSortedImages, setShowInactiveImages} from "@/ducks/products/productImagesSlice.ts";
+import {useProductImages} from "@/components/products/images/useProductImages.ts";
+import {imageFilter} from "@/ducks/products/utils/images-utils.ts";
 
-const showGridKey = 'b2b-products/productImagesGrid';
-
-const ProductImageList = () => {
+export default function ProductImageList() {
+    const {showGrid, setShowGrid} = useProductImages();
     const dispatch = useAppDispatch();
     const showInactive = useAppSelector(selectShowInactiveImages);
-    const [grid, setGrid] = useState(LocalStore.getItem<boolean>(showGridKey, true));
+    const images = useAppSelector(selectSortedImages);
     const [search, setSearch] = useState<string>('');
     const [itemCode, setItemCode] = useState<string>('');
     const showGridId = useId();
@@ -21,24 +21,17 @@ const ProductImageList = () => {
     const showInactiveId = useId();
 
     const changeHandler = (ev: React.ChangeEvent<HTMLInputElement>) => {
-        setGrid(ev.target.checked);
-        LocalStore.setItem(showGridKey, ev.target.checked);
+        setShowGrid(ev.target.checked);
     }
 
     const onChangeShowImages = (ev: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setShowInactiveImages(ev.target.checked));
     }
 
+    const imageList = imageFilter(images, {search, itemCode});
     return (
         <div className="mt-3">
             <Row className="g-3 mb-1">
-                <Col>
-                    <h4>Images</h4>
-                </Col>
-                <Col xs="auto">
-                    <FormCheck type="checkbox" label="Show Inactive" id={showInactiveId} checked={showInactive}
-                               onChange={onChangeShowImages}/>
-                </Col>
                 <Col xs="auto">
                     <InputGroup size="sm">
                         <InputGroup.Text as="label" htmlFor={searchId} aria-label="Search Images">
@@ -60,19 +53,22 @@ const ProductImageList = () => {
                     </InputGroup>
                 </Col>
                 <Col xs="auto">
-                    <FormCheck type="switch" id={showGridId} label="Display Grid" checked={grid}
+                    <FormCheck type="checkbox" label="Show Inactive" id={showInactiveId} checked={showInactive}
+                               onChange={onChangeShowImages}/>
+                </Col>
+
+                <Col xs="auto">
+                    <FormCheck type="switch" id={showGridId} label="Display Grid" checked={showGrid}
                                onChange={changeHandler}/>
                 </Col>
             </Row>
-            {grid && (
-                <ProductImageGrid search={search} itemCode={itemCode}/>
+            {showGrid && (
+                <ProductImageGrid images={imageList}/>
             )}
-            {!grid && (
-                <ProductImageTable search={search} itemCode={itemCode}/>
+            {!showGrid && (
+                <ProductImageTable images={imageList}/>
             )}
 
         </div>
     )
 }
-
-export default ProductImageList;
