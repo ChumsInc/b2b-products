@@ -7,6 +7,7 @@ import process from "node:process";
 export default defineConfig({
     plugins: [react()],
     resolve: {
+        conditions: ['module', 'browser', 'production|development', 'import', 'type'],
         alias: {
             "@/api": path.resolve(process.cwd(), 'src/api'),
             '@/app': path.resolve(process.cwd(), 'src/app'),
@@ -33,6 +34,13 @@ export default defineConfig({
             }
         },
     },
+    css: {
+        modules: {
+            localsConvention: 'camelCaseOnly',
+            // generateScopedName: '[name]__[local]-[hash:base64:5]'
+        }
+    },
+
     server: {
         port: 8080,
         host: 'localhost',
