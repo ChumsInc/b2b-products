@@ -2,7 +2,7 @@ import VariantRow from "@/components/products/variant/editor/VariantRow.tsx";
 import {useId} from "react";
 import {FormControl} from "react-bootstrap";
 import {useEditorContext} from "@/hooks/editor/useEditorContext.ts";
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 
 export default function VariantIdInput() {
     const id = useId();

@@ -1,6 +1,6 @@
 import {useAppDispatch} from "@/app/configureStore.ts";
 import {useEditorContext} from "@/hooks/editor/useEditorContext.ts";
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import {setCurrentVariant} from "@/ducks/products/productVariantsSlice.ts";
 import {Button} from "react-bootstrap";
 

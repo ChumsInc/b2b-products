@@ -1,6 +1,4 @@
-import React from 'react';
-
-import {parseColor} from "../../../utils/common-utils";
+import {parseColor} from "@/utils/image-utils";
 
 interface ProductImageProps {
     title?: string,
@@ -10,12 +8,12 @@ interface ProductImageProps {
     imageUrl?: string,
 }
 
-const ProductImage: React.FC<ProductImageProps> = ({
+export default function ProductImage({
                                                        image,
                                                        size = '80',
                                                        defaultColor,
                                                        imageUrl
-                                                   }) => {
+                                                   }:ProductImageProps) {
     const imageFile = parseColor(imageUrl || image || 'missing.png', defaultColor || '');
     const src = 'https://intranet.chums.com/images/products/:size/:imageFile'
         .replace(':size', encodeURIComponent(size))
@@ -25,6 +23,4 @@ const ProductImage: React.FC<ProductImageProps> = ({
             <img className="img-thumbnail" src={src} alt={imageUrl || image} title={imageFile}/>
         </div>
     )
-};
-
-export default ProductImage;
+}

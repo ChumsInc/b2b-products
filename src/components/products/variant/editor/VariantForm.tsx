@@ -1,5 +1,5 @@
 import {useEditorContext} from "@/hooks/editor/useEditorContext.ts";
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import {Alert, Button, Form, ProgressBar} from "react-bootstrap";
 import {type FormEvent, useState} from "react";
 import {saveCurrentVariant} from "@/ducks/products/actions/variants-actions.ts";

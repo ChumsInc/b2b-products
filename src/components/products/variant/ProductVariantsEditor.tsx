@@ -5,7 +5,7 @@ import {
     selectCurrentVariant,
     selectCurrentVariantStatus
 } from "@/ducks/products/productVariantsSlice";
-import type {Editable, Keyword, ProductVariant} from "b2b-types";
+import type {Editable, Keyword, ProductVariant} from "chums-types/b2b";
 import KeywordSelectInputGroup from "../../keywords/KeywordSelectInputGroup";
 import {defaultVariant} from "../../../utils/defaults";
 import {removeVariant, saveCurrentVariant, setDefaultVariant} from "@/ducks/products/actions/variants-actions.ts";

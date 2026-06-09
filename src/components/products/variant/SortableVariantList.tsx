@@ -7,7 +7,7 @@ import {
 import SortableVariantItem from "./SortableVariantItem";
 import {saveVariantsSort} from "@/ducks/products/actions/variants-actions.ts";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import type {VariantSortArgs} from "@/types/variant";
 import {variantSortKey} from "@/ducks/products/utils/variants-utils.ts";
 import SpinnerButton from "@/components/common/SpinnerButton";

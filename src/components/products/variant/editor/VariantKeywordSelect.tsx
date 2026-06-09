@@ -1,6 +1,6 @@
 import {useId, useState} from "react";
 import {useEditorContext} from "@/hooks/editor/useEditorContext.ts";
-import type {Keyword, ProductVariant} from "b2b-types";
+import type {Keyword, ProductVariant} from "chums-types/b2b";
 import VariantRow from "@/components/products/variant/editor/VariantRow.tsx";
 import {Alert, Collapse, InputGroup} from "react-bootstrap";
 import KeywordSelectInputGroup from "@/components/keywords/KeywordSelectInputGroup.tsx";

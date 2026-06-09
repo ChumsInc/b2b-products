@@ -1,6 +1,6 @@
 import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
 import {useEditorContext} from "@/hooks/editor/useEditorContext.ts";
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import {selectCurrentVariantStatus} from "@/ducks/products/productVariantsSlice.ts";
 import {setDefaultVariant} from "@/ducks/products/actions/variants-actions.ts";
 import SpinnerButton from "@/components/common/SpinnerButton.tsx";

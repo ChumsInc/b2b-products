@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import ProductSellAsIcon from "@/components/products/list/ProductSellAsIcon.tsx";
 import styled from "@emotion/styled";
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import {useAppDispatch} from "@/app/configureStore.ts";
 import {setCurrentVariant} from "@/ducks/products/productVariantsSlice.ts";
 import {Button} from "react-bootstrap";

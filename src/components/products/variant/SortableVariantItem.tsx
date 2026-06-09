@@ -1,4 +1,4 @@
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 import {useSortable} from "@dnd-kit/sortable";
 import {CSS} from "@dnd-kit/utilities";
 import ThumbedVariantItem from "@/components/products/variant/ThumbedVariantItem.tsx";
