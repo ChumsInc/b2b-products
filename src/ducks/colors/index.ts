@@ -1,4 +1,4 @@
-import type {ActionStatus, ColorProductUsage, ProductColor} from "b2b-types";
+import type {ActionStatus, ColorProductUsage, ProductColor} from "chums-types/b2b";
 import {colorProductUsageSorter} from "./sorter";
 import type {SortProps} from "chums-types";
 import {createReducer} from "@reduxjs/toolkit";

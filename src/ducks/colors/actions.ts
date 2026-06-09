@@ -1,4 +1,4 @@
-import type {ColorProductUsage, ProductColor} from "b2b-types";
+import type {ColorProductUsage, ProductColor} from "chums-types/b2b";
 import {fetchColors, fetchWhereUsed, postColor} from "./api";
 import {createAction, createAsyncThunk} from "@reduxjs/toolkit";
 import type {SortProps} from "chums-types";
