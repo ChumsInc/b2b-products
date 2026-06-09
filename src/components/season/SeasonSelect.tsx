@@ -1,5 +1,5 @@
 import React, {type ChangeEvent} from "react";
-import type {ProductSeason} from "b2b-types";
+import type {ProductSeason} from "chums-types/b2b";
 import {FormSelect, type FormSelectProps} from "react-bootstrap";
 import {selectSortedSeasons} from "@/ducks/seasons";
 import {useAppSelector} from "@/app/configureStore";
