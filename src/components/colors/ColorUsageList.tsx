@@ -2,7 +2,7 @@ import React, {useEffect, useId, useState} from "react";
 import {selectCurrentColor, selectWhereUsed} from "@/ducks/colors/selectors";
 import {loadColorUsage} from "@/ducks/colors/actions";
 import ProductImage from "../app/ProductImage";
-import type {ColorProductUsage} from "b2b-types";
+import type {ColorProductUsage} from "chums-types/b2b";
 import {TablePagination} from "@chumsinc/sortable-tables";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {FormCheck} from "react-bootstrap";

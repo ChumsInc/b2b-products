@@ -1,7 +1,7 @@
 import {type ChangeEvent, type KeyboardEvent, useEffect, useId, useRef, useState} from 'react';
 import {selectColorList} from "@/ducks/colors/selectors";
 import {useFloating} from '@floating-ui/react-dom'
-import type {ProductColor} from "b2b-types";
+import type {ProductColor} from "chums-types/b2b";
 import useClickOutside from "../../hooks/click-outside";
 import classNames from "classnames";
 import {FormControl, type FormControlProps, InputGroup, type InputGroupProps, ListGroup} from "react-bootstrap";

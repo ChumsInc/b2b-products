@@ -1,6 +1,6 @@
 import React, {type ChangeEvent, type FormEvent, useEffect, useState} from "react";
 import {saveColor} from "@/ducks/colors/actions";
-import type {Editable, ProductColor} from "b2b-types";
+import type {Editable, ProductColor} from "chums-types/b2b";
 import {selectColorsStatus, selectCurrentColor} from "@/ducks/colors/selectors";
 import {defaultColor} from "../../utils/defaults";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";

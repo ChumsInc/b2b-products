@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {SortableTable, type SortableTableField, TablePagination} from '@chumsinc/sortable-tables';
-import type {ProductColor} from "b2b-types";
+import type {ProductColor} from "chums-types/b2b";
 import {setCurrentColorByCode, setSort} from "@/ducks/colors/actions";
 import {selectCurrentColor, selectSort, selectSortedList} from "@/ducks/colors/selectors";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
