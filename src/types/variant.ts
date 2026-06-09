@@ -1,3 +1,3 @@
-import type {ProductVariant} from "b2b-types";
+import type {ProductVariant} from "chums-types/b2b";
 
 export type VariantSortArgs = Pick<ProductVariant, 'parentProductID'|'id'|'priority'>

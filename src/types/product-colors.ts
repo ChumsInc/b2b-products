@@ -1,4 +1,4 @@
-import type {ProductColor} from "b2b-types";
+import type {ProductColor} from "chums-types/b2b";
 
 export interface ProductColorList {
     [key: string]: ProductColor,
