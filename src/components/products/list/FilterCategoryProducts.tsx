@@ -3,7 +3,7 @@ import {InputGroup} from "react-bootstrap";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {selectProductsFilterCategoryId, setCategoryFilter} from "@/ducks/productList/productListSlice.ts";
 import KeywordSelect from "../../keywords/KeywordSelect";
-import type {Keyword} from "b2b-types";
+import type {Keyword} from "chums-types/b2b";
 
 export default function FilterCategoryProducts() {
     const dispatch = useAppDispatch();

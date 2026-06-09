@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {SortableTable, type SortableTableField, type SortProps, TablePagination} from "@chumsinc/sortable-tables";
-import type {ProductListItem} from "b2b-types";
+import type {ProductListItem} from "chums-types/b2b";
 import SeasonIcon from "../../season/SeasonIcon";
 import ProductSellAsIcon from "./ProductSellAsIcon";
 import classNames from "classnames";

@@ -1,5 +1,5 @@
 import React from "react";
-import type {ProductListItem} from "b2b-types";
+import type {ProductListItem} from "chums-types/b2b";
 import classNames from "classnames";
 import numeral from "numeral";
 

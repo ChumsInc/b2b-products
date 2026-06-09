@@ -1,7 +1,7 @@
 import {useId} from 'react';
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {selectProductSeasonFilter, setSeasonFilter} from "@/ducks/productList/productListSlice.ts";
-import type {ProductSeason} from "b2b-types";
+import type {ProductSeason} from "chums-types/b2b";
 import {InputGroup} from "react-bootstrap";
 import SeasonSelect from "../../season/SeasonSelect";
 
