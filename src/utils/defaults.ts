@@ -1,4 +1,4 @@
-import type {ProductBase, ProductColor, ProductColorItem, ProductVariant} from "b2b-types";
+import type {ProductBase, ProductColor, ProductColorItem, ProductVariant} from "chums-types/b2b";
 
 
 export const defaultColor: ProductColor = {

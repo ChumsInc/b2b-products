@@ -15,20 +15,8 @@ import type {
     SellAsMixProduct,
     SellAsSelfProduct,
     SellAsVariantsProduct
-} from "b2b-types";
+} from "chums-types/b2b";
 
-export const parseColor = (str: string, colorCode: string = ''): string => {
-    if (!str) {
-        return '';
-    }
-    colorCode = String(colorCode);
-
-    str = str.replace(/\?/, colorCode);
-    colorCode.split('').map(code => {
-        str = str.replace(/\*/, code);
-    });
-    return str.replace(/\*/g, '');
-};
 
 export const SELL_AS_SELF: ProductSellAsSelf = 1;
 export const SELL_AS_VARIANTS: ProductSellAsVariants = 0;
