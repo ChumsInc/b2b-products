@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import type {ProductListItem} from "b2b-types";
+import type {ProductListItem} from "chums-types/b2b";
 import {fetchProducts} from "./api";
 import {type RootState} from "@/app/configureStore";
 import {selectProductListLoading} from "./productListSlice.ts";

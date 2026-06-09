@@ -1,4 +1,4 @@
-import type {ProductListItem} from "b2b-types";
+import type {ProductListItem} from "chums-types/b2b";
 import type {SortProps} from "chums-types";
 import {createEntityAdapter, createSelector, createSlice, type PayloadAction} from "@reduxjs/toolkit";
 import {LocalStore} from "chums-ui-utils";
