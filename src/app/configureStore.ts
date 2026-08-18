@@ -42,9 +42,9 @@ const store = configureStore({
         //     ignoredActionPaths: ['payload.error', 'meta.arg', 'meta.baseQueryMeta'],
         // }
     }).concat(api.middleware),
-    devTools: {
-        name: 'chums/b2b-products'
-    }
+    // devTools: {
+    //     // name: 'chums/b2b-products'
+    // }
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
