@@ -29,6 +29,7 @@ export const extraState = (): ProductsListState => ({
     search: '',
     filter: {
         ...defaultFilter,
+        showUnavailable: LocalStore.getItem<boolean>(localStorageKeys.products.showUnavailable, true) ?? true,
         showInactive: LocalStore.getItem<boolean>(localStorageKeys.products.showInactive, true) ?? true,
     },
     sort: LocalStore.getItem<SortProps<ProductListItem>>(localStorageKeys.products.sort, {...defaultSort}),

@@ -7,7 +7,7 @@ export async function postColorItem(item: ProductColorVariant): Promise<ProductC
             return Promise.reject(new Error('Invalid color item - missing value ID or color code'));
         }
         const url = item.id === 0
-            ? '/api/b2b/products/items/:productId.json'
+            ? '/api/b2b/products/items/:productId/items.json'
                 .replace(':productId', encodeURIComponent(item.productId))
             : '/api/b2b/products/items/:productId/:id.json'
                 .replace(':productId', encodeURIComponent(item.productId))

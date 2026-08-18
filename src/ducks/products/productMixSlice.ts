@@ -2,39 +2,44 @@ import type {ActionStatus, ProductMixComponent, ProductMixItem} from "chums-type
 import {loadProduct, saveProduct} from "@/ducks/products/actions/product-actions.ts";
 import {isSellAsMixProduct} from "@/ducks/products/utils/utils.ts";
 import {saveMix, saveMixComponent} from "@/ducks/products/actions/mix-actions.ts";
-import {createSlice} from "@reduxjs/toolkit";
+import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
+
+const adapter = createEntityAdapter<ProductMixComponent, number>({
+    selectId: (arg) => arg.id,
+    sortComparer: (a, b) => a.id - b.id,
+})
+
+const selectors = adapter.getSelectors();
 
 export interface ProductMixState {
     mix: ProductMixItem | null;
-    items: ProductMixComponent[];
     status: ActionStatus;
 }
 
 const initialState: ProductMixState = {
     mix: null,
-    items: [],
     status: 'idle'
 };
 
 export const productMixSlice = createSlice({
     name: 'productMix',
-    initialState,
+    initialState: adapter.getInitialState(initialState),
     reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(loadProduct.fulfilled, (state, action) => {
                 if (isSellAsMixProduct(action.payload)) {
                     state.mix = action.payload.mix;
-                    state.items = action.payload.mix.items ?? []
+                    adapter.setAll(state, action.payload.mix.items ?? []);
                 } else {
                     state.mix = null;
-                    state.items = [];
+                    adapter.removeAll(state);
                 }
             })
             .addCase(saveProduct.fulfilled, (state, action) => {
                 if (isSellAsMixProduct(action.payload)) {
                     state.mix = action.payload.mix;
-                    state.items = action.payload.mix.items ?? []
+                    adapter.setAll(state, action.payload.mix.items ?? []);
                 } else {
                     state.mix = null;
                 }
@@ -44,6 +49,7 @@ export const productMixSlice = createSlice({
             })
             .addCase(saveMix.fulfilled, (state, action) => {
                 state.mix = action.payload;
+                adapter.setAll(state, action.payload?.items ?? []);
                 state.status = 'idle';
             })
             .addCase(saveMix.rejected, (state) => {
@@ -55,6 +61,7 @@ export const productMixSlice = createSlice({
             .addCase(saveMixComponent.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.mix = action.payload;
+                adapter.setAll(state, action.payload?.items ?? []);
             })
             .addCase(saveMixComponent.rejected, (state) => {
                 state.status = 'idle';
@@ -62,7 +69,7 @@ export const productMixSlice = createSlice({
     },
     selectors: {
         selectCurrentMix: (state) => state.mix,
-        selectCurrentMixComponents: (state) => state.items,
+        selectCurrentMixComponents: (state) => selectors.selectAll(state),
         selectCurrentMixStatus: (state) => state.status,
     }
 })

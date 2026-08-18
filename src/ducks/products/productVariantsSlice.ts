@@ -44,7 +44,11 @@ export const productVariantsSlice = createSlice({
     initialState: adapter.getInitialState(extraState),
     reducers: {
         setCurrentVariant: (state, action: PayloadAction<ProductVariant | null>) => {
-            state.variant = action.payload;
+            if (!action.payload && state.productId) {
+                state.variant = action.payload ?? {...defaultVariant, parentProductID: state.productId};
+            } else {
+                state.variant = action.payload;
+            }
         },
     },
     extraReducers: (builder) => {

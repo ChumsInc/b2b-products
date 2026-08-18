@@ -13,6 +13,7 @@ export interface ProductColorItemsState {
     status: ActionStatus | 'rejected';
     sort: SortProps<ProductColorItem>;
     showInactive: boolean;
+    showDiscontinued: boolean;
 }
 
 const adapter = createEntityAdapter<ProductColorItem, number>({
@@ -27,7 +28,8 @@ const extraState: ProductColorItemsState = {
     current: null,
     status: 'idle',
     sort: {field: 'colorCode', ascending: true},
-    showInactive: false
+    showInactive: false,
+    showDiscontinued: false,
 };
 
 export const productColorItemsSlice = createSlice({
@@ -39,6 +41,9 @@ export const productColorItemsSlice = createSlice({
         },
         setColorsShowInactive: (state, action: PayloadAction<boolean>) => {
             state.showInactive = action.payload;
+        },
+        setColorsShowDiscontinued: (state, action:PayloadAction<boolean>) => {
+            state.showDiscontinued = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -88,6 +93,7 @@ export const productColorItemsSlice = createSlice({
         selectCurrentProductColors: (state) => selectors.selectAll(state),
         selectCurrentColorStatus: (state) => state.status,
         selectCurrentColorShowInactive: (state) => state.showInactive,
+        selectShowDiscontinuedColors: (state) => state.showDiscontinued,
         selectCurrentColorSort: (state) => state.sort,
     }
 });
@@ -95,18 +101,22 @@ export const productColorItemsSlice = createSlice({
 export const {
     setColorsSort,
     setColorsShowInactive,
+    setColorsShowDiscontinued,
 } = productColorItemsSlice.actions;
 export const {
     selectCurrentProductColors,
     selectCurrentColorStatus,
     selectCurrentColorShowInactive,
+    selectShowDiscontinuedColors,
     selectCurrentColorSort
 } = productColorItemsSlice.selectors;
+
 export const selectFilteredProductColors = createSelector(
-    [selectCurrentProductColors, selectCurrentColorShowInactive, selectCurrentColorSort],
-    (list, showInactive, sort) => {
+    [selectCurrentProductColors, selectCurrentColorShowInactive, selectShowDiscontinuedColors, selectCurrentColorSort],
+    (list, showInactive, showDiscontinued, sort) => {
         return list
-            .filter(c => showInactive || (c.productStatus !== 'D' && c.selfStatus))
+            .filter(c => showInactive || c.selfStatus)
+            .filter(c => showDiscontinued || c.productType !== 'D')
             .sort(productColorSorter(sort))
     }
 )
