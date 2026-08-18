@@ -14,6 +14,7 @@ import {localStorageKeys} from "@/api/preferences";
 import {LocalStore} from "chums-ui-utils";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallbackComponent from "@/components/app/ErrorFallbackComponent";
+import {loadProduct} from "@/ducks/products/actions/product-actions.ts";
 
 
 const fields: SortableTableField<ProductListItem>[] = [
@@ -74,6 +75,10 @@ const ProductTable = () => {
     }
 
     const onSelectRow = (row: ProductListItem) => {
+        if (currentId === row.id) {
+            dispatch(loadProduct(row.keyword));
+            return;
+        }
         const url = `/products/${encodeURIComponent(row.keyword)}`;
         navigate(url);
     }

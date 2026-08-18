@@ -2,6 +2,7 @@ import {type ChangeEvent, useId} from 'react';
 import {useAppDispatch, useAppSelector} from "@/app/configureStore";
 import {selectProductsShowUnavailable, toggleShowUnavailable} from "@/ducks/productList/productListSlice.ts";
 import {FormCheck} from "react-bootstrap";
+import {localStorageKeys, setPreference} from "@/api/preferences.ts";
 
 export default function FilterAvailableProducts() {
     const dispatch = useAppDispatch();
@@ -9,6 +10,7 @@ export default function FilterAvailableProducts() {
     const id = useId();
 
     const changeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
+        setPreference(localStorageKeys.products.showUnavailable, ev.target.checked);
         dispatch(toggleShowUnavailable(ev.target.checked));
     }
 
