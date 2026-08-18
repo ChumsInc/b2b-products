@@ -16,10 +16,12 @@ export const localStorageKeys = {
     productColors: {
         rowsPerPage:`${localStoragePrefix}/product-colors/rowsPerPage`,
         showInactive: `${localStoragePrefix}/product-colors/showInactive`,
+        showDiscontinued: `${localStoragePrefix}/product-colors/showDiscontinued`,
     },
     products: {
         rowsPerPage: `${localStoragePrefix}/products/rowsPerPage`,
         showInactive: `${localStoragePrefix}/products/showInactive`,
+        showUnavailable: `${localStoragePrefix}/products/showUnavailable`,
         sort: `${localStoragePrefix}/products/sort`,
     },
     items: {
