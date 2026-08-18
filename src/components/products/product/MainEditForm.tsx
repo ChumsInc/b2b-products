@@ -1,4 +1,4 @@
-import {type ChangeEvent, type FormEvent, useId} from 'react';
+import {type ChangeEvent, useId} from 'react';
 import {
     duplicateProduct,
     selectCurrentProduct,
@@ -58,8 +58,7 @@ const MainEditForm = () => {
     const newColorsId = useId();
 
 
-    const submitHandler = async (ev: FormEvent) => {
-        ev.preventDefault();
+    const submitHandler = async () => {
         if (!product) {
             return;
         }
@@ -174,7 +173,7 @@ const MainEditForm = () => {
 
     return (
         <ErrorBoundary FallbackComponent={ErrorFallbackComponent}>
-            <Form onSubmit={submitHandler} className="mt-3">
+            <Form action={submitHandler} className="mt-3">
                 <Form.Group as={Row}>
                     <Form.Label column={true} xs={4} lg={3} htmlFor={idProductId}>ID</Form.Label>
                     <Col>

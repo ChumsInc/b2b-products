@@ -43,6 +43,7 @@ const ProductDetailsTab: React.FC = () => {
         switch (field) {
             case 'description':
             case 'details':
+            case 'anticipatedPrice':
                 return dispatch(updateProduct({[field]: ev.target.value}));
         }
     }
@@ -144,7 +145,7 @@ const ProductDetailsTab: React.FC = () => {
                     <Col>
                         <FormControl type="text" size="sm" id={priceId} className="text-end"
                                      value={product.anticipatedPrice || 0}
-                                     onChange={additionalDataChangeHandler('subtitle')}/>
+                                     onChange={textChangeHandler('anticipatedPrice')}/>
                     </Col>
                 </Form.Group>
                 <Row className="justify-content-end">
