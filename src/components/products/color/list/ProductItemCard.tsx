@@ -27,19 +27,19 @@ export default function ProductItemCard({item, isCurrentItem, onSelectItem}: Pro
               onClick={cardClickHandler}>
             <Card.Header className="p-1">
                 <div className="d-flex justify-content-between align-items-baseline">
-                    <div>
+                    <div className="me-2">
                         {item.colorCode}
                     </div>
                     {!item.inactiveItem && (
-                        <SeasonIcon code={item.additionalData?.season?.code}
+                        <SeasonIcon code={item.additionalData?.season?.code} className="me-1"
                                     seasonAvailable={item.additionalData?.seasonAvailable === true}/>
                     )}
                     {!item.inactiveItem && !item.status && (
-                        <Badge bg="secondary">Off</Badge>
+                        <Badge bg="secondary" className="me-1">Off</Badge>
                     )}
                     {!item.inactiveItem && !!item.productStatus && (
-                        <Badge bg="warning">{item.productStatus}</Badge>)}
-                    {item.inactiveItem && (<Badge bg="danger">Inactive</Badge>)}
+                        <Badge bg="warning" className="me-1">{item.productStatus}</Badge>)}
+                    {item.inactiveItem && (<Badge bg="danger" className="me-1">Inactive</Badge>)}
                     <ColorSwatch colorCode={item.colorCode}
                                  swatchFormat={item.additionalData?.swatch_code ?? product?.additionalData?.swatch_format}>
                         &nbsp;

@@ -43,7 +43,7 @@ const fields: SortableTableField<ProductColorItem>[] = [
                 )}
                 {!row.inactiveItem && !!row.productStatus && (
                     <Badge bg="warning" className="text-dark">{row.productStatus}</Badge>)}
-                {row.inactiveItem && (<Badge bg="danger">Inactive</Badge>)}
+                {row.inactiveItem && (<Badge bg="danger">Discontinued</Badge>)}
             </div>
         )
     },
