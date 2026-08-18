@@ -1,13 +1,8 @@
-import {useEffect} from 'react';
 import {Nav, type NavProps} from "react-bootstrap";
 import {Link, useMatch} from "react-router";
 
 export default function AppTabs(props: NavProps) {
     const match = useMatch({path: '/:tab', end: false});
-
-    useEffect(() => {
-        console.log(match?.params.tab);
-    }, [match]);
 
     return (
         <Nav variant="tabs" activeKey={match?.params.tab ?? 'products'} {...props}>
