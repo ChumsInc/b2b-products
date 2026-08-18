@@ -11,7 +11,7 @@ const ProductScreen = () => {
         storage: localStorage,
     })
     return (
-        <Group defaultLayout={defaultLayout} onLayoutChange={onLayoutChanged}>
+        <Group defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
             <Panel defaultSize="50%" className="container" id="product-list-panel">
                 <ProductTableFilterBar/>
                 <ProductsLoading/>

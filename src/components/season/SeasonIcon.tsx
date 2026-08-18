@@ -1,6 +1,7 @@
 import {useAppSelector} from "@/app/configureStore";
 import {selectSeasonByCode} from "@/ducks/seasons";
 import styled from "@emotion/styled";
+import type {HTMLAttributes} from "react";
 
 const BadgeIcon = styled.span`
     --bs-badge-padding-x: 0.65em;
@@ -20,12 +21,12 @@ const BadgeIcon = styled.span`
     vertical-align: baseline;
     border-radius: var(--bs-border-radius-pill);
 `
-export interface SeasonIconProps {
+export interface SeasonIconProps extends HTMLAttributes<HTMLSpanElement> {
     code?: string | null;
     seasonAvailable?: boolean;
 }
 
-const SeasonIcon = ({code, seasonAvailable}: SeasonIconProps) => {
+const SeasonIcon = ({code, seasonAvailable, style, ...rest}: SeasonIconProps) => {
     const season = useAppSelector((state) => selectSeasonByCode(state, code ?? ''));
     if (!season) {
         return null;
@@ -36,7 +37,9 @@ const SeasonIcon = ({code, seasonAvailable}: SeasonIconProps) => {
                style={{
                    backgroundColor: season.properties?.color ? `${season.properties.color}` : undefined,
                    color: ['SS22', 'SS23', 'SS24'].includes(season.code) ? 'black' : undefined,
-               }}>
+                   ...style,
+               }}
+               {...rest}>
             <span>
                 {code}
                 {!(seasonAvailable || season.product_available) && (
