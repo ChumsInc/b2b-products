@@ -1,13 +1,12 @@
-import classNames from "classnames";
 import ProductSellAsIcon from "@/components/products/list/ProductSellAsIcon.tsx";
 import styled from "@emotion/styled";
 import type {ProductVariant} from "chums-types/b2b";
 import {useAppDispatch} from "@/app/configureStore.ts";
 import {setCurrentVariant} from "@/ducks/products/productVariantsSlice.ts";
 import {Button} from "react-bootstrap";
+import type {MouseEvent} from "react";
 import {useEffect, useState} from "react";
 import type {Variant} from "react-bootstrap/types";
-import type {MouseEvent} from "react";
 
 const VariantItemContainer = styled.div`
     flex: 1 1 auto;
@@ -26,13 +25,14 @@ export interface VariantItemProps {
     active?: boolean,
 }
 
-function getButtonVariant(variant: ProductVariant, active?: boolean):Variant {
+function getButtonVariant(variant: ProductVariant, active?: boolean): Variant {
     if (variant.isDefaultVariant) {
         return active ? 'primary' : 'outline-primary';
     }
     return active ? 'secondary' : 'outline-secondary';
 }
-export default function VariantItem({variant, active}:VariantItemProps) {
+
+export default function VariantItem({variant, active}: VariantItemProps) {
     const dispatch = useAppDispatch();
     const [btnVariant, setBtnVariant] = useState<Variant>(getButtonVariant(variant, active));
 
@@ -42,7 +42,7 @@ export default function VariantItem({variant, active}:VariantItemProps) {
         })
     }, [variant, active]);
 
-    const clickHandler = (ev:MouseEvent<HTMLButtonElement>) => {
+    const clickHandler = (ev: MouseEvent<HTMLButtonElement>) => {
         ev.stopPropagation();
         ev.preventDefault();
         dispatch(setCurrentVariant(variant));
@@ -53,8 +53,12 @@ export default function VariantItem({variant, active}:VariantItemProps) {
             <Button type="button" size="sm" variant={btnVariant} onClick={clickHandler} className="me-3">
                 Edit
             </Button>
-            <div className={classNames('text-start', {'text-primary': variant.isDefaultVariant,})}
-                 style={{flex: '0 0 8rem'}}>
+            <div style={{flex: '0 0 auto'}} className="me-3">
+                {variant.isDefaultVariant && <span className="bi-star-fill text-warning" aria-label="Default variant"/>}
+                {!variant.isDefaultVariant &&
+                    <span className="bi-star text-warning" aria-label="Not the default variant"/>}
+            </div>
+            <div className="text-start" style={{flex: '0 0 8rem'}}>
                 {variant.title}
             </div>
             {variant.product && (

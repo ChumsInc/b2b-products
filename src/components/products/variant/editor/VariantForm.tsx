@@ -1,7 +1,7 @@
 import {useEditorContext} from "@/hooks/editor/useEditorContext.ts";
 import type {ProductVariant} from "chums-types/b2b";
 import {Alert, Button, Form, ProgressBar} from "react-bootstrap";
-import {type FormEvent, useState} from "react";
+import {useState} from "react";
 import {saveCurrentVariant} from "@/ducks/products/actions/variants-actions.ts";
 import {useAppDispatch, useAppSelector} from "@/app/configureStore.ts";
 import {selectCurrentProductId} from "@/ducks/products/productSlice.ts";
@@ -21,13 +21,12 @@ export default function VariantForm() {
     const {value, changed} = useEditorContext<ProductVariant>();
     const [alert, setAlert] = useState<string | null>(null);
 
-    const submitHandler = async (ev: FormEvent) => {
-        ev.preventDefault();
+    const submitHandler = async () => {
         await dispatch(saveCurrentVariant(value));
     }
 
     return (
-        <Form onSubmit={submitHandler}>
+        <Form action={submitHandler}>
             <VariantIdInput/>
             <VariantKeywordSelect onAlert={setAlert}/>
             <VariantTitleInput/>
