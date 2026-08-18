@@ -65,7 +65,6 @@ const ColorAutoComplete = ({
 
     const inputHandler = (ev: KeyboardEvent<HTMLInputElement>) => {
         const len = Math.min(colors.length, 25);
-        console.log(ev.key);
         switch (ev.key) {
             case 'Escape':
                 setOpen(false);
