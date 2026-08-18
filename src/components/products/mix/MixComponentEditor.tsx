@@ -1,4 +1,4 @@
-import React, {type ChangeEvent, type FormEvent, useEffect, useId, useRef, useState} from 'react';
+import React, {type ChangeEvent, useEffect, useId, useRef, useState} from 'react';
 import type {ProductColor, ProductMixComponent, ProductMixItem} from "chums-types/b2b";
 import {deepStrictEqual} from "../../../utils/common-utils";
 import ItemFormControl from "@/components/common/ItemFormControl";
@@ -13,6 +13,7 @@ import {saveMixComponent} from "@/ducks/products/actions/mix-actions.ts";
 import {defaultMixComponent} from "@/ducks/products/utils/mix-utils.ts";
 import {JSONView} from "@chumsinc/json-view";
 import BOMDetailTable from "@/components/products/mix/BOMDetailTable";
+import {useDocumentColorScheme} from 'chums-ui-utils'
 
 export interface MixComponentEditorProps {
     mix: ProductMixItem | null;
@@ -23,6 +24,7 @@ export interface MixComponentEditorProps {
 
 export default function MixComponentEditor({mix, value, show, onClose}: MixComponentEditorProps) {
     const dispatch = useAppDispatch();
+    const theme = useDocumentColorScheme();
     const components = useAppSelector(selectCurrentMixComponents);
     const status = useAppSelector(selectCurrentMixStatus);
     const [component, setComponent] = React.useState<ProductMixComponent>(value ?? {
@@ -102,13 +104,12 @@ export default function MixComponentEditor({mix, value, show, onClose}: MixCompo
         setEqual(deepStrictEqual(next, value));
     }
 
-    const submitHandler = (ev: FormEvent) => {
-        ev.preventDefault();
+    const submitHandler = async () => {
         if (!mix || !mix?.productId) {
             return;
         }
-        dispatch(saveMixComponent({productId: mix.productId, component: component}));
-        setComponent({...defaultMixComponent, mixID: mix.id});
+        await dispatch(saveMixComponent({productId: mix.productId, component: component}));
+        await setComponent({...defaultMixComponent, mixID: mix.id});
         itemRef.current?.focus();
     }
 
@@ -120,7 +121,7 @@ export default function MixComponentEditor({mix, value, show, onClose}: MixCompo
             <Modal.Body>
                 <Row>
                     <Col md={6}>
-                        <Form onSubmit={submitHandler} id={formId}>
+                        <Form action={submitHandler} id={formId}>
                             <Form.Group as={Row}>
                                 <Form.Label column={true} xs={4} htmlFor={itemId}>Item Code</Form.Label>
                                 <Col>
@@ -163,7 +164,7 @@ export default function MixComponentEditor({mix, value, show, onClose}: MixCompo
                                 This mix already contains <strong>{component.itemCode.toUpperCase()}</strong>
                             </Alert>
                         )}
-                        <JSONView data={component} defaultOpenLevels={1}/>
+                        <JSONView dark={theme === 'dark'} data={component} defaultOpenLevels={1}/>
                     </Col>
                     <Col md={6}>
                         <BOMDetailTable onClick={selectBOMComponent}/>
