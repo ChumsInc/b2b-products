@@ -41,7 +41,7 @@ export const itemSearchApi = api.injectEndpoints({
             query: (arg:ItemSearchArg) => {
                 const {search, ...filter} = arg;
                 const params = parseSearchParams(search, filter)
-                return `/api/search/item/chums/?${params.toString()}`
+                return `/api/search/item.json?${params.toString()}`
             },
             transformResponse: (response: ItemSearchResponse) => {
                 console.debug(response);

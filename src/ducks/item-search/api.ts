@@ -33,7 +33,7 @@ export async function loadItemSearchAPI(search: string, filter?: ItemSearchFilte
             return [];
         }
         const params = parseSearchParams(search, filter)
-        const url = `/api/search/item/chums/?${params.toString()}`
+        const url = `/api/search/item.json?${params.toString()}`
         const res = await fetchJSON<{ result: ItemSearchRecord[] }>(url, {signal, cache: 'no-cache'});
         return res?.result ?? []
     } catch (error: unknown) {
